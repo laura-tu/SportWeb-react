@@ -42,13 +42,12 @@ SportWeb-React/
    
 2. **Install Dependencies**
 
-For the server:
+For the server + client:
 
 
  ```bash
 cd server
 yarn install
 
- ```bash
 cd ../client
-yarn install
+yarn install ```
