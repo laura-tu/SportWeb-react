@@ -51,3 +51,24 @@ yarn install
 
 cd ../client
 yarn install ```
+
+### Configuration
+1. **Server configuration**
+
+In server/src/config/db.ts, replace the MongoDB connection string with your own:
+... await mongoose.connect('mongodb+srv://username:password@cluster.mongodb.net/mydatabase'...
+
+2. **Client configuration**
+check environment variables set in .env files
+
+### Running the Application
+```bash
+cd server
+yarn dev
+cd client
+yarn start```
+
+or on root level
+
+```bash
+yarn dev //start development simultaneously for both client+ server```
