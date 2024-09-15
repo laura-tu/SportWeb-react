@@ -50,7 +50,7 @@ cd server
 yarn install
 
 cd ../client
-yarn install ```
+yarn install
 
 ### Configuration
 1. **Server configuration**
@@ -66,7 +66,7 @@ check environment variables set in .env files
 cd server
 yarn dev
 cd client
-yarn start```
+yarn start
 
 or on root level
 
