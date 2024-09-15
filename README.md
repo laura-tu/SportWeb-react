@@ -2,28 +2,6 @@
 
 A full-stack MERN application using Express, MongoDB, React, and TypeScript. This project includes a server-side API and a client-side React application for managing a to-do list.
 
-## Project Structure
-
-SportWeb-React/
-├── .gitignore
-├── .yarn/
-├── client/ # Client-side React application
-│ ├── src/ 
-│ ├── public/
-│ └── package.json
-├── server/ # Server-side application
-│ ├── src/
-│ │ ├── config/ # Database configuration 
-│ │ ├── controllers/ # API controllers 
-│ │ ├── models/ # Mongoose models 
-│ │ ├── routes/ # API routes 
-│ │ └── server.ts # Entry point for the server
-│ ├── package.json 
-│ └── tsconfig.json
-├── package.json 
-├── tsconfig.json 
-└── yarn.lock
-
 ## Setup
 
 ### Prerequisites
@@ -44,15 +22,16 @@ SportWeb-React/
 
 For the server + client:
 
+    ```bash
+   cd server
+   yarn install
+   
+   cd ../client
+   yarn install
 
- ```bash
-cd server
-yarn install
-
-cd ../client
-yarn install
 
 ### Configuration
+
 1. **Server configuration**
 
 In server/src/config/db.ts, replace the MongoDB connection string with your own:
@@ -62,13 +41,13 @@ In server/src/config/db.ts, replace the MongoDB connection string with your own:
 check environment variables set in .env files
 
 ### Running the Application
-```bash
-cd server
-yarn dev
-cd client
-yarn start
+   ```bash
+   cd server
+   yarn dev
+   cd client
+   yarn start
 
-or on root level
-
-```bash
-yarn dev //start development simultaneously for both client+ server```
+   or on root level
+   
+   ```bash
+   yarn dev //start development simultaneously for both client+ server```
