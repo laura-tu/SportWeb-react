@@ -23,7 +23,7 @@ A full-stack MERN application using Express, MongoDB, React, and TypeScript. Thi
 
 For the server + client:
 
-    ```
+   ```
    cd server
    yarn install
    
@@ -37,9 +37,9 @@ For the server + client:
 
 In server/src/config/db.ts, replace the MongoDB connection string with your own:
 
-```
-... await mongoose.connect('mongodb+srv://username:password@cluster.mongodb.net/mydatabase'...
-```
+   ```
+   ... await mongoose.connect('mongodb+srv://username:password@cluster.mongodb.net/mydatabase'...
+   ```
 
 2. **Client configuration**
 check environment variables set in .env files
