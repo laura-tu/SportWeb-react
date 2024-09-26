@@ -1,14 +1,17 @@
 {
   "name": "SportWeb-react",
   "private": true,
+  "version": "1.0.0",
   "packageManager": "yarn@4.5.0",
+  "type": "module",
   "workspaces": [
     "client",
     "server"
   ],
   "scripts": {
     "start": "yarn workspace server start && yarn workspace client start",
-    "dev": "concurrently \"yarn workspace server dev\" \"yarn workspace client start\""
+    "dev": "concurrently \"yarn workspace server dev\" \"yarn workspace client start\"",
+    "generate:types": "cross-env PAYLOAD_CONFIG_PATH=server/payload.config.ts payload generate:types"
   },
   "devDependencies": {
     "@types/node": "^22.5.5",
