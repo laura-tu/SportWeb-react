@@ -1,5 +1,5 @@
 {
-  "name": "SportWeb-react",
+  "name": "sportweb-react",
   "private": true,
   "version": "1.0.0",
   "packageManager": "yarn@4.5.0",
@@ -19,5 +19,13 @@
     "prettier": "^3.3.3",
     "ts-node": "^10.9.2",
     "typescript": "^5.6.2"
+  },
+  "author": "Laura Brejcakova",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "dependencies": {
+    "@payloadcms/bundler-webpack": "^1.0.7"
   }
 }

@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+    "target": "ESNext",                      // Use modern JavaScript syntax
+    "module": "CommonJS",                    // CommonJS for compatibility
+    "moduleResolution": "node",              // Resolve modules in Node.js style
+    "esModuleInterop": true,                 // Enable interoperability between ES and CommonJS modules
+    "skipLibCheck": true,                    // Skip type checks for libraries
+    "outDir": "dist",                        // Output compiled files to dist
+    "rootDir": ".",                          // Root directory for your files
+    "strict": true                           // Enable strict type-checking options
+  },
+    "include": ["server.ts"],                  // Include all files in the src folder
+    "exclude": ["node_modules"]               // Exclude node_modules
+  }
+  

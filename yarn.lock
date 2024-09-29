@@ -3655,7 +3655,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mongodb-js/saslprep@npm:^1.1.5":
+"@mongodb-js/saslprep@npm:^1.1.0, @mongodb-js/saslprep@npm:^1.1.5":
   version: 1.1.9
   resolution: "@mongodb-js/saslprep@npm:1.1.9"
   dependencies:
@@ -3771,6 +3771,35 @@ __metadata:
     ajv: 8.14.0
     payload: ^2.0.0
   checksum: 10c0/5aaaed383fcd1d6af84dd479e6580e030fecdbaf3dba66c2d69e78de8ec45fe0e364e16d6d40d8653c6da3f2842cf6b892e636ace14f67e83672ce3a510acc59
+  languageName: node
+  linkType: hard
+
+"@payloadcms/db-mongodb@npm:^1.7.2":
+  version: 1.7.2
+  resolution: "@payloadcms/db-mongodb@npm:1.7.2"
+  dependencies:
+    bson-objectid: "npm:2.0.4"
+    deepmerge: "npm:4.3.1"
+    get-port: "npm:5.1.1"
+    http-status: "npm:1.6.2"
+    mongoose: "npm:6.12.3"
+    mongoose-aggregate-paginate-v2: "npm:1.0.6"
+    mongoose-paginate-v2: "npm:1.7.22"
+    prompts: "npm:2.4.2"
+    uuid: "npm:9.0.0"
+  peerDependencies:
+    payload: ^2.0.0
+  checksum: 10c0/76077566cbaa8e3454e3542b3532a9e81fb3a5db27af32d19924419a676eff16a0a7f0f7abb95416b1e4246c935c37ef3d078cd788df3b1e7bb87005b42b23e8
+  languageName: node
+  linkType: hard
+
+"@payloadcms/plugin-seo@npm:^2.3.2":
+  version: 2.3.2
+  resolution: "@payloadcms/plugin-seo@npm:2.3.2"
+  peerDependencies:
+    payload: ^2.7.0
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+  checksum: 10c0/fd26d645652c88e43536bf04e1276ef0f11cd42f84ec7a9a85a941813abd04571249c423a40b0396cd26fcf313f9d1e18bf9766eb5a358620c46cd95c0aaebd4
   languageName: node
   linkType: hard
 
@@ -5713,18 +5742,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"SportWeb-react@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "SportWeb-react@workspace:."
-  dependencies:
-    "@types/node": "npm:^22.5.5"
-    concurrently: "npm:^8.0.1"
-    prettier: "npm:^3.3.3"
-    ts-node: "npm:^10.9.2"
-    typescript: "npm:^5.6.2"
-  languageName: unknown
-  linkType: soft
-
 "abab@npm:^2.0.3, abab@npm:^2.0.5":
   version: 2.0.6
   resolution: "abab@npm:2.0.6"
@@ -6670,7 +6687,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bson-objectid@npm:^2.0.4":
+"bson-objectid@npm:2.0.4, bson-objectid@npm:^2.0.4":
   version: 2.0.4
   resolution: "bson-objectid@npm:2.0.4"
   checksum: 10c0/9dbe55a8cd5ed5ddae0c971429a34caadcf38bc5b98070302e740be2e3c04ab2280925c8f4cba28c88e13f51018dff7d674c610370847286e27e6d76c8990a3f
@@ -8175,7 +8192,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"deepmerge@npm:^4.0.0, deepmerge@npm:^4.2.2":
+"deepmerge@npm:4.3.1, deepmerge@npm:^4.0.0, deepmerge@npm:^4.2.2":
   version: 4.3.1
   resolution: "deepmerge@npm:4.3.1"
   checksum: 10c0/e53481aaf1aa2c4082b5342be6b6d8ad9dfe387bc92ce197a66dea08bd4265904a087e75e464f14d1347cf2ac8afe1e4c16b266e0561cc5df29382d3c5f80044
@@ -10086,6 +10103,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"get-port@npm:5.1.1":
+  version: 5.1.1
+  resolution: "get-port@npm:5.1.1"
+  checksum: 10c0/2873877a469b24e6d5e0be490724a17edb39fafc795d1d662e7bea951ca649713b4a50117a473f9d162312cb0e946597bd0e049ed2f866e79e576e8e213d3d1c
+  languageName: node
+  linkType: hard
+
 "get-stdin@npm:^8.0.0":
   version: 8.0.0
   resolution: "get-stdin@npm:8.0.0"
@@ -10707,7 +10731,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"http-status@npm:^1.6.2":
+"http-status@npm:1.6.2, http-status@npm:^1.6.2":
   version: 1.6.2
   resolution: "http-status@npm:1.6.2"
   checksum: 10c0/fa4faf449599f62027e8772aa9709553880010c2dbd584fbb578dac59587fe55eff8cbfc674e4f054d6c9b1a8388fd0dfa28bc9178855e5adb83b013984134ad
@@ -10953,7 +10977,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"is-arguments@npm:^1.1.1":
+"is-arguments@npm:^1.0.4, is-arguments@npm:^1.1.1":
   version: 1.1.1
   resolution: "is-arguments@npm:1.1.1"
   dependencies:
@@ -11104,7 +11128,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"is-generator-function@npm:^1.0.10":
+"is-generator-function@npm:^1.0.10, is-generator-function@npm:^1.0.7":
   version: 1.0.10
   resolution: "is-generator-function@npm:1.0.10"
   dependencies:
@@ -11303,7 +11327,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"is-typed-array@npm:^1.1.13":
+"is-typed-array@npm:^1.1.13, is-typed-array@npm:^1.1.3":
   version: 1.1.13
   resolution: "is-typed-array@npm:1.1.13"
   dependencies:
@@ -13127,7 +13151,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mongodb-connection-string-url@npm:^2.5.4":
+"mongodb-connection-string-url@npm:^2.5.4, mongodb-connection-string-url@npm:^2.6.0":
   version: 2.6.0
   resolution: "mongodb-connection-string-url@npm:2.6.0"
   dependencies:
@@ -13165,6 +13189,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"mongodb@npm:4.17.1":
+  version: 4.17.1
+  resolution: "mongodb@npm:4.17.1"
+  dependencies:
+    "@aws-sdk/credential-providers": "npm:^3.186.0"
+    "@mongodb-js/saslprep": "npm:^1.1.0"
+    bson: "npm:^4.7.2"
+    mongodb-connection-string-url: "npm:^2.6.0"
+    socks: "npm:^2.7.1"
+  dependenciesMeta:
+    "@aws-sdk/credential-providers":
+      optional: true
+    "@mongodb-js/saslprep":
+      optional: true
+  checksum: 10c0/63f5487a54ca8c1c5cbb508383d1977900e4a71bac92c2ec5e0896caf5978ebe3a8bfa4c115bbe602e363a1edf1cce432cf110f0f5d71f3d88a3949fd85090bc
+  languageName: node
+  linkType: hard
+
 "mongodb@npm:6.8.0":
   version: 6.8.0
   resolution: "mongodb@npm:6.8.0"
@@ -13199,6 +13241,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"mongoose-aggregate-paginate-v2@npm:1.0.6":
+  version: 1.0.6
+  resolution: "mongoose-aggregate-paginate-v2@npm:1.0.6"
+  checksum: 10c0/9dd9e4e40059bae4fd66051142aabc4e1279a8b25bdda9e8599e7e59481dcda1bca39f0b0305ac8424a7a5aa347c52e968d5a64471a7befe6f9a0921587b320c
+  languageName: node
+  linkType: hard
+
 "mongoose-aggregate-paginate-v2@npm:^1.0.6":
   version: 1.1.2
   resolution: "mongoose-aggregate-paginate-v2@npm:1.1.2"
@@ -13225,6 +13274,21 @@ __metadata:
     ms: "npm:2.1.3"
     sift: "npm:16.0.1"
   checksum: 10c0/5086bd05b6f0d792341e308153e534994aaa1efced986f53dc2dbb0a1d079a446016b6c7993ae0875f9d277e4255fa3d3fb26a48526a36bf29bba191f7c62b97
+  languageName: node
+  linkType: hard
+
+"mongoose@npm:6.12.3":
+  version: 6.12.3
+  resolution: "mongoose@npm:6.12.3"
+  dependencies:
+    bson: "npm:^4.7.2"
+    kareem: "npm:2.5.1"
+    mongodb: "npm:4.17.1"
+    mpath: "npm:0.9.0"
+    mquery: "npm:4.0.3"
+    ms: "npm:2.1.3"
+    sift: "npm:16.0.1"
+  checksum: 10c0/5b00eee01601600b11cab8890945c0e24947ddea019efc739f0fc2b8ad1a29a89e267eaff3104b70336d11d11ce033d7a5031f64a976451388de3a34162d8c16
   languageName: node
   linkType: hard
 
@@ -16001,7 +16065,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prompts@npm:^2.0.1, prompts@npm:^2.4.2":
+"prompts@npm:2.4.2, prompts@npm:^2.0.1, prompts@npm:^2.4.2":
   version: 2.4.2
   resolution: "prompts@npm:2.4.2"
   dependencies:
@@ -16063,6 +16127,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"punycode@npm:^1.4.1":
+  version: 1.4.1
+  resolution: "punycode@npm:1.4.1"
+  checksum: 10c0/354b743320518aef36f77013be6e15da4db24c2b4f62c5f1eb0529a6ed02fbaf1cb52925785f6ab85a962f2b590d9cd5ad730b70da72b5f180e2556b8bd3ca08
+  languageName: node
+  linkType: hard
+
 "punycode@npm:^2.1.0, punycode@npm:^2.1.1, punycode@npm:^2.3.0":
   version: 2.3.1
   resolution: "punycode@npm:2.3.1"
@@ -16086,7 +16157,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"qs@npm:6.13.0, qs@npm:^6.11.0, qs@npm:^6.9.1":
+"qs@npm:6.13.0, qs@npm:^6.11.0, qs@npm:^6.12.3, qs@npm:^6.9.1":
   version: 6.13.0
   resolution: "qs@npm:6.13.0"
   dependencies:
@@ -16099,6 +16170,13 @@ __metadata:
   version: 6.4.1
   resolution: "qs@npm:6.4.1"
   checksum: 10c0/d2f61607ab1a3cf989f03ca24b43a59d3e5863f1f610aa345f8a7b8ab2dd1292fcec5f72af35ec07c573c974dec73bdf60f9862a00513e4adafd9b6881d2608a
+  languageName: node
+  linkType: hard
+
+"querystring@npm:^0.2.1":
+  version: 0.2.1
+  resolution: "querystring@npm:0.2.1"
+  checksum: 10c0/6841b32bec4f16ffe7f5b5e4373b47ad451f079cde3a7f45e63e550f0ecfd8f8189ef81fb50079413b3fc1c59b06146e4c98192cb74ed7981aca72090466cd94
   languageName: node
   linkType: hard
 
@@ -17305,6 +17383,8 @@ __metadata:
   dependencies:
     "@paralleldrive/cuid2": "npm:^2.2.2"
     "@payloadcms/bundler-webpack": "npm:^1.0.7"
+    "@payloadcms/db-mongodb": "npm:^1.7.2"
+    "@payloadcms/plugin-seo": "npm:^2.3.2"
     "@swc/core": "npm:^1.7.28"
     "@swc/helpers": "npm:^0.5.13"
     "@types/cors": "npm:^2.8.12"
@@ -17317,8 +17397,12 @@ __metadata:
     mongoose: "npm:^8.6.2"
     nodemon: "npm:^3.1.7"
     payload: "npm:^1.15.8"
+    querystring: "npm:^0.2.1"
     ts-node: "npm:^10.9.1"
     typescript: "npm:^5.6.2"
+    url: "npm:^0.11.4"
+    util: "npm:^0.12.5"
+    vm-browserify: "npm:^1.1.2"
   languageName: unknown
   linkType: soft
 
@@ -17761,6 +17845,19 @@ __metadata:
   checksum: 10c0/b292beb8ce9215f8c642bb68be6249c5a4c7f332fc8ecadae7be5cbdf1ea95addc95f0459ef2e7ad9d45fd1064698a097e4eb211c83e772b49bc0ee423e91534
   languageName: node
   linkType: hard
+
+"sportweb-react@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "sportweb-react@workspace:."
+  dependencies:
+    "@payloadcms/bundler-webpack": "npm:^1.0.7"
+    "@types/node": "npm:^22.5.5"
+    concurrently: "npm:^8.0.1"
+    prettier: "npm:^3.3.3"
+    ts-node: "npm:^10.9.2"
+    typescript: "npm:^5.6.2"
+  languageName: unknown
+  linkType: soft
 
 "sprintf-js@npm:^1.1.3":
   version: 1.1.3
@@ -19114,6 +19211,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"url@npm:^0.11.4":
+  version: 0.11.4
+  resolution: "url@npm:0.11.4"
+  dependencies:
+    punycode: "npm:^1.4.1"
+    qs: "npm:^6.12.3"
+  checksum: 10c0/cc93405ae4a9b97a2aa60ca67f1cb1481c0221cb4725a7341d149be5e2f9cfda26fd432d64dbbec693d16593b68b8a46aad8e5eab21f814932134c9d8620c662
+  languageName: node
+  linkType: hard
+
 "use-context-selector@npm:^1.4.1":
   version: 1.4.1
   resolution: "use-context-selector@npm:1.4.1"
@@ -19169,6 +19276,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"util@npm:^0.12.5":
+  version: 0.12.5
+  resolution: "util@npm:0.12.5"
+  dependencies:
+    inherits: "npm:^2.0.3"
+    is-arguments: "npm:^1.0.4"
+    is-generator-function: "npm:^1.0.7"
+    is-typed-array: "npm:^1.1.3"
+    which-typed-array: "npm:^1.1.2"
+  checksum: 10c0/c27054de2cea2229a66c09522d0fa1415fb12d861d08523a8846bf2e4cbf0079d4c3f725f09dcb87493549bcbf05f5798dce1688b53c6c17201a45759e7253f3
+  languageName: node
+  linkType: hard
+
 "utila@npm:~0.4":
   version: 0.4.0
   resolution: "utila@npm:0.4.0"
@@ -19180,6 +19300,15 @@ __metadata:
   version: 1.0.1
   resolution: "utils-merge@npm:1.0.1"
   checksum: 10c0/02ba649de1b7ca8854bfe20a82f1dfbdda3fb57a22ab4a8972a63a34553cf7aa51bc9081cf7e001b035b88186d23689d69e71b510e610a09a4c66f68aa95b672
+  languageName: node
+  linkType: hard
+
+"uuid@npm:9.0.0":
+  version: 9.0.0
+  resolution: "uuid@npm:9.0.0"
+  bin:
+    uuid: dist/bin/uuid
+  checksum: 10c0/8867e438990d1d33ac61093e2e4e3477a2148b844e4fa9e3c2360fa4399292429c4b6ec64537eb1659c97b2d10db349c673ad58b50e2824a11e0d3630de3c056
   languageName: node
   linkType: hard
 
@@ -19230,6 +19359,13 @@ __metadata:
   version: 1.1.2
   resolution: "vary@npm:1.1.2"
   checksum: 10c0/f15d588d79f3675135ba783c91a4083dcd290a2a5be9fcb6514220a1634e23df116847b1cc51f66bfb0644cf9353b2abb7815ae499bab06e46dd33c1a6bf1f4f
+  languageName: node
+  linkType: hard
+
+"vm-browserify@npm:^1.1.2":
+  version: 1.1.2
+  resolution: "vm-browserify@npm:1.1.2"
+  checksum: 10c0/0cc1af6e0d880deb58bc974921320c187f9e0a94f25570fca6b1bd64e798ce454ab87dfd797551b1b0cc1849307421aae0193cedf5f06bdb5680476780ee344b
   languageName: node
   linkType: hard
 
@@ -19482,7 +19618,7 @@ __metadata:
     webpack-cli:
       optional: true
   bin:
-    webpack-dev-server: bin/webpack-dev-server.js
+    webpack-dev-server: bin/webpack-dev-server.ts
   checksum: 10c0/625bd5b79360afcf98782c8b1fd710b180bb0e96d96b989defff550c546890010ceea82ffbecb2a0a23f7f018bc72f2dee7b3070f7b448fb0110df6657fb2904
   languageName: node
   linkType: hard
@@ -19722,7 +19858,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"which-typed-array@npm:^1.1.13, which-typed-array@npm:^1.1.14, which-typed-array@npm:^1.1.15, which-typed-array@npm:^1.1.9":
+"which-typed-array@npm:^1.1.13, which-typed-array@npm:^1.1.14, which-typed-array@npm:^1.1.15, which-typed-array@npm:^1.1.2, which-typed-array@npm:^1.1.9":
   version: 1.1.15
   resolution: "which-typed-array@npm:1.1.15"
   dependencies:

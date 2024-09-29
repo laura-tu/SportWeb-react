@@ -1,10 +1,9 @@
-import express from 'express'; 
-import cors from 'cors';  
+const express = require('express');
+const cors = require('cors');
 import todoRoutes from './routes/todoRoutes';
-import { connectDB } from './config/db';
-import payload from 'payload';
-
-require('dotenv').config()
+const { connectDB } = require('./config/db');
+const payload = require('payload');
+require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;

@@ -1,31 +1,28 @@
-import { buildConfig } from 'payload/config'
-import dotenv from 'dotenv'
-import path from 'path'
-import { webpackBundler } from '@payloadcms/bundler-webpack'
+import { buildConfig } from 'payload/config';
 
-import Users from './payload/collections/users'
+//import dotenv from 'dotenv';
+import path from 'path';
+import { webpackBundler } from '@payloadcms/bundler-webpack';
 
-dotenv.config()
+import Users from './payload/collections/users';
+
+//dotenv.config();
 
 export default buildConfig({
   admin: {
     user: Users.slug,
-    css: path.resolve(__dirname, './global-overrides.scss'),
-    bundler: webpackBundler(),
-    /*components: {
-      beforeLogin: [BeforeLogin],
-      afterDashboard: [AfterDashboard],
-      graphics: {
-        Logo: Logo, // Login logo
-        Icon: Logo,// Navbar logo
-      },
-      //providers: [QueryProvider, LoggerProvider],*/
+    //css: path.resolve(__dirname, 'client/tailwind.css'), 
+    bundler: webpackBundler(), 
+
     meta: {
-      titleSuffix: 'sport web',
+      titleSuffix: 'Sport Web', 
     },
   },
-  collections: [Users],
+
+  collections: [Users], 
+
   typescript: {
-    outputFile: path.resolve(__dirname, 'payload-types.ts'),
+    outputFile: path.resolve(__dirname, 'payload-types.ts'), 
   },
-})
+
+});
