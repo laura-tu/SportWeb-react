@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 import ErrorModal from '../error-modal/index.tsx'
+import { RiCloseLargeFill } from 'react-icons/ri'
 
 const LoginForm: React.FC = () => {
   const [user, setUser] = useState({ email: '', password: '' })
@@ -47,10 +48,10 @@ const LoginForm: React.FC = () => {
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-2xl font-bold">Prihlásenie</h1>
           <button
-            className="text-red-600"
+            className="text-red-600 text-2xl"
             onClick={() => setShowErrorLoginModal(false)} // Close the modal when clicking on 'X'
           >
-            X
+            <RiCloseLargeFill />
           </button>
         </div>
 

@@ -7201,6 +7201,7 @@ __metadata:
     postcss-loader: "npm:^8.1.1"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
+    react-icons: "npm:^5.3.0"
     react-router-dom: "npm:^6.27.0"
     react-scripts: "npm:^5.0.1"
     tailwindcss: "npm:^3.4.14"
@@ -16673,6 +16674,15 @@ __metadata:
     react-native:
       optional: true
   checksum: 10c0/ffc40b157e274bc26fc82fc82761290804fffba33ceed552eb5a8c8c80899ea93a3fa7af4b0d719a9f101f3e08aab6f4754df953f1b720a61aa0317f5459abca
+  languageName: node
+  linkType: hard
+
+"react-icons@npm:^5.3.0":
+  version: 5.3.0
+  resolution: "react-icons@npm:5.3.0"
+  peerDependencies:
+    react: "*"
+  checksum: 10c0/a53af0de558f0e2bacfbafc973aa8ca1e6a429006a2f83d70becad5be431726a691e096336c95949bb0d967587b145264c5046d2bc1518969dbae731855d0712
   languageName: node
   linkType: hard
 

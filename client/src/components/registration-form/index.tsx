@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import axios from 'axios'
 import ErrorModal from '../error-modal/index.tsx'
 import SuccessModal from '../success-modal/index.tsx'
+import { RiCloseLargeFill, RiEyeFill, RiEyeOffFill } from 'react-icons/ri'
 
 const RegistrationForm: React.FC<{
   onClose: () => void
@@ -72,8 +73,8 @@ const RegistrationForm: React.FC<{
       <div className="box-border bg-white p-6 rounded-lg shadow-lg border border-black max-w-md w-full">
         <div className="headerX flex justify-between items-center mb-4">
           <h1 className="text-xl font-bold text-black text-bold">Vytvoriť účet</h1>
-          <button className="text-red-600" onClick={onClose}>
-            &times; {/* Close button */}
+          <button className="text-red-600 text-2xl" onClick={onClose}>
+            <RiCloseLargeFill />
           </button>
         </div>
 
@@ -123,12 +124,12 @@ const RegistrationForm: React.FC<{
             />
           </div>
 
-          <div className="form-row mb-4 text-black">
+          <div className="form-row mb-4 text-black relative">
             <label className="block mb-1" htmlFor="password">
               Heslo
             </label>
             <input
-              className="w-full p-2 border border-gray-300 rounded-md "
+              className="w-full p-2 border border-gray-300 rounded-md pr-10"
               type={passwordVisible ? 'text' : 'password'}
               name="password"
               value={user.password}
@@ -138,19 +139,19 @@ const RegistrationForm: React.FC<{
             />
             <button
               type="button"
-              className="mt-1 text-black"
+              className="absolute right-2 top-10 text-black"
               onClick={() => setPasswordVisible(!passwordVisible)}
             >
-              {passwordVisible ? 'Hide' : 'Show'}
+              {passwordVisible ? <RiEyeFill /> : <RiEyeOffFill />}
             </button>
           </div>
 
-          <div className="form-row mb-4 text-black">
+          <div className="form-row mb-4 text-black relative">
             <label className="block mb-1" htmlFor="passwordConf">
               Potvrdenie hesla
             </label>
             <input
-              className="w-full p-2 border border-gray-300 rounded-md"
+              className="w-full p-2 border border-gray-300 rounded-md pr-10"
               type={passwordConfVisible ? 'text' : 'password'}
               name="passwordConf"
               value={user.passwordConf}
@@ -160,10 +161,10 @@ const RegistrationForm: React.FC<{
             />
             <button
               type="button"
-              className="mt-1 text-gray-500"
-              onClick={() => setPasswordConfVisible(!passwordConfVisible)}
+              className="absolute right-2 top-10 text-black"
+              onClick={() => setPasswordConfVisible(!passwordConfVisible)} 
             >
-              {passwordConfVisible ? 'Hide' : 'Show'}
+              {passwordConfVisible ? <RiEyeFill /> : <RiEyeOffFill />} 
             </button>
           </div>
 
@@ -266,7 +267,10 @@ const RegistrationForm: React.FC<{
         )}
 
         {errorModalVisible && (
-          <ErrorModal onClose={() => setErrorModalVisible(false)} text={'registrovaní používateľa'} />
+          <ErrorModal
+            onClose={() => setErrorModalVisible(false)}
+            text={'registrovaní používateľa'}
+          />
         )}
       </div>
     </div>
