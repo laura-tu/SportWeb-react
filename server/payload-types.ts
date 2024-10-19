@@ -8,14 +8,14 @@
 
 export interface Config {
   collections: {
-    users: User;
-  };
-  globals: {};
+    users: User
+  }
+  globals: {}
 }
 export interface User {
-  id: string;
-  name: string;
-  email: string;
-  updatedAt: string;
-  createdAt: string;
+  id: string
+  name: string
+  email: string
+  updatedAt: string
+  createdAt: string
 }
