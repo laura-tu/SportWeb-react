@@ -17,7 +17,7 @@ const LoginForm: React.FC = () => {
     e.preventDefault()
 
     try {
-      const { data } = await axios.post('http://localhost:4000/api/user/login', user)
+      const { data } = await axios.post('http://localhost:5000/api/user/login', user)
       if (data.status === true) {
         console.log('Login successful')
 
@@ -49,7 +49,7 @@ const LoginForm: React.FC = () => {
           <h1 className="text-2xl font-bold">Prihlásenie</h1>
           <button
             className="text-red-600 text-2xl"
-            onClick={() => setShowErrorLoginModal(false)} // Close the modal when clicking on 'X'
+            onClick={() => setShowErrorLoginModal(false)} 
           >
             <RiCloseLargeFill />
           </button>

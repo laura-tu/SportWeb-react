@@ -2,7 +2,6 @@ import UserModel, { IUser, UserRole } from '../models/userModel'
 import AthleteModel from '../models/athleteModel'
 import bcrypt from 'bcrypt'
 
-// Define the types for user details
 interface UserDetails {
   name: string
   surname: string
@@ -11,7 +10,7 @@ interface UserDetails {
   password: string
   terms: boolean
 }
-// Define the type for the login user details
+
 interface LoginUserDetails {
   email: string
   password: string

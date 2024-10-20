@@ -11,13 +11,12 @@ export interface AthleteDetails {
   club: string
 }
 
-/* CREATE athlete */
+
 export const createAthleteDBService = async (
   athleteDetails: AthleteDetails,
 ): Promise<{ athlete: IAthlete }> => {
   // Change the return type
   try {
-    // Create a new athlete
     const newAthlete = await AthleteModel.create({
       user_id: athleteDetails.user_id,
       day: athleteDetails.day,
@@ -28,14 +27,13 @@ export const createAthleteDBService = async (
       club: athleteDetails.club,
     })
 
-    return { athlete: newAthlete } // Correctly return the athlete document
+    return { athlete: newAthlete }
   } catch (error) {
     console.error('Error creating athlete:', error)
     throw new Error('Internal Server Error')
   }
 }
 
-/* UPDATE athlete */
 export const updateAthleteDBService = async (
   userEmail: string,
   athleteDetails: Partial<AthleteDetails>,
@@ -59,7 +57,7 @@ export const updateAthleteDBService = async (
     if (!updatedAthlete) {
       throw new Error('Athlete not found')
     } else {
-      return { athlete: updatedAthlete } // Return the updated athlete
+      return { athlete: updatedAthlete } 
     }
   } catch (error) {
     console.error('Error updating athlete:', error)

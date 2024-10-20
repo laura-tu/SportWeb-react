@@ -1,15 +1,17 @@
 {
-    "compilerOptions": {
-    "target": "ESNext",                      // Use modern JavaScript syntax
-    "module": "CommonJS",                    // CommonJS for compatibility
-    "moduleResolution": "node",              // Resolve modules in Node.js style
-    "esModuleInterop": true,                 // Enable interoperability between ES and CommonJS modules
-    "skipLibCheck": true,                    // Skip type checks for libraries
-    "outDir": "dist",                        // Output compiled files to dist
-    "rootDir": ".",                          // Root directory for your files
-    "strict": true                           // Enable strict type-checking options
+  "compilerOptions": {
+    "module": "NodeNext",               // Set to NodeNext for ES module support
+    "moduleResolution": "NodeNext",     // Set to NodeNext for module resolution
+    "target": "ES2020",                    // ES6 or later for modern JS features
+    "esModuleInterop": true,            // Interop for CommonJS and ES Modules
+    "skipLibCheck": true,
+    "outDir": "./dist",                 // Output directory for compiled files
+    "rootDir": ".",                     // Root directory of your source files
+    "strict": true,                     // Enables all strict type checking options
+    "paths": {
+      "*": ["./node_modules/*", "./*"]      
+    }
   },
-    "include": ["server.ts"],                  // Include all files in the src folder
-    "exclude": ["node_modules"]               // Exclude node_modules
-  }
-  
+  "include": ["**/*.ts", "./types/**/*.d.ts"],
+  "exclude": ["node_modules"]     // Exclude node_modules from compilation
+}

@@ -8,14 +8,20 @@
 
 export interface Config {
   collections: {
-    users: User
-  }
-  globals: {}
+    users: User;
+  };
+  globals: {};
 }
 export interface User {
-  id: string
-  name: string
-  email: string
-  updatedAt: string
-  createdAt: string
+  id: string;
+  updatedAt: string;
+  createdAt: string;
+  email: string;
+  resetPasswordToken?: string;
+  resetPasswordExpiration?: string;
+  salt?: string;
+  hash?: string;
+  loginAttempts?: number;
+  lockUntil?: string;
+  password?: string;
 }
