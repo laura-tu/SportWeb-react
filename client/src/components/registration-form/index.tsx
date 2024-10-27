@@ -13,6 +13,7 @@ import PersonAddAlt1OutlinedIcon from '@mui/icons-material/PersonAddAlt1Outlined
 import AlternateEmailOutlinedIcon from '@mui/icons-material/AlternateEmailOutlined'
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined'
 import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined'
+import { Button } from '@material-ui/core'
 
 const RegistrationForm: React.FC<{
   onClose: () => void
@@ -87,7 +88,7 @@ const RegistrationForm: React.FC<{
     <div className="registration-form fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center z-50">
       <div className="box-border bg-white p-6 rounded-lg shadow-lg border border-black max-w-lg w-full">
         <div className="headerX flex justify-between items-center mb-10">
-          <h1 className="text-xl font-bold text-black text-bold ">Vytvoriť účet</h1>
+          <h1 className="text-2xl font-bold text-black text-bold ">Vytvoriť účet</h1>
           <button className="text-red-600 text-2xl " onClick={onClose}>
             <CloseOutlinedIcon />
           </button>
@@ -131,7 +132,7 @@ const RegistrationForm: React.FC<{
             />
             <button
               type="button"
-              className="absolute right-2 top-6 text-black"
+              className="absolute right-2 top-6 text-gray-500"
               onClick={() => setPasswordVisible(!passwordVisible)}
             >
               {passwordVisible ? <VisibilityOutlinedIcon /> : <VisibilityOffOutlinedIcon />}
@@ -152,7 +153,7 @@ const RegistrationForm: React.FC<{
 
             <button
               type="button"
-              className="absolute right-2 top-6 text-black"
+              className="absolute right-2 top-6 text-gray-500"
               onClick={() => setPasswordConfVisible(!passwordConfVisible)}
             >
               {passwordConfVisible ? <VisibilityOutlinedIcon /> : <VisibilityOffOutlinedIcon />}
@@ -225,7 +226,8 @@ const RegistrationForm: React.FC<{
             </button>
 
             {formSubmitted && (
-              <button
+              <Button
+                variant="contained"
                 type="button"
                 onClick={handleNext}
                 disabled={
@@ -234,7 +236,7 @@ const RegistrationForm: React.FC<{
                 className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
               >
                 POKRAČOVAŤ
-              </button>
+              </Button>
             )}
           </div>
 

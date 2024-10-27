@@ -3,8 +3,18 @@ import axios from 'axios'
 import ErrorModal from '../error-modal/index.tsx'
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined'
 import { useNavigate } from 'react-router-dom'
+import CustomTextField from '../custom-textfield/index.tsx'
+import AlternateEmailOutlinedIcon from '@mui/icons-material/AlternateEmailOutlined'
+import KeyIcon from '@mui/icons-material/Key'
+import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined'
+import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined'
+import Button from '@mui/material/Button'
 
-const LoginForm: React.FC = () => {
+interface LoginFormProps {
+  onClose: () => void
+}
+
+const LoginForm: React.FC<LoginFormProps> = ({ onClose }) => {
   const [user, setUser] = useState({ email: '', password: '' })
   const [showErrorLoginModal, setShowErrorLoginModal] = useState(false)
   const [passwordVisible, setPasswordVisible] = useState(false)
@@ -49,48 +59,48 @@ const LoginForm: React.FC = () => {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75 z-50">
       <div className="bg-gray-100 p-8 rounded-lg shadow-lg border border-black max-w-md w-full text-black">
-        <div className="flex justify-between items-center mb-4">
-          <h1 className="text-2xl font-bold">Prihlásenie</h1>
-          <button className="text-red-600 text-2xl" onClick={() => setShowErrorLoginModal(false)}>
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-2xl font-bold ">Prihlásenie</h1>
+          <button className="text-red-600 text-2xl" onClick={onClose}>
             <CloseOutlinedIcon />
           </button>
         </div>
 
         <form onSubmit={LoginAthlete}>
           <div className="mb-4">
-            <input
-              className="w-full p-2 border border-gray-300 rounded-md"
-              type="email"
+            <CustomTextField
               name="email"
+              label="E-mail"
               value={user.email}
               onChange={handleChange}
-              placeholder="E-mail"
-              required
+              icon={<AlternateEmailOutlinedIcon />}
             />
           </div>
 
           <div className="mb-4 relative">
-            <input
-              className="w-full p-2 border border-gray-300 rounded-md"
-              type={passwordVisible ? 'text' : 'password'}
+            <CustomTextField
               name="password"
+              label="Heslo"
               value={user.password}
               onChange={handleChange}
-              placeholder="Heslo"
-              required
+              type={passwordVisible ? 'text' : 'password'}
+              icon={<KeyIcon />}
             />
             <button
               type="button"
-              className="absolute right-2 top-2 text-gray-500"
+              className="absolute right-2 top-3 text-gray-500"
               onClick={() => setPasswordVisible(!passwordVisible)}
             >
-              {passwordVisible ? 'Hide' : 'Show'}
+              {passwordVisible ? <VisibilityOffOutlinedIcon /> : <VisibilityOutlinedIcon />}
             </button>
           </div>
 
-          <button className="w-full py-2 bg-blue-500 text-white font-bold rounded-md hover:bg-blue-600">
+          <Button
+            variant="contained"
+            className="w-full py-2 bg-blue-500 text-white font-bold rounded-md hover:bg-blue-600"
+          >
             PRIHLÁSIŤ SA
-          </button>
+          </Button>
         </form>
       </div>
 

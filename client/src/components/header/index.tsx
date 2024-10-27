@@ -15,10 +15,12 @@ const Header = () => {
 
   const showRegistration = () => {
     setShowRegis(true)
+    setShowLog(false)
   }
 
   const showLogin = () => {
     setShowLog(true)
+    setShowRegis(false)
   }
 
   const closeRegistration = () => {
@@ -31,8 +33,8 @@ const Header = () => {
 
   const handleNext = (userId: string, user: any) => {
     console.log('User registered:', userId, user)
-    // Add your registration logic here
-    closeRegistration() // Optionally close the registration after success
+
+    closeRegistration()
   }
 
   return (
@@ -104,8 +106,7 @@ const Header = () => {
           {/* Login Form Popup */}
           {showLog && (
             <div className="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-              <LoginForm />
-              {/*onClose={closeLogin}*/}
+              <LoginForm onClose={closeLogin} />
             </div>
           )}
         </div>
