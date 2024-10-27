@@ -27,9 +27,6 @@ const LoginForm: React.FC = () => {
         axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`
         console.log('User data after login:', data.user)
 
-        // Store user data (handle this according to your state management)
-        // Example: dispatch({ type: 'SET_USER', payload: data.user });
-
         // Navigate to the DashboardView
         // Example: navigate("/dashboard"); or use useHistory from react-router-dom
       } else {

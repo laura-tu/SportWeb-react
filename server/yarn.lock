@@ -1840,132 +1840,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@payloadcms/bundler-webpack@npm:^1.0.7":
-  version: 1.0.7
-  resolution: "@payloadcms/bundler-webpack@npm:1.0.7"
-  dependencies:
-    ajv: "npm:8.14.0"
-    compression: "npm:1.7.4"
-    connect-history-api-fallback: "npm:1.6.0"
-    css-loader: "npm:5.2.7"
-    file-loader: "npm:6.2.0"
-    find-node-modules: "npm:^2.1.3"
-    html-webpack-plugin: "npm:^5.5.0"
-    md5: "npm:2.3.0"
-    mini-css-extract-plugin: "npm:1.6.2"
-    path-browserify: "npm:1.0.1"
-    postcss: "npm:8.4.31"
-    postcss-loader: "npm:6.2.1"
-    postcss-preset-env: "npm:9.0.0"
-    process: "npm:0.11.10"
-    sass-loader: "npm:12.6.0"
-    style-loader: "npm:^2.0.0"
-    swc-loader: "npm:^0.2.3"
-    swc-minify-webpack-plugin: "npm:^2.1.0"
-    terser-webpack-plugin: "npm:^5.3.6"
-    url-loader: "npm:4.1.1"
-    webpack: "npm:^5.78.0"
-    webpack-bundle-analyzer: "npm:^4.8.0"
-    webpack-cli: "npm:^4.10.0"
-    webpack-dev-middleware: "npm:6.1.2"
-    webpack-hot-middleware: "npm:^2.25.3"
-  peerDependencies:
-    ajv: 8.14.0
-    payload: ^2.0.0
-  checksum: 10c0/5aaaed383fcd1d6af84dd479e6580e030fecdbaf3dba66c2d69e78de8ec45fe0e364e16d6d40d8653c6da3f2842cf6b892e636ace14f67e83672ce3a510acc59
-  languageName: node
-  linkType: hard
-
-"@payloadcms/db-mongodb@npm:^1.7.3":
-  version: 1.7.3
-  resolution: "@payloadcms/db-mongodb@npm:1.7.3"
-  dependencies:
-    bson-objectid: "npm:2.0.4"
-    deepmerge: "npm:4.3.1"
-    get-port: "npm:5.1.1"
-    http-status: "npm:1.6.2"
-    mongoose: "npm:6.12.3"
-    mongoose-aggregate-paginate-v2: "npm:1.0.6"
-    mongoose-paginate-v2: "npm:1.7.22"
-    prompts: "npm:2.4.2"
-    uuid: "npm:9.0.0"
-  peerDependencies:
-    payload: ^2.0.0
-  checksum: 10c0/dac3b69f60c7eeba21d676645ee97b8b89c62600b31eb23e4f4ced8a917373fd64b9b9dcb427b61d048b2c859e93c9627bfdb24620837d1b4518093958799ae2
-  languageName: node
-  linkType: hard
-
-"@payloadcms/plugin-redirects@npm:^1.0.2":
-  version: 1.0.2
-  resolution: "@payloadcms/plugin-redirects@npm:1.0.2"
-  peerDependencies:
-    payload: ^0.18.5 || ^1.0.0 || ^2.0.0
-    react: ^18.0.0
-  checksum: 10c0/7590be508ef37bbab1b15833724f6d77dd8f09b33c1932499a6214eeadd6c6b60c7e63aa1bcab532e0b130064875730741d897e5c5549e3bf4a0b546226e183f
-  languageName: node
-  linkType: hard
-
-"@payloadcms/plugin-seo@npm:^2.3.2":
-  version: 2.3.2
-  resolution: "@payloadcms/plugin-seo@npm:2.3.2"
-  peerDependencies:
-    payload: ^2.7.0
-    react: ^16.8.0 || ^17.0.0 || ^18.0.0
-  checksum: 10c0/fd26d645652c88e43536bf04e1276ef0f11cd42f84ec7a9a85a941813abd04571249c423a40b0396cd26fcf313f9d1e18bf9766eb5a358620c46cd95c0aaebd4
-  languageName: node
-  linkType: hard
-
-"@payloadcms/richtext-lexical@npm:^0.11.4":
-  version: 0.11.4
-  resolution: "@payloadcms/richtext-lexical@npm:0.11.4"
-  dependencies:
-    "@faceless-ui/modal": "npm:2.0.2"
-    "@lexical/headless": "npm:0.13.1"
-    "@lexical/link": "npm:0.13.1"
-    "@lexical/list": "npm:0.13.1"
-    "@lexical/mark": "npm:0.13.1"
-    "@lexical/markdown": "npm:0.13.1"
-    "@lexical/react": "npm:0.13.1"
-    "@lexical/rich-text": "npm:0.13.1"
-    "@lexical/selection": "npm:0.13.1"
-    "@lexical/utils": "npm:0.13.1"
-    bson-objectid: "npm:2.0.4"
-    classnames: "npm:^2.3.2"
-    deep-equal: "npm:2.2.3"
-    i18next: "npm:22.5.1"
-    json-schema: "npm:^0.4.0"
-    lexical: "npm:0.13.1"
-    lodash: "npm:4.17.21"
-    react-error-boundary: "npm:4.0.13"
-    react-i18next: "npm:11.18.6"
-    ts-essentials: "npm:7.0.3"
-  peerDependencies:
-    payload: ^2.4.0
-    react: ^16.8.0 || ^17.0.0 || ^18.0.0
-    react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
-  checksum: 10c0/54150d3530644f7eef04cf7736dae0a2e2088d834bebb13cc1de2a19c4872134bf7ea0816b01674e091ab9e2004a0dcde445a05a666c65dc99d1aa3b775ca5a9
-  languageName: node
-  linkType: hard
-
-"@payloadcms/richtext-slate@npm:^1.5.2":
-  version: 1.5.2
-  resolution: "@payloadcms/richtext-slate@npm:1.5.2"
-  dependencies:
-    "@faceless-ui/modal": "npm:2.0.1"
-    i18next: "npm:22.5.1"
-    is-hotkey: "npm:0.2.0"
-    react-i18next: "npm:11.18.6"
-    slate: "npm:0.91.4"
-    slate-history: "npm:0.86.0"
-    slate-hyperscript: "npm:0.81.3"
-    slate-react: "npm:0.92.0"
-  peerDependencies:
-    payload: ^2.3.0
-    react: ^16.8.0 || ^17.0.0 || ^18.0.0
-  checksum: 10c0/4e3a04c09e33f5568575416b3fe921796d9821a337e6fdd90dc7d31618f1cc3711afb32d55d8fab2c4f6d42ee4222b7b410ff4a8ffe783549c1c32b15682a42b
-  languageName: node
-  linkType: hard
-
 "@pkgjs/parseargs@npm:^0.11.0":
   version: 0.11.0
   resolution: "@pkgjs/parseargs@npm:0.11.0"
@@ -7947,104 +7821,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"payload@npm:^2.24.0":
-  version: 2.30.3
-  resolution: "payload@npm:2.30.3"
-  dependencies:
-    "@date-io/date-fns": "npm:2.16.0"
-    "@dnd-kit/core": "npm:6.0.8"
-    "@dnd-kit/sortable": "npm:7.0.2"
-    "@faceless-ui/modal": "npm:2.0.2"
-    "@faceless-ui/scroll-info": "npm:1.3.0"
-    "@faceless-ui/window-info": "npm:2.1.2"
-    "@monaco-editor/react": "npm:4.5.1"
-    "@swc/core": "npm:1.6.1"
-    "@swc/register": "npm:0.1.10"
-    body-parser: "npm:1.20.3"
-    body-scroll-lock: "npm:4.0.0-beta.0"
-    bson-objectid: "npm:2.0.4"
-    compression: "npm:1.7.4"
-    conf: "npm:10.2.0"
-    connect-history-api-fallback: "npm:1.6.0"
-    console-table-printer: "npm:2.11.2"
-    dataloader: "npm:2.2.2"
-    date-fns: "npm:2.30.0"
-    deep-equal: "npm:2.2.3"
-    deepmerge: "npm:4.3.1"
-    dotenv: "npm:8.6.0"
-    express: "npm:4.21.0"
-    express-fileupload: "npm:1.4.0"
-    express-rate-limit: "npm:5.5.1"
-    file-type: "npm:16.5.4"
-    find-up: "npm:4.1.0"
-    fs-extra: "npm:10.1.0"
-    get-tsconfig: "npm:4.6.2"
-    graphql: "npm:16.8.1"
-    graphql-http: "npm:1.21.0"
-    graphql-playground-middleware-express: "npm:1.7.23"
-    graphql-query-complexity: "npm:0.12.0"
-    graphql-scalars: "npm:1.22.2"
-    graphql-type-json: "npm:0.3.2"
-    html-webpack-plugin: "npm:5.5.3"
-    http-status: "npm:1.6.2"
-    i18next: "npm:22.5.1"
-    i18next-browser-languagedetector: "npm:6.1.8"
-    i18next-http-middleware: "npm:3.3.2"
-    is-buffer: "npm:^2.0.5"
-    is-hotkey: "npm:0.2.0"
-    is-plain-object: "npm:5.0.0"
-    isomorphic-fetch: "npm:3.0.0"
-    joi: "npm:17.9.2"
-    json-schema-to-typescript: "npm:14.0.5"
-    jsonwebtoken: "npm:9.0.2"
-    jwt-decode: "npm:3.1.2"
-    md5: "npm:2.3.0"
-    method-override: "npm:3.0.0"
-    minimist: "npm:1.2.8"
-    mkdirp: "npm:1.0.4"
-    monaco-editor: "npm:0.38.0"
-    nodemailer: "npm:6.9.15"
-    object-to-formdata: "npm:4.5.1"
-    passport: "npm:0.6.0"
-    passport-anonymous: "npm:1.0.1"
-    passport-headerapikey: "npm:1.2.2"
-    passport-jwt: "npm:4.0.1"
-    passport-local: "npm:1.0.0"
-    pino: "npm:8.15.0"
-    pino-pretty: "npm:10.3.1"
-    pluralize: "npm:8.0.0"
-    probe-image-size: "npm:6.0.0"
-    process: "npm:0.11.10"
-    qs: "npm:6.11.2"
-    qs-middleware: "npm:1.0.3"
-    react: "npm:^18.0.0"
-    react-animate-height: "npm:2.1.2"
-    react-datepicker: "npm:4.16.0"
-    react-diff-viewer-continued: "npm:3.2.6"
-    react-dom: "npm:^18.0.0"
-    react-helmet: "npm:6.1.0"
-    react-i18next: "npm:11.18.6"
-    react-image-crop: "npm:10.1.8"
-    react-router-dom: "npm:5.3.4"
-    react-router-navigation-prompt: "npm:1.9.6"
-    react-select: "npm:5.7.4"
-    react-toastify: "npm:10.0.5"
-    sanitize-filename: "npm:1.6.3"
-    sass: "npm:1.69.4"
-    scheduler: "npm:0.23.2"
-    scmp: "npm:2.1.0"
-    sharp: "npm:0.32.6"
-    swc-loader: "npm:0.2.6"
-    terser-webpack-plugin: "npm:5.3.10"
-    ts-essentials: "npm:7.0.3"
-    use-context-selector: "npm:1.4.1"
-    uuid: "npm:9.0.1"
-  bin:
-    payload: bin.js
-  checksum: 10c0/0b5be0627df8353bf78ad4ebb81b33cb88b38c35a75b6a828a083cbed4a6a3d3e221a131f4ba2ee79d7f8c39309e8b77bf1e6077cd90aea28a254019c7958e95
-  languageName: node
-  linkType: hard
-
 "peek-readable@npm:^4.1.0":
   version: 4.1.0
   resolution: "peek-readable@npm:4.1.0"
@@ -9573,12 +9349,6 @@ __metadata:
   resolution: "server@workspace:."
   dependencies:
     "@paralleldrive/cuid2": "npm:^2.2.2"
-    "@payloadcms/bundler-webpack": "npm:^1.0.7"
-    "@payloadcms/db-mongodb": "npm:^1.7.3"
-    "@payloadcms/plugin-redirects": "npm:^1.0.2"
-    "@payloadcms/plugin-seo": "npm:^2.3.2"
-    "@payloadcms/richtext-lexical": "npm:^0.11.4"
-    "@payloadcms/richtext-slate": "npm:^1.5.2"
     "@swc/core": "npm:^1.7.36"
     "@types/bcrypt": "npm:^5.0.2"
     "@types/cors": "npm:^2.8.12"
@@ -9596,7 +9366,6 @@ __metadata:
     jsonwebtoken: "npm:^9.0.2"
     mongoose: "npm:^8.6.2"
     nodemon: "npm:^2.0.6"
-    payload: "npm:^2.24.0"
     querystring: "npm:^0.2.1"
     react: "npm:^18.3.1"
     ts-node: "npm:^10.9.2"

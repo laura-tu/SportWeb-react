@@ -4,7 +4,7 @@
 /client/node_modules
 
 # Yarn
-.yarn/*
+.yarn
 !.yarn/releases
 !.yarn/plugins
 !.yarn/sdks
