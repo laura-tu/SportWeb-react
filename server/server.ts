@@ -1,6 +1,6 @@
 import express from 'express'
 import cors from 'cors'
-import { connectDB } from './config/db.js'
+import { connectDB } from './config/db'
 import payload from 'payload'
 import dotenv from 'dotenv'
 
@@ -19,22 +19,19 @@ connectDB()
 
 const start = async () => {
   try {
-    // Ensure PAYLOAD_SECRET is defined
     if (!process.env.PAYLOAD_SECRET) {
       throw new Error('PAYLOAD_SECRET is not defined in .env')
     }
-
-    // Ensure MONGO_URI is defined
     if (!process.env.MONGO_URI) {
       throw new Error('MONGO_URI is not defined in .env')
     }
 
-    // Initialize Payload CMS
+    console.log("Initializing Payload...");
     await payload.init({
-      secret: process.env.PAYLOAD_SECRET as string, // Type assertion
-      express: app,
-      mongoURL: process.env.MONGO_URI as string | false, // Type assertion
+      secret: process.env.PAYLOAD_SECRET,
+      express: app
     })
+    console.log("Payload initialized successfully.");
 
     // Start Express server
     app.listen(PORT, () => {
@@ -42,7 +39,7 @@ const start = async () => {
     })
   } catch (error) {
     console.error('Error starting the server:', error)
-    process.exit(1) // Exit the process with failure
+    process.exit(1)
   }
 }
 

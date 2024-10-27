@@ -17,7 +17,7 @@ const LoginForm: React.FC = () => {
     e.preventDefault()
 
     try {
-      const { data } = await axios.post('http://localhost:5000/api/user/login', user)
+      const { data } = await axios.post('http://localhost:3000/api/login', user)
       if (data.status === true) {
         console.log('Login successful')
 

@@ -11,6 +11,7 @@
 !.yarn/versions
 .pnp.*
 .yarnrc.yml
+server/.yarn
 
 # Logs
 logs

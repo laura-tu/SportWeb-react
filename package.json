@@ -26,6 +26,8 @@
   },
   "dependencies": {
     "@payloadcms/bundler-webpack": "^1.0.3",
-    "payload": "^2.30.3"
+    "cliui": "^8.0.1",
+    "payload": "^2.30.3",
+    "string-width": "^7.2.0"
   }
 }
