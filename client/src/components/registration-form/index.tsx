@@ -2,11 +2,17 @@ import React, { useState } from 'react'
 import axios from 'axios'
 import ErrorModal from '../error-modal/index.tsx'
 import SuccessModal from '../success-modal/index.tsx'
-import { RiCloseLargeFill, RiEyeFill, RiEyeOffFill } from 'react-icons/ri'
+import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined'
 import Radio from '@mui/material/Radio'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import FormLabel from '@mui/material/FormLabel'
 import GreenCheckbox from '../green-checkbox/index.tsx'
+import CustomTextField from '../custom-textfield/index.tsx'
+import KeyIcon from '@mui/icons-material/Key'
+import PersonAddAlt1OutlinedIcon from '@mui/icons-material/PersonAddAlt1Outlined'
+import AlternateEmailOutlinedIcon from '@mui/icons-material/AlternateEmailOutlined'
+import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined'
+import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined'
 
 const RegistrationForm: React.FC<{
   onClose: () => void
@@ -80,78 +86,76 @@ const RegistrationForm: React.FC<{
   return (
     <div className="registration-form fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center z-50">
       <div className="box-border bg-white p-6 rounded-lg shadow-lg border border-black max-w-lg w-full">
-        <div className="headerX flex justify-between items-center mb-4">
-          <h1 className="text-xl font-bold text-black text-bold">Vytvoriť účet</h1>
-          <button className="text-red-600 text-2xl" onClick={onClose}>
-            <RiCloseLargeFill />
+        <div className="headerX flex justify-between items-center mb-10">
+          <h1 className="text-xl font-bold text-black text-bold ">Vytvoriť účet</h1>
+          <button className="text-red-600 text-2xl " onClick={onClose}>
+            <CloseOutlinedIcon />
           </button>
         </div>
 
         <form onSubmit={registerUser}>
-          <div className="form-row flex flex-wrap mb-4">
-            <div className="form-col flex-1 mr-2 text-black">
-              <FormLabel>Meno</FormLabel>
-              <input
-                className="w-full p-2 border border-gray-300 rounded-md"
-                type="text"
-                name="name"
-                value={user.name}
-                onChange={handleChange}
-                required
-                maxLength={20}
-              />
-            </div>
+          <div className="form-row my-4 text-black">
+            <CustomTextField
+              label="Meno"
+              name="name"
+              value={user.name}
+              onChange={handleChange}
+              required
+              maxLength={20}
+              icon={<PersonAddAlt1OutlinedIcon />}
+            />
           </div>
 
-          <div className="form-row mb-4 text-black">
-            <FormLabel>E-mail</FormLabel>
-            <input
-              className="w-full p-2 border border-gray-300 rounded-md"
+          <div className="form-row mb-8 text-black">
+            <CustomTextField
+              label="E-mail"
               type="email"
               name="email"
               value={user.email}
               onChange={handleChange}
               required
+              icon={<AlternateEmailOutlinedIcon />}
             />
           </div>
 
           <div className="form-row mb-4 text-black relative">
-            <FormLabel>Heslo</FormLabel>
-            <input
-              className="w-full p-2 border border-gray-300 rounded-md pr-10"
+            <CustomTextField
+              label="Heslo"
               type={passwordVisible ? 'text' : 'password'}
               name="password"
               value={user.password}
               onChange={handleChange}
               required
               minLength={8}
+              icon={<KeyIcon />}
             />
             <button
               type="button"
-              className="absolute right-2 top-10 text-black"
+              className="absolute right-2 top-6 text-black"
               onClick={() => setPasswordVisible(!passwordVisible)}
             >
-              {passwordVisible ? <RiEyeFill /> : <RiEyeOffFill />}
+              {passwordVisible ? <VisibilityOutlinedIcon /> : <VisibilityOffOutlinedIcon />}
             </button>
           </div>
 
-          <div className="form-row mb-4 text-black relative">
-            <FormLabel>Potvrdenie hesla</FormLabel>
-            <input
-              className="w-full p-2 border border-gray-300 rounded-md pr-10"
+          <div className="form-row mb-8 text-black relative">
+            <CustomTextField
+              label="Potvrdenie hesla"
               type={passwordConfVisible ? 'text' : 'password'}
               name="passwordConf"
               value={user.passwordConf}
               onChange={handleChange}
               required
               minLength={8}
+              icon={<KeyIcon />}
             />
+
             <button
               type="button"
-              className="absolute right-2 top-10 text-black"
+              className="absolute right-2 top-6 text-black"
               onClick={() => setPasswordConfVisible(!passwordConfVisible)}
             >
-              {passwordConfVisible ? <RiEyeFill /> : <RiEyeOffFill />}
+              {passwordConfVisible ? <VisibilityOutlinedIcon /> : <VisibilityOffOutlinedIcon />}
             </button>
           </div>
 
@@ -160,8 +164,10 @@ const RegistrationForm: React.FC<{
             <div className="text-red-600 text-sm mb-4">Heslá sa nezhodujú.</div>
           )}
 
-          <div className="form-row mb-4 text-black">
-            <FormLabel component="legend">Rola</FormLabel>
+          <div className="form-row mb-8 text-black">
+            <FormLabel component="legend" required>
+              Rola
+            </FormLabel>
             <div className="flex space-x-4">
               <FormControlLabel
                 control={
@@ -187,7 +193,7 @@ const RegistrationForm: React.FC<{
                 }
                 label="Tréner"
               />
-              <FormControlLabel
+              {/*<FormControlLabel
                 control={
                   <Radio
                     checked={user.role === 'admin'}
@@ -198,10 +204,11 @@ const RegistrationForm: React.FC<{
                   />
                 }
                 label="Admin(tester)"
-              />
+              />*/}
             </div>
           </div>
 
+          {/**nechat? */}
           <div className="form-row mb-4 text-black">
             <FormControlLabel
               control={<GreenCheckbox checked={user.terms} onChange={handleChange} name="terms" />}

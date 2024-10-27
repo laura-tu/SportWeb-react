@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 import ErrorModal from '../error-modal/index.tsx'
-import { RiCloseLargeFill } from 'react-icons/ri'
+import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined'
 
 const LoginForm: React.FC = () => {
   const [user, setUser] = useState({ email: '', password: '' })
@@ -44,11 +44,8 @@ const LoginForm: React.FC = () => {
       <div className="bg-gray-100 p-8 rounded-lg shadow-lg border border-black max-w-md w-full text-black">
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-2xl font-bold">Prihlásenie</h1>
-          <button
-            className="text-red-600 text-2xl"
-            onClick={() => setShowErrorLoginModal(false)} 
-          >
-            <RiCloseLargeFill />
+          <button className="text-red-600 text-2xl" onClick={() => setShowErrorLoginModal(false)}>
+            <CloseOutlinedIcon />
           </button>
         </div>
 
