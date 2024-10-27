@@ -2,11 +2,13 @@ import React, { useState } from 'react'
 import axios from 'axios'
 import ErrorModal from '../error-modal/index.tsx'
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined'
+import { useNavigate } from 'react-router-dom'
 
 const LoginForm: React.FC = () => {
   const [user, setUser] = useState({ email: '', password: '' })
   const [showErrorLoginModal, setShowErrorLoginModal] = useState(false)
   const [passwordVisible, setPasswordVisible] = useState(false)
+  const navigate = useNavigate()
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -17,25 +19,30 @@ const LoginForm: React.FC = () => {
     e.preventDefault()
 
     try {
-      const { data } = await axios.post('http://localhost:3000/api/login', user)
-      if (data.status === true) {
+      const { data } = await axios.post('http://localhost:3000/api/users/login', user)
+
+      if (data.token) {
         console.log('Login successful')
 
-        // Save token to local storage
         localStorage.setItem('token', data.token)
-        // Set default headers for all axios requests to include the token
-        axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`
-        console.log('User data after login:', data.user)
 
-        // Navigate to the DashboardView
-        // Example: navigate("/dashboard"); or use useHistory from react-router-dom
+        axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`
+
+        navigate('/dashboard')
       } else {
-        console.log('Login failed')
+        console.error('Login failed')
         setShowErrorLoginModal(true)
       }
     } catch (error) {
-      console.error('Error:', error)
-      setShowErrorLoginModal(true)
+      console.log('Error during login:', error)
+
+      // Check if the error response exists and show appropriate message
+      if (axios.isAxiosError(error) && error.response) {
+        setShowErrorLoginModal(true)
+        console.error('Error response:', error.response.data)
+      } else {
+        setShowErrorLoginModal(true)
+      }
     }
   }
 

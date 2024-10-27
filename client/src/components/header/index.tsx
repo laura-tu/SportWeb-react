@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import RegistrationForm from '../registration-form/index.tsx'
-import LoginForm from '../login-vue/index.tsx'
+import LoginForm from '../login-form/index.tsx'
 
 const Header = () => {
   const [scrollPosition, setScrollPosition] = useState(false)
