@@ -1,31 +1,60 @@
-// ErrorModal.tsx
-
 import React from 'react'
+import { Modal, Box, IconButton } from '@mui/material'
+import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined'
 
 interface ErrorModalProps {
   onClose: () => void
   text: string
   label?: string
+  open: boolean
 }
 
-const ErrorModal: React.FC<ErrorModalProps> = ({ onClose, label, text }) => {
+const ErrorModal: React.FC<ErrorModalProps> = ({ onClose, label, text, open }) => {
   return (
-    <div className="fixed inset-0 flex justify-center items-center z-60">
-      <div className="bg-red-500 text-white p-6 rounded-lg shadow-lg max-w-md w-full">
-        {label ? (
-          <h3 className="text-md font-semibold">{label}</h3>
-        ) : (
-          <h2 className="text-lg font-semibold">Error!</h2>
-        )}
-        <p>Vyskytol sa problém pri {text}. Prosím, skúste to znova neskôr.</p>
-        <button
-          className="mt-4 bg-red-700 text-white py-2 px-4 rounded hover:bg-red-800"
+    <Modal
+      open={open}
+      onClose={onClose} 
+      aria-labelledby="error-modal-title"
+      aria-describedby="error-modal-description"
+    >
+      <Box
+        className="bg-red-500 text-white p-6 rounded-lg shadow-lg max-w-md w-full mx-auto mt-20 relative" // Center the modal vertically and ensure relative positioning
+        sx={{
+          bgcolor: 'red.main',
+          color: 'white',
+          p: 4,
+          borderRadius: 2,
+          boxShadow: 3,
+        }}
+      >
+        {/* Close Button */}
+        <IconButton
           onClick={onClose}
+          aria-label="close"
+          sx={{
+            position: 'absolute', // Positioned absolutely within the Box
+            top: 8,
+            right: 8,
+            color: 'white', // Set color of the icon to white
+          }}
         >
-          Close
-        </button>
-      </div>
-    </div>
+          <CloseOutlinedIcon />
+        </IconButton>
+
+        {label ? (
+          <h3 className="text-md font-semibold" id="error-modal-title">
+            {label}
+          </h3>
+        ) : (
+          <h2 className="text-lg font-semibold" id="error-modal-title">
+            Error!
+          </h2>
+        )}
+        <p id="error-modal-description">
+          Vyskytol sa problém pri {text}. Prosím, skúste to znova neskôr.
+        </p>
+      </Box>
+    </Modal>
   )
 }
 

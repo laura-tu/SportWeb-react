@@ -104,21 +104,15 @@ const LoginForm: React.FC<LoginFormProps> = ({ onClose }) => {
         </form>
       </div>
 
-      {/* Modal for login failure */}
       {
         showErrorLoginModal && (
           <ErrorModal
+            open={showErrorLoginModal}
             onClose={() => setShowErrorLoginModal(false)}
             label={'Prihlasovanie zlyhalo'}
             text={'prihlasovaní'}
           />
         )
-        /*(
-        <p className="mt-2">
-            Váš pokus o prihlásenie bol neúspešný. Skontrolujte svoje prihlasovacie údaje a skúste
-            to znova. (chyba prihlasovacích údajov alebo servera)
-        </p>
-      )*/
       }
     </div>
   )

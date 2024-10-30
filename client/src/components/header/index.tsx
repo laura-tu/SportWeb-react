@@ -1,40 +1,17 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import RegistrationForm from '../registration-form/index.tsx'
-import LoginForm from '../login-form/index.tsx'
 
-const Header = () => {
+interface HeaderProps {
+  onShowRegistration: () => void
+  onShowLogin: () => void
+}
+
+const Header: React.FC<HeaderProps> = ({ onShowRegistration, onShowLogin }) => {
   const [scrollPosition, setScrollPosition] = useState(false)
   const [mobileNav, setMobileNav] = useState(false)
-  const [showRegis, setShowRegis] = useState(false)
-  const [showLog, setShowLog] = useState(false)
 
   const toggleMobileNav = () => {
     setMobileNav(!mobileNav)
-  }
-
-  const showRegistration = () => {
-    setShowRegis(true)
-    setShowLog(false)
-  }
-
-  const showLogin = () => {
-    setShowLog(true)
-    setShowRegis(false)
-  }
-
-  const closeRegistration = () => {
-    setShowRegis(false)
-  }
-
-  const closeLogin = () => {
-    setShowLog(false)
-  }
-
-  const handleNext = (userId: string, user: any) => {
-    console.log('User registered:', userId, user)
-
-    closeRegistration()
   }
 
   return (
@@ -51,13 +28,13 @@ const Header = () => {
           <div className="hidden md:flex">
             <button
               className="bg-transparent border border-azure text-azure py-1 px-3 mr-2 transition hover:bg-azure hover:text-green-300"
-              onClick={showRegistration}
+              onClick={onShowRegistration}
             >
               Registrácia
             </button>
             <button
               className="bg-transparent border border-azure text-azure py-1 px-3 transition hover:bg-azure hover:text-green-300"
-              onClick={showLogin}
+              onClick={onShowLogin}
             >
               Prihlásenie
             </button>
@@ -94,20 +71,6 @@ const Header = () => {
                 </Link>
               </li>
             </ul>
-          )}
-
-          {/* Registration Form Popup */}
-          {showRegis && (
-            <div className="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-              <RegistrationForm onClose={closeRegistration} onNext={handleNext} />
-            </div>
-          )}
-
-          {/* Login Form Popup */}
-          {showLog && (
-            <div className="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-              <LoginForm onClose={closeLogin} />
-            </div>
           )}
         </div>
       </nav>
