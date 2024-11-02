@@ -160,7 +160,6 @@ const RegistrationForm: React.FC<{
             </button>
           </div>
 
-          {/* Error message for mismatched passwords */}
           {user.password !== user.passwordConf && (
             <div className="text-red-600 text-sm mb-4">Heslá sa nezhodujú.</div>
           )}
@@ -248,6 +247,7 @@ const RegistrationForm: React.FC<{
 
         {successModalVisible && (
           <SuccessModal
+          open={successModalVisible}
             onClose={() => setSuccessModalVisible(false)}
             text={"Používateľ zaregistrovaný. Prosím stlačte tlačidlo 'POKRAČOVAŤ'"}
           />

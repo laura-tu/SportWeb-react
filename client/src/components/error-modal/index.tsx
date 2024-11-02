@@ -13,12 +13,12 @@ const ErrorModal: React.FC<ErrorModalProps> = ({ onClose, label, text, open }) =
   return (
     <Modal
       open={open}
-      onClose={onClose} 
+      onClose={onClose}
       aria-labelledby="error-modal-title"
       aria-describedby="error-modal-description"
     >
       <Box
-        className="bg-red-500 text-white p-6 rounded-lg shadow-lg max-w-md w-full mx-auto mt-20 relative" // Center the modal vertically and ensure relative positioning
+        className="bg-red-500 text-white p-6 rounded-lg shadow-lg max-w-md w-full mx-auto mt-20 relative"
         sx={{
           bgcolor: 'red.main',
           color: 'white',
@@ -27,7 +27,6 @@ const ErrorModal: React.FC<ErrorModalProps> = ({ onClose, label, text, open }) =
           boxShadow: 3,
         }}
       >
-        {/* Close Button */}
         <IconButton
           onClick={onClose}
           aria-label="close"
@@ -35,7 +34,7 @@ const ErrorModal: React.FC<ErrorModalProps> = ({ onClose, label, text, open }) =
             position: 'absolute', // Positioned absolutely within the Box
             top: 8,
             right: 8,
-            color: 'white', // Set color of the icon to white
+            color: 'white',
           }}
         >
           <CloseOutlinedIcon />
