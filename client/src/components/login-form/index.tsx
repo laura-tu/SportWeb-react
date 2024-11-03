@@ -11,12 +11,17 @@ import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined
 import Button from '@mui/material/Button'
 import { loginUser } from '../../services/user.ts'
 
+interface User {
+  email: string
+  password: string
+}
+
 interface LoginFormProps {
   onClose: () => void
 }
 
 const LoginForm: React.FC<LoginFormProps> = ({ onClose }) => {
-  const [user, setUser] = useState({ email: '', password: '' })
+  const [user, setUser] = useState<User>({ email: '', password: '' })
   const [showErrorLoginModal, setShowErrorLoginModal] = useState(false)
   const [passwordVisible, setPasswordVisible] = useState(false)
   const navigate = useNavigate()
@@ -26,10 +31,11 @@ const LoginForm: React.FC<LoginFormProps> = ({ onClose }) => {
     setUser(prev => ({ ...prev, [name]: value }))
   }
 
-  const LoginAthlete = async (e: React.FormEvent<HTMLFormElement>) => {
+  const loginAthlete = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
     try {
+      console.log('Logging in user:', user)
       const data = await loginUser(user)
 
       if (data.token) {
@@ -67,7 +73,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onClose }) => {
           </button>
         </div>
 
-        <form onSubmit={LoginAthlete}>
+        <form onSubmit={loginAthlete}>
           <div className="mb-4">
             <CustomTextField
               name="email"
@@ -98,6 +104,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onClose }) => {
 
           <Button
             variant="contained"
+            type="submit"
             className="w-full py-2 bg-blue-500 text-white font-bold rounded-md hover:bg-blue-600"
           >
             PRIHLÁSIŤ SA
