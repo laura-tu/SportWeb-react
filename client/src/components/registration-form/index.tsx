@@ -15,6 +15,7 @@ import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined'
 import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined'
 import { Button } from '@material-ui/core'
 import { Box } from '@mui/material'
+import { registerUser } from '../../services/user.ts'
 
 const RegistrationForm: React.FC<{
   onClose: () => void
@@ -60,7 +61,7 @@ const RegistrationForm: React.FC<{
     }
   }
 
-  const registerUser = async (e: React.FormEvent<HTMLFormElement>) => {
+  const registerUserHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (user.password !== user.passwordConf) {
       alert('Heslá sa nezhodujú.') //todo: replace with warning component
@@ -70,8 +71,8 @@ const RegistrationForm: React.FC<{
     try {
       // Create a new object without `terms` and `passwordConf`
       const { passwordConf, terms, ...userData } = user
-      const response = await axios.post('http://localhost:3000/api/users', userData)
-      const userId = response.data.doc.id
+      const responseData = await registerUser(userData)
+      const userId = responseData.doc.id
       setUserId(userId)
       setFormSubmitted(true)
       //setSuccessModalVisible(true)
@@ -114,7 +115,7 @@ const RegistrationForm: React.FC<{
           </button>
         </div>
 
-        <form onSubmit={registerUser}>
+        <form onSubmit={registerUserHandler}>
           <div className="form-row my-4 text-black">
             <CustomTextField
               label="Meno"

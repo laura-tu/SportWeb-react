@@ -9,6 +9,7 @@ import KeyIcon from '@mui/icons-material/Key'
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined'
 import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined'
 import Button from '@mui/material/Button'
+import { loginUser } from '../../services/user.ts'
 
 interface LoginFormProps {
   onClose: () => void
@@ -29,7 +30,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onClose }) => {
     e.preventDefault()
 
     try {
-      const { data } = await axios.post('http://localhost:3000/api/users/login', user)
+      const data = await loginUser(user)
 
       if (data.token) {
         console.log('Login successful')
@@ -104,16 +105,14 @@ const LoginForm: React.FC<LoginFormProps> = ({ onClose }) => {
         </form>
       </div>
 
-      {
-        showErrorLoginModal && (
-          <ErrorModal
-            open={showErrorLoginModal}
-            onClose={() => setShowErrorLoginModal(false)}
-            label={'Prihlasovanie zlyhalo'}
-            text={'prihlasovaní'}
-          />
-        )
-      }
+      {showErrorLoginModal && (
+        <ErrorModal
+          open={showErrorLoginModal}
+          onClose={() => setShowErrorLoginModal(false)}
+          label={'Prihlasovanie zlyhalo'}
+          text={'prihlasovaní'}
+        />
+      )}
     </div>
   )
 }

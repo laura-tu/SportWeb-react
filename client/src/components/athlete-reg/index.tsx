@@ -1,11 +1,13 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Select, MenuItem, InputLabel, FormControl, Button, Modal, Box } from '@mui/material'
-import axios from 'axios'
 import { useForm, Controller } from 'react-hook-form'
 import ErrorModal from '../error-modal/index.tsx'
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined'
+import { fetchSports } from '../../services/sports.ts'
+import { fetchSportClubs } from '../../services/sport-clubs.ts'
+import { registerAthlete } from '../../services/athlete.ts'
 
-interface AthleteFormData {
+export interface AthleteFormData {
   day?: number | null
   month?: number | null
   year?: number | null
@@ -21,23 +23,13 @@ interface SportOption {
   name: string
 }
 
-const fetchSports = async () => {
-  const response = await axios.get('http://localhost:3000/api/c_sport')
-  return response.data.docs
-}
-
-const fetchSportClubs = async () => {
-  const response = await axios.get('http://localhost:3000/api/c_sport_club')
-  return response.data.docs
-}
-
 const AthleteReg = ({ userId, formData, onClose }) => {
   const [successModalVisible, setSuccessModalVisible] = useState(false)
   const [errorModal, setErrorModal] = useState(false)
   const [sportsOptions, setSportsOptions] = useState<SportOption[]>([])
   const [clubOptions, setClubOptions] = useState<SportOption[]>([])
 
-  React.useEffect(() => {
+  useEffect(() => {
     const loadSports = async () => {
       const sports = await fetchSports()
       setSportsOptions(sports)
@@ -52,7 +44,7 @@ const AthleteReg = ({ userId, formData, onClose }) => {
     loadSportClubs()
   }, [])
 
-  const { control, handleSubmit, setValue, register } = useForm<AthleteFormData>()
+  const { control, handleSubmit, setValue } = useForm<AthleteFormData>()
 
   const days = Array.from({ length: 31 }, (_, i) => i + 1)
   const months = Array.from({ length: 12 }, (_, i) => i + 1)
@@ -62,24 +54,8 @@ const AthleteReg = ({ userId, formData, onClose }) => {
     { label: 'Žena', value: 'zena' },
   ]
 
-  const registerAthlete = async (data: AthleteFormData) => {
-    try {
-      if (data.year && data.month && data.day) {
-        data.birth_date = `${data.year}-${String(data.month).padStart(2, '0')}-${String(data.day).padStart(2, '0')}`
-      }
-
-      delete data.day
-      delete data.month
-      delete data.year
-
-      data.user = userId
-
-      await axios.post('http://localhost:3000/api/u_athlete', data)
-      setSuccessModalVisible(true)
-    } catch (error) {
-      console.error(error.message)
-      setErrorModal(true)
-    }
+  const onSubmit = async (data: AthleteFormData) => {
+    await registerAthlete(data, userId, setSuccessModalVisible, setErrorModal)
   }
 
   return (
@@ -92,7 +68,7 @@ const AthleteReg = ({ userId, formData, onClose }) => {
           </button>
         </div>
 
-        <form onSubmit={handleSubmit(registerAthlete)} className="space-y-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <InputLabel>Dátum narodenia:</InputLabel>
           <div className="flex space-x-2">
             <FormControl fullWidth>
