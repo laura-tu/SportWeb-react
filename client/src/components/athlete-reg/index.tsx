@@ -16,44 +16,78 @@ import { useForm, Controller } from 'react-hook-form'
 import ErrorModal from '../error-modal/index.tsx'
 
 interface AthleteFormData {
-  day: number | null
-  month: number | null
-  year: number | null
+  day?: number | null
+  month?: number | null
+  year?: number | null
+  birth_date?: string //formatted day,month,year
   gender: string
   sport: string[]
-  club: string
-  user_id?: string
+  club?: string
+  user?: string
+}
+
+interface SportOption {
+  id: string
+  name: string
+}
+
+const fetchSports = async () => {
+  const response = await axios.get('http://localhost:3000/api/c_sport')
+  return response.data.docs
+}
+
+const fetchSportClubs = async () => {
+  const response = await axios.get('http://localhost:3000/api/c_sport_club')
+  return response.data.docs
 }
 
 const AthleteReg = ({ userId, formData, onClose }) => {
   const [successModalVisible, setSuccessModalVisible] = useState(false)
   const [errorModal, setErrorModal] = useState(false)
+  const [sportsOptions, setSportsOptions] = useState<SportOption[]>([])
+  const [clubOptions, setClubOptions] = useState<SportOption[]>([])
 
-  const { control, handleSubmit, setValue, watch, register } = useForm<AthleteFormData>()
+  React.useEffect(() => {
+    const loadSports = async () => {
+      const sports = await fetchSports()
+      setSportsOptions(sports)
+    }
+
+    const loadSportClubs = async () => {
+      const clubs = await fetchSportClubs()
+      setClubOptions(clubs)
+    }
+
+    loadSports()
+    loadSportClubs()
+  }, [])
+
+  const { control, handleSubmit, setValue, register } = useForm<AthleteFormData>()
 
   const days = Array.from({ length: 31 }, (_, i) => i + 1)
   const months = Array.from({ length: 12 }, (_, i) => i + 1)
   const years = Array.from({ length: 100 }, (_, i) => new Date().getFullYear() - i)
-  const genders = ['Muž', 'Žena']
-  const sportsOptions = [
-    'Futbal',
-    'Volejbal',
-    'Basketbal',
-    'Hokej',
-    'Plávanie',
-    'Atletika',
-    'Gymnastika',
-    'Cyklistika',
-    'Posilovanie',
-    'Iné',
+  const genders = [
+    { label: 'Muž', value: 'muz' },
+    { label: 'Žena', value: 'zena' },
   ]
 
   const registerAthlete = async (data: AthleteFormData) => {
     try {
-      data.user_id = userId
-      await axios.post('http://localhost:4000/api/athlete/post', data)
+      if (data.year && data.month && data.day) {
+        data.birth_date = `${data.year}-${String(data.month).padStart(2, '0')}-${String(data.day).padStart(2, '0')}`
+      }
+
+      delete data.day
+      delete data.month
+      delete data.year
+
+      data.user = userId
+
+      await axios.post('http://localhost:3000/api/u_athlete', data)
       setSuccessModalVisible(true)
     } catch (error) {
+      console.error(error.message)
       setErrorModal(true)
     }
   }
@@ -80,10 +114,12 @@ const AthleteReg = ({ userId, formData, onClose }) => {
               <Controller
                 name="day"
                 control={control}
+                defaultValue={null}
                 render={({ field }) => (
                   <Select
                     {...field}
                     label="Deň"
+                    value={field.value ?? ''}
                     onChange={e => {
                       const value = Number(e.target.value)
                       setValue('day', isNaN(value) ? null : value)
@@ -104,10 +140,12 @@ const AthleteReg = ({ userId, formData, onClose }) => {
               <Controller
                 name="month"
                 control={control}
+                defaultValue={null}
                 render={({ field }) => (
                   <Select
                     {...field}
                     label="Mesiac"
+                    value={field.value ?? ''}
                     onChange={e => {
                       const value = Number(e.target.value)
                       setValue('month', isNaN(value) ? null : value)
@@ -128,10 +166,12 @@ const AthleteReg = ({ userId, formData, onClose }) => {
               <Controller
                 name="year"
                 control={control}
+                defaultValue={null}
                 render={({ field }) => (
                   <Select
                     {...field}
                     label="Rok"
+                    value={field.value ?? ''}
                     onChange={e => {
                       const value = Number(e.target.value)
                       setValue('year', isNaN(value) ? null : value)
@@ -153,17 +193,19 @@ const AthleteReg = ({ userId, formData, onClose }) => {
             <Controller
               name="gender"
               control={control}
+              defaultValue={undefined}
               render={({ field }) => (
                 <Select
                   {...field}
                   label="Pohlavie"
+                  value={field.value ?? ''}
                   onChange={e => {
                     setValue('gender', e.target.value)
                   }}
                 >
                   {genders.map(gender => (
-                    <MenuItem key={gender} value={gender}>
-                      {gender}
+                    <MenuItem key={gender.value} value={gender.value}>
+                      {gender.label}
                     </MenuItem>
                   ))}
                 </Select>
@@ -176,6 +218,7 @@ const AthleteReg = ({ userId, formData, onClose }) => {
             <Controller
               name="sport"
               control={control}
+              defaultValue={[]}
               render={({ field }) => (
                 <Select
                   {...field}
@@ -183,15 +226,15 @@ const AthleteReg = ({ userId, formData, onClose }) => {
                   multiple
                   value={field.value || []} // Controlled state
                   onChange={e => {
-                    const selectedSports: string[] = e.target.value as string[] // Cast to string[]
-                    if (selectedSports.length <= 3) {
-                      setValue('sport', selectedSports)
+                    const selectedSportIds = e.target.value as string[] // Array of sport IDs
+                    if (selectedSportIds.length <= 3) {
+                      setValue('sport', selectedSportIds)
                     }
                   }}
                 >
                   {sportsOptions.map(sport => (
-                    <MenuItem key={sport} value={sport}>
-                      {sport}
+                    <MenuItem key={sport.id} value={sport.id}>
+                      {sport.name}
                     </MenuItem>
                   ))}
                 </Select>
@@ -200,7 +243,22 @@ const AthleteReg = ({ userId, formData, onClose }) => {
           </FormControl>
 
           <InputLabel>Názov klubu:</InputLabel>
-          <TextField fullWidth label="Klub" {...register('club')} inputProps={{ maxLength: 40 }} />
+          <FormControl fullWidth>
+            <Controller
+              name="club"
+              control={control}
+              defaultValue=""
+              render={({ field }) => (
+                <Select {...field} label="Klub" onChange={e => setValue('club', e.target.value)}>
+                  {clubOptions.map(club => (
+                    <MenuItem key={club.id} value={club.id}>
+                      {club.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              )}
+            />
+          </FormControl>
 
           <Button type="submit" variant="contained" color="success" fullWidth>
             ZAREGISTROVAŤ SA
@@ -218,8 +276,12 @@ const AthleteReg = ({ userId, formData, onClose }) => {
         </Box>
       </Modal>
 
-      <ErrorModal onClose={() => setErrorModal(false)} text="registrácii" label="Chyba!"  open={errorModal}/>
-
+      <ErrorModal
+        onClose={() => setErrorModal(false)}
+        text="registrácii"
+        label="Chyba!"
+        open={errorModal}
+      />
     </div>
   )
 }

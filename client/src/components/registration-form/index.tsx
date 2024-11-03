@@ -69,10 +69,12 @@ const RegistrationForm: React.FC<{
       // Create a new object without `terms` and `passwordConf`
       const { passwordConf, terms, ...userData } = user
       const response = await axios.post('http://localhost:3000/api/users', userData)
-
-      setUserId(response.data.userId)
+      const userId = response.data.doc.id
+      setUserId(userId)
       setFormSubmitted(true)
       setSuccessModalVisible(true)
+
+      onNext(userId, user)
     } catch (error) {
       console.error('Error registering user:', error)
       console.error(error.message)
@@ -245,13 +247,13 @@ const RegistrationForm: React.FC<{
           )}
         </form>
 
-        {successModalVisible && (
+        {/*{successModalVisible && (
           <SuccessModal
-          open={successModalVisible}
+            open={successModalVisible}
             onClose={() => setSuccessModalVisible(false)}
             text={"Používateľ zaregistrovaný. Prosím stlačte tlačidlo 'POKRAČOVAŤ'"}
           />
-        )}
+        )}*/}
 
         {errorModalVisible && (
           <ErrorModal
