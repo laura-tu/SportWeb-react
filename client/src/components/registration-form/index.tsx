@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 import ErrorModal from '../error-modal/index.tsx'
-import SuccessModal from '../success-modal/index.tsx'
+//import SuccessModal from '../success-modal/index.tsx'
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined'
 import Radio from '@mui/material/Radio'
 import FormControlLabel from '@mui/material/FormControlLabel'
@@ -14,6 +14,7 @@ import AlternateEmailOutlinedIcon from '@mui/icons-material/AlternateEmailOutlin
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined'
 import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined'
 import { Button } from '@material-ui/core'
+import { Box } from '@mui/material'
 
 const RegistrationForm: React.FC<{
   onClose: () => void
@@ -94,9 +95,8 @@ const RegistrationForm: React.FC<{
         }
       }
 
-      // Display the custom error message in the ErrorModal
       setErrorModalVisible(true)
-      setErrorModalMessage(errorMessage) // Update the error modal message
+      setErrorModalMessage(errorMessage)
     }
   }
 
@@ -106,7 +106,7 @@ const RegistrationForm: React.FC<{
 
   return (
     <div className="registration-form fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center z-50">
-      <div className="box-border bg-white p-6 rounded-lg shadow-lg border border-black max-w-lg w-full">
+      <Box className="bg-white p-6 rounded-lg shadow-lg border border-black max-w-lg w-full">
         <div className="headerX flex justify-between items-center mb-10">
           <h1 className="text-2xl font-bold text-black text-bold ">Vytvoriť účet</h1>
           <button className="text-red-600 text-2xl " onClick={onClose}>
@@ -152,7 +152,7 @@ const RegistrationForm: React.FC<{
             />
             <button
               type="button"
-              className="absolute right-2 top-6 text-gray-500"
+              className="absolute right-3 top-4 text-gray-500"
               onClick={() => setPasswordVisible(!passwordVisible)}
             >
               {passwordVisible ? <VisibilityOutlinedIcon /> : <VisibilityOffOutlinedIcon />}
@@ -173,7 +173,7 @@ const RegistrationForm: React.FC<{
 
             <button
               type="button"
-              className="absolute right-2 top-6 text-gray-500"
+              className="absolute right-3 top-4 text-gray-500"
               onClick={() => setPasswordConfVisible(!passwordConfVisible)}
             >
               {passwordConfVisible ? <VisibilityOutlinedIcon /> : <VisibilityOffOutlinedIcon />}
@@ -264,8 +264,8 @@ const RegistrationForm: React.FC<{
             <div className="text-red-600 text-sm mt-2">Prosím, vyplňte všetky povinné polia.</div>
           )}
         </form>
-
-        {/*{successModalVisible && (
+      </Box>
+      {/*{successModalVisible && (
           <SuccessModal
             open={successModalVisible}
             onClose={() => setSuccessModalVisible(false)}
@@ -273,15 +273,14 @@ const RegistrationForm: React.FC<{
           />
         )}*/}
 
-        {errorModalVisible && (
-          <ErrorModal
-            onClose={() => setErrorModalVisible(false)}
-            text={'registrovaní používateľa'}
-            errorModalMessage={errorModalMessage}
-            open={errorModalVisible}
-          />
-        )}
-      </div>
+      {errorModalVisible && (
+        <ErrorModal
+          onClose={() => setErrorModalVisible(false)}
+          text={'registrovaní používateľa'}
+          errorModalMessage={errorModalMessage}
+          open={errorModalVisible}
+        />
+      )}
     </div>
   )
 }

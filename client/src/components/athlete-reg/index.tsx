@@ -1,19 +1,9 @@
 import React, { useState } from 'react'
-import {
-  Select,
-  MenuItem,
-  TextField,
-  InputLabel,
-  FormControl,
-  Button,
-  Modal,
-  Box,
-  IconButton,
-} from '@mui/material'
-import CloseIcon from '@mui/icons-material/Close'
+import { Select, MenuItem, InputLabel, FormControl, Button, Modal, Box } from '@mui/material'
 import axios from 'axios'
 import { useForm, Controller } from 'react-hook-form'
 import ErrorModal from '../error-modal/index.tsx'
+import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined'
 
 interface AthleteFormData {
   day?: number | null
@@ -94,18 +84,14 @@ const AthleteReg = ({ userId, formData, onClose }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50">
-      <Box className="bg-gray-200 p-6 rounded-lg w-full max-w-md shadow-lg border border-black relative">
-        <IconButton
-          aria-label="close"
-          onClick={onClose}
-          style={{
-            position: 'absolute',
-            right: 8,
-            top: 8,
-          }}
-        >
-          <CloseIcon />
-        </IconButton>
+      <Box className="bg-white p-6 rounded-lg w-full max-w-md shadow-lg border border-black relative">
+        <div className="headerX flex justify-between items-center mb-10">
+          <h1 className="text-2xl font-bold text-black text-bold ">Informácie o športovcovi</h1>
+          <button className="text-red-600 text-2xl " onClick={onClose}>
+            <CloseOutlinedIcon />
+          </button>
+        </div>
+
         <form onSubmit={handleSubmit(registerAthlete)} className="space-y-4">
           <InputLabel>Dátum narodenia:</InputLabel>
           <div className="flex space-x-2">
@@ -224,9 +210,9 @@ const AthleteReg = ({ userId, formData, onClose }) => {
                   {...field}
                   label="Šport"
                   multiple
-                  value={field.value || []} // Controlled state
+                  value={field.value || []}
                   onChange={e => {
-                    const selectedSportIds = e.target.value as string[] // Array of sport IDs
+                    const selectedSportIds = e.target.value as string[]
                     if (selectedSportIds.length <= 3) {
                       setValue('sport', selectedSportIds)
                     }
