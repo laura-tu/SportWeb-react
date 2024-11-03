@@ -31,8 +31,9 @@ const RegistrationForm: React.FC<{
   const [user, setUser] = useState(initialState)
   const [formSubmitted, setFormSubmitted] = useState(false)
   const [userId, setUserId] = useState('')
-  const [successModalVisible, setSuccessModalVisible] = useState(false)
+  //const [successModalVisible, setSuccessModalVisible] = useState(false)
   const [errorModalVisible, setErrorModalVisible] = useState(false)
+  const [errorModalMessage, setErrorModalMessage] = useState('')
   const [passwordVisible, setPasswordVisible] = useState(false)
   const [passwordConfVisible, setPasswordConfVisible] = useState(false)
 
@@ -61,7 +62,7 @@ const RegistrationForm: React.FC<{
   const registerUser = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (user.password !== user.passwordConf) {
-      alert('Heslá sa nezhodujú.')
+      alert('Heslá sa nezhodujú.') //todo: replace with warning component
       return
     }
 
@@ -72,13 +73,30 @@ const RegistrationForm: React.FC<{
       const userId = response.data.doc.id
       setUserId(userId)
       setFormSubmitted(true)
-      setSuccessModalVisible(true)
+      //setSuccessModalVisible(true)
 
       onNext(userId, user)
     } catch (error) {
       console.error('Error registering user:', error)
-      console.error(error.message)
+      // Check if the error response has a specific error for the email field
+      let errorMessage = 'Chyba pri registrácii používateľa.'
+      if (
+        error.response &&
+        error.response.data.errors &&
+        Array.isArray(error.response.data.errors)
+      ) {
+        const emailError = error.response.data.errors.find(
+          err => err.name === 'ValidationError' && err.data.some(d => d.field === 'email'),
+        )
+        if (emailError) {
+          // Custom message for email already registered
+          errorMessage = emailError.data.find(d => d.field === 'email').message
+        }
+      }
+
+      // Display the custom error message in the ErrorModal
       setErrorModalVisible(true)
+      setErrorModalMessage(errorMessage) // Update the error modal message
     }
   }
 
@@ -259,6 +277,7 @@ const RegistrationForm: React.FC<{
           <ErrorModal
             onClose={() => setErrorModalVisible(false)}
             text={'registrovaní používateľa'}
+            errorModalMessage={errorModalMessage}
             open={errorModalVisible}
           />
         )}

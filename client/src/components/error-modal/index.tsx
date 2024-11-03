@@ -7,9 +7,16 @@ interface ErrorModalProps {
   text: string
   label?: string
   open: boolean
+  errorModalMessage?: string | null
 }
 
-const ErrorModal: React.FC<ErrorModalProps> = ({ onClose, label, text, open }) => {
+const ErrorModal: React.FC<ErrorModalProps> = ({
+  onClose,
+  label,
+  text,
+  open,
+  errorModalMessage,
+}) => {
   return (
     <Modal
       open={open}
@@ -46,12 +53,16 @@ const ErrorModal: React.FC<ErrorModalProps> = ({ onClose, label, text, open }) =
           </h3>
         ) : (
           <h2 className="text-lg font-semibold" id="error-modal-title">
-            Error!
+            Chyba!
           </h2>
         )}
-        <p id="error-modal-description">
-          Vyskytol sa problém pri {text}. Prosím, skúste to znova neskôr.
-        </p>
+        <br />
+        {errorModalMessage ? (
+          <p id="error-modal-description">{errorModalMessage}</p>
+        ) : (
+          <p id="error-modal-description">Vyskytol sa problém pri {text}.</p>
+        )}
+        <p>Prosím, skúste to znova neskôr.</p>
       </Box>
     </Modal>
   )
