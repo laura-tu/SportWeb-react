@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import { Select, MenuItem, InputLabel, FormControl, Button, Modal, Box } from '@mui/material'
+import { Select, MenuItem, InputLabel, FormControl, Button, Box } from '@mui/material'
 import { useForm, Controller } from 'react-hook-form'
 import ErrorModal from '../error-modal/index.tsx'
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined'
 import { fetchSports } from '../../services/sports.ts'
 import { fetchSportClubs } from '../../services/sport-clubs.ts'
 import { registerAthlete } from '../../services/athlete.ts'
+import SuccessModal from '../success-modal/index.tsx'
 
 export interface AthleteFormData {
   day?: number | null
@@ -65,7 +66,7 @@ const AthleteReg = ({ userId, onClose }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50">
-      <Box className="bg-white p-6 rounded-lg w-full max-w-md shadow-lg border border-black relative">
+      <Box className="bg-white p-6 rounded-lg w-full max-w-lg shadow-lg border border-black relative">
         <div className="headerX flex justify-between items-center mb-10">
           <h1 className="text-2xl font-bold text-black text-bold ">Informácie o športovcovi</h1>
           <button className="text-red-600 text-2xl " onClick={onClose}>
@@ -227,21 +228,23 @@ const AthleteReg = ({ userId, onClose }) => {
             />
           </FormControl>
 
-          <Button type="submit" variant="contained" color="success" fullWidth>
+          <Button
+            type="submit"
+            variant="contained"
+            color="success"
+            fullWidth
+            className=" text-white py-2 px-4 rounded hover:bg-green-600"
+          >
             ZAREGISTROVAŤ SA
           </Button>
         </form>
       </Box>
 
-      <Modal open={successModalVisible} onClose={() => setSuccessModalVisible(false)}>
-        <Box className="bg-white rounded-lg p-4 max-w-sm text-center mx-auto">
-          <h2 className="text-xl font-bold">Hotovo!</h2>
-          <p className="pb-4">Boli ste úspešne zaregistrovaný</p>
-          <Button onClick={handleCloseSuccessModal} variant="contained" color="primary">
-            Zatvoriť
-          </Button>
-        </Box>
-      </Modal>
+      <SuccessModal
+        open={successModalVisible}
+        onClose={handleCloseSuccessModal}
+        text="Boli ste úspešne zaregistrovaný"
+      />
 
       <ErrorModal
         onClose={() => setErrorModal(false)}

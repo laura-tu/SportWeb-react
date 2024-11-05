@@ -1,7 +1,5 @@
 import React, { useState } from 'react'
-import axios from 'axios'
 import ErrorModal from '../error-modal/index.tsx'
-//import SuccessModal from '../success-modal/index.tsx'
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined'
 import Radio from '@mui/material/Radio'
 import FormControlLabel from '@mui/material/FormControlLabel'
@@ -13,7 +11,7 @@ import PersonAddAlt1OutlinedIcon from '@mui/icons-material/PersonAddAlt1Outlined
 import AlternateEmailOutlinedIcon from '@mui/icons-material/AlternateEmailOutlined'
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined'
 import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined'
-import { Button } from '@material-ui/core'
+import { Button } from '@mui/material'
 import { Box } from '@mui/material'
 import { registerUser } from '../../services/user.ts'
 
@@ -32,8 +30,6 @@ const RegistrationForm: React.FC<{
 
   const [user, setUser] = useState(initialState)
   const [formSubmitted, setFormSubmitted] = useState(false)
-  const [userId, setUserId] = useState('')
-  //const [successModalVisible, setSuccessModalVisible] = useState(false)
   const [errorModalVisible, setErrorModalVisible] = useState(false)
   const [errorModalMessage, setErrorModalMessage] = useState('')
   const [passwordVisible, setPasswordVisible] = useState(false)
@@ -73,9 +69,7 @@ const RegistrationForm: React.FC<{
       const { passwordConf, terms, ...userData } = user
       const responseData = await registerUser(userData)
       const userId = responseData.doc.id
-      setUserId(userId)
       setFormSubmitted(true)
-      //setSuccessModalVisible(true)
 
       onNext(userId, user)
     } catch (error) {
@@ -91,7 +85,6 @@ const RegistrationForm: React.FC<{
           err => err.name === 'ValidationError' && err.data.some(d => d.field === 'email'),
         )
         if (emailError) {
-          // Custom message for email already registered
           errorMessage = emailError.data.find(d => d.field === 'email').message
         }
       }
@@ -101,12 +94,8 @@ const RegistrationForm: React.FC<{
     }
   }
 
-  const handleNext = () => {
-    onNext(userId, user)
-  }
-
   return (
-    <div className="registration-form fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center z-50">
+    <div className="fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center z-50">
       <Box className="bg-white p-6 rounded-lg shadow-lg border border-black max-w-lg w-full">
         <div className="headerX flex justify-between items-center mb-10">
           <h1 className="text-2xl font-bold text-black text-bold ">Vytvoriť účet</h1>
@@ -238,41 +227,22 @@ const RegistrationForm: React.FC<{
           </div>
 
           <div className="flex justify-between mt-4 ">
-            <button
+            <Button
               type="submit"
-              className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600"
+              variant="contained"
+              color="success"
+              fullWidth
+              className=" text-white py-2 px-4 rounded hover:bg-green-600"
             >
               POTVRDIŤ
-            </button>
-
-            {formSubmitted && (
-              <Button
-                variant="contained"
-                type="button"
-                onClick={handleNext}
-                disabled={
-                  !user.name || !user.email || !user.password || !user.passwordConf || !user.terms
-                }
-                className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
-              >
-                POKRAČOVAŤ
-              </Button>
-            )}
+            </Button>
           </div>
 
-          {/* Show error message when form is invalid */}
           {formSubmitted && !user.name && (
             <div className="text-red-600 text-sm mt-2">Prosím, vyplňte všetky povinné polia.</div>
           )}
         </form>
       </Box>
-      {/*{successModalVisible && (
-          <SuccessModal
-            open={successModalVisible}
-            onClose={() => setSuccessModalVisible(false)}
-            text={"Používateľ zaregistrovaný. Prosím stlačte tlačidlo 'POKRAČOVAŤ'"}
-          />
-        )}*/}
 
       {errorModalVisible && (
         <ErrorModal
