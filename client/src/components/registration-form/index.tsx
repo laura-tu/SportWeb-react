@@ -14,6 +14,7 @@ import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined
 import { Button } from '@mui/material'
 import { Box } from '@mui/material'
 import { registerUser } from '../../services/user.ts'
+import { UserRole } from '../homeview/index.tsx'
 
 const RegistrationForm: React.FC<{
   onClose: () => void
@@ -21,7 +22,7 @@ const RegistrationForm: React.FC<{
 }> = ({ onClose, onNext }) => {
   const initialState = {
     name: '',
-    role: 'user',
+    role: UserRole.USER,
     email: '',
     password: '',
     passwordConf: '',
@@ -182,7 +183,7 @@ const RegistrationForm: React.FC<{
               <FormControlLabel
                 control={
                   <Radio
-                    checked={user.role === 'user'}
+                    checked={user.role === UserRole.USER}
                     onChange={handleChange}
                     value="user"
                     name="role"
@@ -194,7 +195,7 @@ const RegistrationForm: React.FC<{
               <FormControlLabel
                 control={
                   <Radio
-                    checked={user.role === 'coach'}
+                    checked={user.role === UserRole.COACH}
                     onChange={handleChange}
                     value="coach"
                     name="role"
@@ -206,7 +207,7 @@ const RegistrationForm: React.FC<{
               {/*<FormControlLabel
                 control={
                   <Radio
-                    checked={user.role === 'admin'}
+                    checked={user.role === UserRole.ADMIN}
                     onChange={handleChange}
                     value="admin"
                     name="role"

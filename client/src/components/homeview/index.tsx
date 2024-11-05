@@ -6,6 +6,11 @@ import AthleteReg from '../athlete-reg/index.tsx'
 import CoachReg from '../coach-reg/index.tsx'
 import LoginForm from '../login-form/index.tsx'
 
+export enum UserRole{
+  USER = 'user',
+  COACH = 'coach',
+  ADMIN = 'admin'
+}
 const HomeView = () => {
   const [showRegistration, setShowRegistration] = useState(false)
   const [showLogin, setShowLogin] = useState(false)
@@ -22,10 +27,10 @@ const HomeView = () => {
   const showNextComponent = (id, user) => {
     setUserId(id)
 
-    if (user.role === 'user') {
+    if (user.role === UserRole.USER) {
       setShowRegistration(false)
       setShowAthleteReg(true)
-    } else if (user.role === 'coach') {
+    } else if (user.role === UserRole.COACH) {
       setShowRegistration(false)
       setShowCoachReg(true)
     }
