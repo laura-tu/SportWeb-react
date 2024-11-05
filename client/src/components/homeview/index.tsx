@@ -11,7 +11,6 @@ const HomeView = () => {
   const [showLogin, setShowLogin] = useState(false)
   const [showAthleteReg, setShowAthleteReg] = useState(false)
   const [showCoachReg, setShowCoachReg] = useState(false)
-  const [formData, setFormData] = useState({})
   const [userId, setUserId] = useState(null)
 
   const location = useLocation()
@@ -22,7 +21,6 @@ const HomeView = () => {
 
   const showNextComponent = (id, user) => {
     setUserId(id)
-    setFormData(user)
 
     if (user.role === 'user') {
       setShowRegistration(false)
@@ -47,9 +45,7 @@ const HomeView = () => {
       {showRegistration && (
         <RegistrationForm onClose={closeRegistration} onNext={showNextComponent} />
       )}
-      {showAthleteReg && (
-        <AthleteReg onClose={closeAthleteReg} formData={formData} userId={userId} />
-      )}
+      {showAthleteReg && <AthleteReg onClose={closeAthleteReg} userId={userId} />}
       {showCoachReg && <CoachReg onClose={closeCoachReg} userId={userId} />}
       {showLogin && !isDashboardRoute && <LoginForm onClose={closeLogin} />}
     </div>

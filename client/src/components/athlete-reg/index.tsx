@@ -23,7 +23,7 @@ interface SportOption {
   name: string
 }
 
-const AthleteReg = ({ userId, formData, onClose }) => {
+const AthleteReg = ({ userId, onClose }) => {
   const [successModalVisible, setSuccessModalVisible] = useState(false)
   const [errorModal, setErrorModal] = useState(false)
   const [sportsOptions, setSportsOptions] = useState<SportOption[]>([])
@@ -56,6 +56,11 @@ const AthleteReg = ({ userId, formData, onClose }) => {
 
   const onSubmit = async (data: AthleteFormData) => {
     await registerAthlete(data, userId, setSuccessModalVisible, setErrorModal)
+  }
+
+  const handleCloseSuccessModal = () => {
+    setSuccessModalVisible(false)
+    onClose() // Close the entire AthleteReg component
   }
 
   return (
@@ -231,8 +236,8 @@ const AthleteReg = ({ userId, formData, onClose }) => {
       <Modal open={successModalVisible} onClose={() => setSuccessModalVisible(false)}>
         <Box className="bg-white rounded-lg p-4 max-w-sm text-center mx-auto">
           <h2 className="text-xl font-bold">Hotovo!</h2>
-          <p>Boli ste úspešne zaregistrovaný</p>
-          <Button onClick={() => setSuccessModalVisible(false)} variant="contained" color="primary">
+          <p className="pb-4">Boli ste úspešne zaregistrovaný</p>
+          <Button onClick={handleCloseSuccessModal} variant="contained" color="primary">
             Zatvoriť
           </Button>
         </Box>
