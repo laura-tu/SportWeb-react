@@ -38,7 +38,7 @@ const ErrorModal: React.FC<ErrorModalProps> = ({
           onClick={onClose}
           aria-label="close"
           sx={{
-            position: 'absolute', // Positioned absolutely within the Box
+            position: 'absolute',
             top: 8,
             right: 8,
             color: 'white',
@@ -62,7 +62,7 @@ const ErrorModal: React.FC<ErrorModalProps> = ({
         ) : (
           <p id="error-modal-description">Vyskytol sa problém pri {text}.</p>
         )}
-        <p>Prosím, skúste to znova neskôr.</p>
+        <p>Prosím, skúste to znova.</p>
       </Box>
     </Modal>
   )
