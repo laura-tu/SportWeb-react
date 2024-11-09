@@ -1,5 +1,4 @@
-import React from 'react'
-import { useState, useMemo, useEffect } from 'react'
+import React, { useState, useMemo, useEffect } from 'react'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import DashboardIcon from '@mui/icons-material/Dashboard'
@@ -9,7 +8,7 @@ import { AppProvider, type Session, type Navigation } from '@toolpad/core/AppPro
 import { DashboardLayout } from '@toolpad/core/DashboardLayout'
 import { useDemoRouter } from '@toolpad/core/internal'
 import ThemeToggle from './theme-toggle.tsx'
-import { fetchUserData } from '../../services/user.ts'
+import { fetchUserData, useAuth } from '../../services/user.ts'
 
 const NAVIGATION: Navigation = [
   {
@@ -36,7 +35,6 @@ function DemoPageContent({ pathname }: { pathname: string }) {
       }}
     >
       <Typography>Dashboard content for {pathname}</Typography>
-      {/*prec*/}
     </Box>
   )
 }
@@ -47,6 +45,7 @@ interface DemoProps {
 
 export default function DashboardLayoutAccount(props: DemoProps) {
   const { window } = props
+  const { signOut } = useAuth()
 
   const [isDarkMode, setIsDarkMode] = useState(false)
   const [session, setSession] = useState<Session | null>(null)
@@ -65,18 +64,34 @@ export default function DashboardLayoutAccount(props: DemoProps) {
     [isDarkMode],
   )
 
-  const fetchData = async () => {
-    try {
-      const user = await fetchUserData()
-      setSession({ user })
-    } catch (error) {
-      console.error('Failed to fetch user data:', error)
-    }
-  }
-
+  // Fetch user data only once when the component is mounted
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const user = await fetchUserData()
+        setSession({ user })
+      } catch (error) {
+        console.error('Failed to fetch user data:', error)
+      }
+    }
     fetchData()
-  }, [])
+  }, []) // Empty dependency array ensures this runs only once when the component is mounted
+
+  const authentication = useMemo(() => {
+    return {
+      signIn: () => {
+        if (!session?.user) {
+          console.error('No user data available for sign-in')
+          return
+        }
+        setSession({ user: session.user })
+      },
+      signOut: () => {
+        signOut()
+        setSession(null)
+      },
+    }
+  }, [session]) // Dependency on session ensures signIn uses the latest user data
 
   const router = useDemoRouter('/dashboard')
   const demoWindow = window ? window() : undefined
@@ -85,6 +100,7 @@ export default function DashboardLayoutAccount(props: DemoProps) {
     <ThemeProvider theme={theme}>
       <AppProvider
         session={session}
+        authentication={authentication}
         navigation={NAVIGATION}
         router={router}
         theme={theme}
@@ -99,6 +115,7 @@ export default function DashboardLayoutAccount(props: DemoProps) {
           {session && session.user && (
             <Box sx={{ pl: 3, textAlign: 'start' }}>
               <Typography variant="h6">Vitaj, {session.user.name}</Typography>
+              {/* Sign-out button could be added here */}
             </Box>
           )}
           <Box

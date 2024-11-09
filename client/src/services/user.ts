@@ -1,4 +1,6 @@
 import axios from 'axios'
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 export const registerUser = async (userData: {
   name: string
@@ -29,5 +31,18 @@ export const fetchUserData = async () => {
     return response.data.docs[0]
   } catch (error) {
     throw new Error('Failed to fetch user data')
+  }
+}
+
+export const useAuth = () => {
+  const navigate = useNavigate()
+
+  const signOut = () => {
+    localStorage.removeItem('token')
+    navigate('/')
+  }
+
+  return {
+    signOut,
   }
 }
