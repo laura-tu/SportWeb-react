@@ -35,12 +35,9 @@ const LoginForm: React.FC<LoginFormProps> = ({ onClose }) => {
     e.preventDefault()
 
     try {
-      console.log('Logging in user:', user)
       const data = await loginUser(user)
 
       if (data.token) {
-        console.log('Login successful')
-
         localStorage.setItem('token', data.token)
 
         axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`

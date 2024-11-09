@@ -1,5 +1,5 @@
-import * as React from 'react'
-import { useState, useMemo } from 'react'
+import React from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import DashboardIcon from '@mui/icons-material/Dashboard'
@@ -9,6 +9,7 @@ import { AppProvider, type Session, type Navigation } from '@toolpad/core/AppPro
 import { DashboardLayout } from '@toolpad/core/DashboardLayout'
 import { useDemoRouter } from '@toolpad/core/internal'
 import ThemeToggle from './theme-toggle.tsx'
+import { fetchUserData } from '../../services/user.ts'
 
 const NAVIGATION: Navigation = [
   {
@@ -47,6 +48,7 @@ export default function DashboardLayoutAccount(props: DemoProps) {
   const { window } = props
 
   const [isDarkMode, setIsDarkMode] = useState(false)
+  const [session, setSession] = useState<Session | null>(null)
 
   const toggleTheme = () => {
     setIsDarkMode(prevMode => !prevMode)
@@ -62,13 +64,18 @@ export default function DashboardLayoutAccount(props: DemoProps) {
     [isDarkMode],
   )
 
-  const [session, setSession] = useState<Session | null>({
-    user: {
-      name: 'Bharat Kashyap',
-      email: 'bharatkashyap@outlook.com',
-      image: 'https://avatars.githubusercontent.com/u/19550456',
-    },
-  })
+  const fetchData = async () => {
+    try {
+      const user = await fetchUserData()
+      setSession({ user })
+    } catch (error) {
+      console.error('Failed to fetch user data:', error)
+    }
+  }
+
+  useEffect(() => {
+    fetchData()
+  }, [])
 
   const authentication = React.useMemo(() => {
     return {
@@ -105,10 +112,12 @@ export default function DashboardLayoutAccount(props: DemoProps) {
         }}
       >
         <DashboardLayout>
-          {/* Main content area */}
           <DemoPageContent pathname={router.pathname} />
-
-          {/* Bottom navigation area */}
+          {session && session.user && (
+            <Box sx={{ pl: 3, textAlign: 'start' }}>
+              <Typography variant="h6">Vitaj, {session.user.name}</Typography>
+            </Box>
+          )}
           <Box
             sx={{
               display: 'flex',
