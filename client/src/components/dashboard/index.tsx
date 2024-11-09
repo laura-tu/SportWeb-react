@@ -36,6 +36,7 @@ function DemoPageContent({ pathname }: { pathname: string }) {
       }}
     >
       <Typography>Dashboard content for {pathname}</Typography>
+      {/*prec*/}
     </Box>
   )
 }
@@ -77,23 +78,6 @@ export default function DashboardLayoutAccount(props: DemoProps) {
     fetchData()
   }, [])
 
-  const authentication = React.useMemo(() => {
-    return {
-      signIn: () => {
-        setSession({
-          user: {
-            name: 'Bharat Kashyap',
-            email: 'bharatkashyap@outlook.com',
-            image: 'https://avatars.githubusercontent.com/u/19550456',
-          },
-        })
-      },
-      signOut: () => {
-        setSession(null)
-      },
-    }
-  }, [])
-
   const router = useDemoRouter('/dashboard')
   const demoWindow = window ? window() : undefined
 
@@ -101,7 +85,6 @@ export default function DashboardLayoutAccount(props: DemoProps) {
     <ThemeProvider theme={theme}>
       <AppProvider
         session={session}
-        authentication={authentication}
         navigation={NAVIGATION}
         router={router}
         theme={theme}
