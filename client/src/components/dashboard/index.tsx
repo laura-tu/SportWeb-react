@@ -9,6 +9,7 @@ import { DashboardLayout } from '@toolpad/core/DashboardLayout'
 import { useDemoRouter } from '@toolpad/core/internal'
 import ThemeToggle from './theme-toggle.tsx'
 import { fetchUserData, useAuth } from '../../services/user.ts'
+import { Account } from '@toolpad/core/Account'
 
 const NAVIGATION: Navigation = [
   {
@@ -110,7 +111,22 @@ export default function DashboardLayoutAccount(props: DemoProps) {
           title: 'SportWeb',
         }}
       >
-        <DashboardLayout>
+        {/*how to do this in app provider?*/}
+
+        {/* end */}
+
+        <DashboardLayout
+          slots={{
+            toolbarAccount: () => (
+              <Account
+                localeText={{
+                  //signInLabel: 'Prihlásiť sa',
+                  signOutLabel: 'ODHLÁSIŤ SA', //Odhlásiť sa = Sa
+                }}
+              />
+            ),
+          }}
+        >
           <DemoPageContent pathname={router.pathname} />
           {session && session.user && (
             <Box sx={{ pl: 3, textAlign: 'start' }}>
