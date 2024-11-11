@@ -1,5 +1,14 @@
 import axios from 'axios'
 import { AthleteFormData } from '../components/athlete-reg/index.tsx'
+import { Athlete } from '../utils/interfaces.ts'
+
+export interface AthleteIdResponse {
+  docs: Athlete[]
+  totalDocs: number
+  limit: number
+  totalPages: number
+  page: number
+}
 
 export const registerAthlete = async (
   data: AthleteFormData,
@@ -24,4 +33,14 @@ export const registerAthlete = async (
     console.error(error.message)
     setErrorModal(true)
   }
+}
+
+export const fetchAthlete = async (athleteId: string) => {
+  const response = await axios.get(`http://localhost:3000/api/u_athlete/${athleteId}`)
+  return response.data
+}
+
+export const fetchAthleteByUserId = async (userId: string): Promise<AthleteIdResponse> => {
+  const response = await axios.get(`http://localhost:3000/api/u_athlete?user=${userId}`)
+  return response.data
 }

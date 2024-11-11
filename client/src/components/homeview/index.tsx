@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import HeaderComp from '../header/index.tsx'
 import RegistrationForm from '../registration-form/index.tsx'
@@ -6,10 +6,10 @@ import AthleteReg from '../athlete-reg/index.tsx'
 import CoachReg from '../coach-reg/index.tsx'
 import LoginForm from '../login-form/index.tsx'
 
-export enum UserRole{
+export enum UserRole {
   USER = 'user',
   COACH = 'coach',
-  ADMIN = 'admin'
+  ADMIN = 'admin',
 }
 const HomeView = () => {
   const [showRegistration, setShowRegistration] = useState(false)
@@ -38,8 +38,15 @@ const HomeView = () => {
 
   const closeRegistration = () => setShowRegistration(false)
   const closeLogin = () => setShowLogin(false)
-  const closeAthleteReg = () => setShowAthleteReg(false)
-  const closeCoachReg = () => setShowCoachReg(false)
+  const closeAthleteReg = () => {
+    setShowAthleteReg(false)
+    setUserId(null)
+  }
+
+  const closeCoachReg = () => {
+    setShowCoachReg(false)
+    setUserId(null)
+  }
 
   return (
     <div>

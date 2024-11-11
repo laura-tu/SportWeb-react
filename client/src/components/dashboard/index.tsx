@@ -10,7 +10,10 @@ import { useDemoRouter } from '@toolpad/core/internal'
 import ThemeToggle from './theme-toggle.tsx'
 import { fetchUserData, useAuth } from '../../services/user.ts'
 import { Account } from '@toolpad/core/Account'
+import Settings from '../settings/index.tsx'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
+const queryClient = new QueryClient()
 const NAVIGATION: Navigation = [
   {
     segment: 'dashboard',
@@ -98,58 +101,66 @@ export default function DashboardLayoutAccount(props: DemoProps) {
   const demoWindow = window ? window() : undefined
 
   return (
-    <ThemeProvider theme={theme}>
-      <AppProvider
-        session={session}
-        authentication={authentication}
-        navigation={NAVIGATION}
-        router={router}
-        theme={theme}
-        window={demoWindow}
-        branding={{
-          logo: <img src="./logo_black_50.jpg" alt="SportWeb logo" />,
-          title: 'SportWeb',
-        }}
-      >
-        {/*how to do this in app provider?*/}
-
-        {/* end */}
-
-        <DashboardLayout
-          slots={{
-            toolbarAccount: () => (
-              <Account
-                localeText={{
-                  //signInLabel: 'Prihlásiť sa',
-                  signOutLabel: 'ODHLÁSIŤ SA', //Odhlásiť sa = Sa
-                }}
-              />
-            ),
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider theme={theme}>
+        <AppProvider
+          session={session}
+          authentication={authentication}
+          navigation={NAVIGATION}
+          router={router}
+          theme={theme}
+          window={demoWindow}
+          branding={{
+            logo: <img src="./logo_black_50.jpg" alt="SportWeb logo" />,
+            title: 'SportWeb',
           }}
         >
-          <DemoPageContent pathname={router.pathname} />
-          {session && session.user && (
-            <Box sx={{ pl: 3, textAlign: 'start' }}>
-              <Typography variant="h6">Vitaj, {session.user.name}</Typography>
-              {/* Sign-out button could be added here */}
-            </Box>
-          )}
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'start',
-              padding: 2,
-              position: 'fixed',
-              bottom: 0,
-              width: '100%',
-              backgroundColor: theme.palette.background.paper,
-              borderTop: `1px solid ${theme.palette.divider}`,
+          <DashboardLayout
+            slots={{
+              toolbarAccount: () => (
+                <Account
+                  localeText={{
+                    signInLabel: 'Prihlásiť sa',
+                    signOutLabel: 'Odhlásiť sa',
+                  }}
+                  /*sx={{
+                  '.signOutLabel': {
+                    textTransform: 'none', // Ensure text remains as typed
+                  },
+                }}*/
+                />
+              ),
             }}
           >
-            <ThemeToggle isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
-          </Box>
-        </DashboardLayout>
-      </AppProvider>
-    </ThemeProvider>
+            {router.pathname === '/settings' && session?.user ? (
+              <Settings userId={session.user.id as string} />
+            ) : (
+              <DemoPageContent pathname={router.pathname} />
+            )}
+
+            {router.pathname === '/' && session && session.user && (
+              <Box sx={{ pl: 3, textAlign: 'start' }}>
+                <Typography variant="h6">Vitaj, {session.user.name}</Typography>
+              </Box>
+            )}
+
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'start',
+                padding: 2,
+                position: 'fixed',
+                bottom: 0,
+                width: '100%',
+                backgroundColor: theme.palette.background.paper,
+                borderTop: `1px solid ${theme.palette.divider}`,
+              }}
+            >
+              <ThemeToggle isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
+            </Box>
+          </DashboardLayout>
+        </AppProvider>
+      </ThemeProvider>
+    </QueryClientProvider>
   )
 }
