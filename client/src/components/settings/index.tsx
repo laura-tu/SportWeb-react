@@ -76,7 +76,7 @@ export default function Settings({ userId }: SettingsProps) {
               <strong>Dátum narodenia:</strong> {new Date(athlete.birth_date).toLocaleDateString()}
             </Typography>
             <Typography>
-              <strong>Pohlavie:</strong> {athlete.gender === 'zena' ? 'Female' : 'Male'}
+              <strong>Pohlavie:</strong> {athlete.gender === 'zena' ? 'Žena' : 'Muž'}
             </Typography>
             <Typography>
               <strong>Šport(y):</strong> {athlete.sport.map(sport => sport.name).join(', ')}
