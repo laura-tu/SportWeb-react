@@ -10,7 +10,8 @@ import { useDemoRouter } from '@toolpad/core/internal'
 import ThemeToggle from './theme-toggle.tsx'
 import { fetchUserData, useAuth } from '../../services/user.ts'
 import { Account } from '@toolpad/core/Account'
-import Settings from '../settings/index.tsx'
+import SettingsAthlete from '../settings/athlete-profile.tsx'
+import SettingsCoach from '../settings/coach-profile.tsx'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 const queryClient = new QueryClient()
@@ -133,7 +134,10 @@ export default function DashboardLayoutAccount(props: DemoProps) {
             }}
           >
             {router.pathname === '/settings' && session?.user ? (
-              <Settings userId={session.user.id as string} />
+              <>
+                <SettingsAthlete userId={session.user.id as string} />
+                <SettingsCoach userId={session.user.id as string} />
+              </>
             ) : (
               <DemoPageContent pathname={router.pathname} />
             )}

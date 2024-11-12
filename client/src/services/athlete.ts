@@ -4,10 +4,6 @@ import { Athlete } from '../utils/interfaces.ts'
 
 export interface AthleteIdResponse {
   docs: Athlete[]
-  totalDocs: number
-  limit: number
-  totalPages: number
-  page: number
 }
 
 export const registerAthlete = async (
@@ -35,12 +31,17 @@ export const registerAthlete = async (
   }
 }
 
-export const fetchAthlete = async (athleteId: string) => {
-  const response = await axios.get(`http://localhost:3000/api/u_athlete/${athleteId}`)
-  return response.data
-}
-
 export const fetchAthleteByUserId = async (userId: string): Promise<AthleteIdResponse> => {
-  const response = await axios.get(`http://localhost:3000/api/u_athlete?user=${userId}`)
-  return response.data
+  const response = await axios.get(`http://localhost:3000/api/u_athlete`)
+  const athletes = response.data.docs
+
+  const filteredAthlete = athletes.find((athlete: Athlete) => {
+    if (typeof athlete.user === 'object' && 'id' in athlete.user) {
+      return athlete.user.id === userId
+    } else {
+      return athlete.user === userId
+    }
+  })
+
+  return { docs: filteredAthlete ? [filteredAthlete] : [] }
 }

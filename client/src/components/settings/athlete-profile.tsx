@@ -1,15 +1,13 @@
 import React from 'react'
 import { Box, Typography, CircularProgress } from '@mui/material'
-import { fetchAthlete, fetchAthleteByUserId, AthleteIdResponse } from '../../services/athlete.ts'
+import { fetchAthleteByUserId, AthleteIdResponse } from '../../services/athlete.ts'
 import { useQuery } from '@tanstack/react-query'
-import { Athlete } from '../../utils/interfaces.ts'
 
-interface SettingsProps {
+export interface SettingsProps {
   userId: string
 }
 
-export default function Settings({ userId }: SettingsProps) {
-  // Step 1: Get the athlete ID by user ID
+const SettingsAthlete: React.FC<SettingsProps> = ({ userId }) => {
   const {
     data: athleteData,
     isLoading: isFetchingAthleteId,
@@ -19,23 +17,9 @@ export default function Settings({ userId }: SettingsProps) {
     queryFn: () => fetchAthleteByUserId(userId),
   })
 
-  // Select the first athlete document from docs
-  const firstAthleteDoc = athleteData?.docs[0]
-  const athleteId = firstAthleteDoc?.id
+  const athlete = athleteData?.docs[0]
 
-  // Step 2: Fetch the athlete data by athlete ID
-  const {
-    data: athlete,
-    isLoading: isFetchingAthlete,
-    error: athleteError,
-  } = useQuery<Athlete>({
-    queryKey: ['athlete', athleteId],
-    queryFn: () => fetchAthlete(athleteId!),
-    enabled: !!athleteId, // Only run this query if athleteId exists
-  })
-
-  // Display loading and error states
-  if (isFetchingAthleteId || isFetchingAthlete) {
+  if (isFetchingAthleteId) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
         <CircularProgress />
@@ -45,7 +29,8 @@ export default function Settings({ userId }: SettingsProps) {
 
   if (athleteIdError)
     return <p>Error loading athlete information by user ID: {athleteIdError.message}</p>
-  if (athleteError) return <p>Error loading athlete data: {athleteError.message}</p>
+
+  if (!athlete) return <p>Athlete not found for this user.</p>
 
   return (
     <Box
@@ -63,11 +48,8 @@ export default function Settings({ userId }: SettingsProps) {
       <Typography variant="h4" gutterBottom>
         Profil
       </Typography>
-      <Typography variant="body1" paragraph>
-        Aktualizuj svoje informácie tu.
-      </Typography>
+      <Typography variant="body1">Aktualizuj svoje informácie tu.</Typography>
 
-      {/* Display athlete's data */}
       {athlete && (
         <Box sx={{ textAlign: 'left', width: '100%', mt: 3 }}>
           <Typography variant="h6">Informácie o športovcovi:</Typography>
@@ -93,3 +75,5 @@ export default function Settings({ userId }: SettingsProps) {
     </Box>
   )
 }
+
+export default SettingsAthlete
