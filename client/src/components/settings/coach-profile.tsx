@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Typography } from '@mui/material'
+import { Box, Typography, TextField } from '@mui/material'
 import { fetchCoachByUserId, CoachIdResponse } from '../../services/coach.ts'
 import { useQuery } from '@tanstack/react-query'
 import { SettingsProps } from './athlete-profile.tsx'
@@ -38,22 +38,38 @@ const SettingsCoach: React.FC<SettingsProps> = ({ userId }) => {
         margin: '0 auto',
       }}
     >
-      <Typography variant="h4" gutterBottom>
-        Profil
-      </Typography>
-      <Typography variant="body1">Aktualizuj svoje informácie tu.</Typography>
-
       {coach && (
         <Box sx={{ textAlign: 'left', width: '100%', mt: 3 }}>
           <Typography variant="h6">Informácie o trénerovi:</Typography>
           <Box sx={{ mt: 2 }}>
-            <Typography>
-              <strong>Šport(y):</strong> {coach.sport.map(sport => sport.name).join(', ')}
-            </Typography>
-            <Typography>
-              <strong>Športové kluby:</strong>{' '}
-              {typeof coach.sport_club === 'string' ? coach.sport_club : coach.sport_club?.name}
-            </Typography>
+            <TextField
+              label="Šport:"
+              variant="outlined"
+              fullWidth
+              margin="normal"
+              value={coach.sport.map(sport => sport.name).join(', ')}
+              slotProps={{
+                input: {
+                  readOnly: true,
+                },
+              }}
+            />
+            <TextField
+              label="Športový klub:"
+              variant="outlined"
+              fullWidth
+              margin="normal"
+              value={
+                typeof coach.sport_club === 'string'
+                  ? coach.sport_club
+                  : coach.sport_club?.name || ''
+              }
+              slotProps={{
+                input: {
+                  readOnly: true,
+                },
+              }}
+            />
           </Box>
         </Box>
       )}

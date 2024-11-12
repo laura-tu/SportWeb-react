@@ -135,6 +135,13 @@ export default function DashboardLayoutAccount(props: DemoProps) {
           >
             {router.pathname === '/settings' && session?.user ? (
               <>
+                <Box sx={{ ml: 3, mt: 3 }}>
+                  <Typography variant="h4" gutterBottom>
+                    Profil
+                  </Typography>
+                  <Typography variant="body1">Aktualizuj svoje informácie tu.</Typography>
+                </Box>
+
                 <SettingsAthlete userId={session.user.id as string} />
                 <SettingsCoach userId={session.user.id as string} />
               </>
