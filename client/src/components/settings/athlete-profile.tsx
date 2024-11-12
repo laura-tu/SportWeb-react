@@ -1,7 +1,8 @@
 import React from 'react'
-import { Box, Typography, CircularProgress } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 import { fetchAthleteByUserId, AthleteIdResponse } from '../../services/athlete.ts'
 import { useQuery } from '@tanstack/react-query'
+import LoadingOverlay from '../loading/loading-overlay.tsx'
 
 export interface SettingsProps {
   userId: string
@@ -20,11 +21,7 @@ const SettingsAthlete: React.FC<SettingsProps> = ({ userId }) => {
   const athlete = athleteData?.docs[0]
 
   if (isFetchingAthleteId) {
-    return (
-      <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
-        <CircularProgress />
-      </Box>
-    )
+    return <LoadingOverlay />
   }
 
   if (athleteIdError)

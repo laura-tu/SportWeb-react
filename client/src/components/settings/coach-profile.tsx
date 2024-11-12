@@ -1,8 +1,9 @@
 import React from 'react'
-import { Box, Typography, CircularProgress } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 import { fetchCoachByUserId, CoachIdResponse } from '../../services/coach.ts'
 import { useQuery } from '@tanstack/react-query'
 import { SettingsProps } from './athlete-profile.tsx'
+import LoadingOverlay from '../loading/loading-overlay.tsx'
 
 const SettingsCoach: React.FC<SettingsProps> = ({ userId }) => {
   const {
@@ -17,11 +18,7 @@ const SettingsCoach: React.FC<SettingsProps> = ({ userId }) => {
   const coach = coachData?.docs[0]
 
   if (isFetchingCoachId) {
-    return (
-      <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
-        <CircularProgress />
-      </Box>
-    )
+    return <LoadingOverlay />
   }
 
   if (coachIdError) return <p>Error loading coach information by user ID: {coachIdError.message}</p>
