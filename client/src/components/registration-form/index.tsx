@@ -35,6 +35,7 @@ const RegistrationForm: React.FC<{
   const [errorModalMessage, setErrorModalMessage] = useState('')
   const [passwordVisible, setPasswordVisible] = useState(false)
   const [passwordConfVisible, setPasswordConfVisible] = useState(false)
+  const [passwordError, setPasswordError] = useState('')
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
@@ -60,23 +61,29 @@ const RegistrationForm: React.FC<{
 
   const registerUserHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+
     if (user.password !== user.passwordConf) {
-      alert('Heslá sa nezhodujú.') //todo: replace with warning component
+      setPasswordError('Heslá sa nezhodujú.') // Set password error if they don't match
       return
     }
+    setPasswordError('')
 
     try {
-      // Create a new object without `terms` and `passwordConf`
-      const { passwordConf, terms, ...userData } = user
-      const responseData = await registerUser(userData)
+      const { passwordConf, terms, role, ...userData } = user
+      const formattedUserData = {
+        ...userData,
+        roles: [role],
+      }
+
+      const responseData = await registerUser(formattedUserData)
       const userId = responseData.doc.id
       setFormSubmitted(true)
 
       onNext(userId, user)
     } catch (error) {
       console.error('Error registering user:', error)
-      // Check if the error response has a specific error for the email field
       let errorMessage = 'Chyba pri registrácii používateľa.'
+
       if (
         error.response &&
         error.response.data.errors &&
@@ -161,7 +168,6 @@ const RegistrationForm: React.FC<{
               minLength={8}
               icon={<KeyIcon />}
             />
-
             <button
               type="button"
               className="absolute right-3 top-4 text-gray-500"
@@ -171,9 +177,7 @@ const RegistrationForm: React.FC<{
             </button>
           </div>
 
-          {user.password !== user.passwordConf && (
-            <div className="text-red-600 text-sm mb-4">Heslá sa nezhodujú.</div>
-          )}
+          {passwordError && <div className="text-red-600 text-sm mb-4">{passwordError}</div>}
 
           <div className="form-row mb-8 text-black">
             <FormLabel component="legend" required>
@@ -197,7 +201,7 @@ const RegistrationForm: React.FC<{
                   <Radio
                     checked={user.role === UserRole.COACH}
                     onChange={handleChange}
-                    value="coach"
+                    value="sportCoach"
                     name="role"
                     inputProps={{ 'aria-label': 'Coach' }}
                   />

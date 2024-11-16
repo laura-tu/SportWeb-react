@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 
 export const registerUser = async (userData: {
   name: string
-  role: string
+  roles: string[]
   email: string
   password: string
 }) => {

@@ -8,7 +8,7 @@ import LoginForm from '../login-form/index.tsx'
 
 export enum UserRole {
   USER = 'user',
-  COACH = 'coach',
+  COACH = 'sportCoach',
   ADMIN = 'admin',
 }
 const HomeView = () => {
