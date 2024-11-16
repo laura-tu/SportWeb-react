@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react'
+import React, { useState, useMemo } from 'react'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import DashboardIcon from '@mui/icons-material/Dashboard'
@@ -8,11 +8,12 @@ import { AppProvider, type Session, type Navigation } from '@toolpad/core/AppPro
 import { DashboardLayout } from '@toolpad/core/DashboardLayout'
 import { useDemoRouter } from '@toolpad/core/internal'
 import ThemeToggle from './theme-toggle.tsx'
-import { fetchUserData, useAuth } from '../../services/user.ts'
 import { Account } from '@toolpad/core/Account'
 import SettingsAthlete from '../settings/athlete-profile.tsx'
 import SettingsCoach from '../settings/coach-profile.tsx'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { useAuthSession } from './hooks/useAuthSession.tsx'
+import { SettingsToggleButtons } from './settings-toggle-buttons.tsx'
 
 const queryClient = new QueryClient()
 const NAVIGATION: Navigation = [
@@ -50,10 +51,11 @@ interface DemoProps {
 
 export default function DashboardLayoutAccount(props: DemoProps) {
   const { window } = props
-  const { signOut } = useAuth()
 
+  const { session, authentication } = useAuthSession()
   const [isDarkMode, setIsDarkMode] = useState(false)
-  const [session, setSession] = useState<Session | null>(null)
+
+  const [currentForm, setCurrentForm] = useState<'athlete' | 'coach' | null>(null)
 
   const toggleTheme = () => {
     setIsDarkMode(prevMode => !prevMode)
@@ -68,35 +70,6 @@ export default function DashboardLayoutAccount(props: DemoProps) {
       }),
     [isDarkMode],
   )
-
-  // Fetch user data only once when the component is mounted
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const user = await fetchUserData()
-        setSession({ user })
-      } catch (error) {
-        console.error('Failed to fetch user data:', error)
-      }
-    }
-    fetchData()
-  }, []) // Empty dependency array ensures this runs only once when the component is mounted
-
-  const authentication = useMemo(() => {
-    return {
-      signIn: () => {
-        if (!session?.user) {
-          console.error('No user data available for sign-in')
-          return
-        }
-        setSession({ user: session.user })
-      },
-      signOut: () => {
-        signOut()
-        setSession(null)
-      },
-    }
-  }, [session]) // Dependency on session ensures signIn uses the latest user data
 
   const router = useDemoRouter('/dashboard')
   const demoWindow = window ? window() : undefined
@@ -124,31 +97,47 @@ export default function DashboardLayoutAccount(props: DemoProps) {
                     signInLabel: 'Prihlásiť sa',
                     signOutLabel: 'Odhlásiť sa',
                   }}
-                  /*sx={{
-                  '.signOutLabel': {
-                    textTransform: 'none', // Ensure text remains as typed
-                  },
-                }}*/
                 />
               ),
             }}
           >
             {router.pathname === '/settings' && session?.user ? (
               <>
-                <Box sx={{ ml: 3, mt: 3 }}>
+                <Box sx={{ m: 3 }}>
                   <Typography variant="h4" gutterBottom>
                     Profil
                   </Typography>
                   <Typography variant="body1">Aktualizuj svoje informácie tu.</Typography>
                 </Box>
 
-                <SettingsAthlete userId={session.user.id as string} />
-                <SettingsCoach userId={session.user.id as string} />
+                {/* Directly display the appropriate form based on user role */}
+                {session?.user?.roles?.includes('user') &&
+                  !session?.user?.roles?.includes('sportCoach') && (
+                    <SettingsAthlete userId={session.user.id} />
+                  )}
+                {session?.user?.roles?.includes('sportCoach') &&
+                  !session?.user?.roles?.includes('user') && (
+                    <SettingsCoach userId={session.user.id} />
+                  )}
+
+                {/* Render the buttons to toggle between forms when user has both roles */}
+                {session?.user && (
+                  <SettingsToggleButtons session={session} setCurrentForm={setCurrentForm} />
+                )}
+
+                {/* If currentForm is set, display the corresponding form */}
+                {currentForm === 'athlete' && session?.user?.roles?.includes('user') && (
+                  <SettingsAthlete userId={session.user.id} />
+                )}
+                {currentForm === 'coach' && session?.user?.roles?.includes('sportCoach') && (
+                  <SettingsCoach userId={session.user.id} />
+                )}
               </>
             ) : (
               <DemoPageContent pathname={router.pathname} />
             )}
 
+            {/* Show user name */}
             {router.pathname === '/' && session && session.user && (
               <Box sx={{ pl: 3, textAlign: 'start' }}>
                 <Typography variant="h6">Vitaj, {session.user.name}</Typography>

@@ -34,7 +34,7 @@ const SettingsCoach: React.FC<SettingsProps> = ({ userId }) => {
         flexDirection: 'column',
         alignItems: 'center',
         textAlign: 'center',
-        maxWidth: 600,
+        width: { xs: '75%', sm: '65%', md: 600 },
         margin: '0 auto',
       }}
     >

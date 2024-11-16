@@ -27,11 +27,18 @@ export interface Club {
 
 export interface User {
   id: string
-  email: string
-  role: string
-
-  createdAt: string
+  name?: string | null
+  roles: ('admin' | 'user' | 'sportCoach')[] // Remove optional/nullability
   updatedAt: string
+  createdAt: string
+  email: string
+  resetPasswordToken?: string | null
+  resetPasswordExpiration?: string | null
+  salt?: string | null
+  hash?: string | null
+  loginAttempts?: number | null
+  lockUntil?: string | null
+  password: string | null
 }
 
 export interface Athlete {
