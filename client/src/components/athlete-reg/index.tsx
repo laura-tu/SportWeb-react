@@ -7,6 +7,7 @@ import { fetchSports } from '../../services/sports.ts'
 import { fetchSportClubs } from '../../services/sport-clubs.ts'
 import { registerAthlete } from '../../services/athlete.ts'
 import SuccessModal from '../success-modal/index.tsx'
+import { Club, Sport } from '../../utils/interfaces.ts'
 
 export interface AthleteFormData {
   day?: number | null
@@ -19,16 +20,11 @@ export interface AthleteFormData {
   user?: string
 }
 
-interface SportOption {
-  id: string
-  name: string
-}
-
 const AthleteReg = ({ userId, onClose }) => {
   const [successModalVisible, setSuccessModalVisible] = useState(false)
   const [errorModal, setErrorModal] = useState(false)
-  const [sportsOptions, setSportsOptions] = useState<SportOption[]>([])
-  const [clubOptions, setClubOptions] = useState<SportOption[]>([])
+  const [sportsOptions, setSportsOptions] = useState<Sport[]>([])
+  const [clubOptions, setClubOptions] = useState<Club[]>([])
 
   useEffect(() => {
     const loadSports = async () => {
