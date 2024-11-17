@@ -37,3 +37,16 @@ export const fetchCoachByUserId = async (userId: string): Promise<CoachIdRespons
 
   return { docs: filteredCoach ? [filteredCoach] : [] }
 }
+
+export const updateCoachData = async (coachId: string, updateData: Record<string, any>) => {
+  try {
+    const response = await axios.patch(`http://localhost:3000/api/u_coach/${coachId}`, updateData, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    })
+    return response.data
+  } catch (error) {
+    throw new Error(error.response?.data?.message || 'Failed to update athlete data')
+  }
+}

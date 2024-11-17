@@ -47,16 +47,16 @@ export const fetchAthleteByUserId = async (userId: string): Promise<AthleteIdRes
 }
 
 export const updateAthleteData = async (athleteId: string, updateData: Record<string, any>) => {
-
   try {
-    console.log('updateData:', updateData)
-    console.log('athleteId:', athleteId)
-    const response = await axios.patch(`http://localhost:3000/api/u_athlete/${athleteId}`, updateData, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`, // Add token from localStorage
+    const response = await axios.patch(
+      `http://localhost:3000/api/u_athlete/${athleteId}`,
+      updateData,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`, 
+        },
       },
-    })
-    console.log('response:', response)
+    )
     return response.data
   } catch (error) {
     throw new Error(error.response?.data?.message || 'Failed to update athlete data')

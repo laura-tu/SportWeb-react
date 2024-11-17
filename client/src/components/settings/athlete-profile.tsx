@@ -46,6 +46,12 @@ const SettingsAthlete: React.FC<SettingsProps> = ({ userId }) => {
   const [errorModalOpen, setErrorModalOpen] = useState(false)
   const [sportsOptions, setSportsOptions] = useState<Sport[]>([])
   const [clubOptions, setClubOptions] = useState<Club[]>([])
+  const [formData, setFormData] = useState<AthleteFormData>({
+    birth_date: '',
+    gender: '',
+    sport: [],
+    sport_club: '',
+  })
 
   const {
     data: athleteData,
@@ -58,13 +64,6 @@ const SettingsAthlete: React.FC<SettingsProps> = ({ userId }) => {
 
   const athlete = athleteData?.docs[0]
   const originalDataRef = useRef<any>(null)
-
-  const [formData, setFormData] = useState<AthleteFormData>({
-    birth_date: '',
-    gender: '',
-    sport: [],
-    sport_club: '',
-  })
 
   useEffect(() => {
     if (athlete) {
@@ -219,6 +218,7 @@ const SettingsAthlete: React.FC<SettingsProps> = ({ userId }) => {
             <FormControl fullWidth margin="normal">
               <InputLabel>Šport</InputLabel>
               <Select
+                label="Šport"
                 multiple
                 value={formData.sport}
                 onChange={e => handleInputChange('sport', e.target.value)}
@@ -234,6 +234,7 @@ const SettingsAthlete: React.FC<SettingsProps> = ({ userId }) => {
             <FormControl fullWidth margin="normal">
               <InputLabel>Športový klub</InputLabel>
               <Select
+                label="Športový klub"
                 value={formData.sport_club}
                 onChange={e => handleInputChange('sport_club', e.target.value)}
               >
@@ -262,7 +263,6 @@ const SettingsAthlete: React.FC<SettingsProps> = ({ userId }) => {
           {mutation.isPending ? 'Ukladám...' : 'Uložiť zmeny'}
         </Button>
 
-        {/* Success Modal */}
         <SuccessModal
           open={successModalOpen}
           onClose={() => setSuccessModalOpen(false)}
