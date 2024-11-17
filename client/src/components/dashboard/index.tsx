@@ -4,7 +4,7 @@ import Typography from '@mui/material/Typography'
 import DashboardIcon from '@mui/icons-material/Dashboard'
 import SettingsAccessibilityIcon from '@mui/icons-material/SettingsAccessibility'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
-import { AppProvider, type Session, type Navigation } from '@toolpad/core/AppProvider'
+import { AppProvider, type Navigation } from '@toolpad/core/AppProvider'
 import { DashboardLayout } from '@toolpad/core/DashboardLayout'
 import { useDemoRouter } from '@toolpad/core/internal'
 import ThemeToggle from './theme-toggle.tsx'
@@ -88,6 +88,7 @@ export default function DashboardLayoutAccount(props: DemoProps) {
             logo: <img src="./logo_black_50.jpg" alt="SportWeb logo" />,
             title: 'SportWeb',
           }}
+          
         >
           <DashboardLayout
             slots={{
@@ -97,6 +98,7 @@ export default function DashboardLayoutAccount(props: DemoProps) {
                     signInLabel: 'Prihlásiť sa',
                     signOutLabel: 'Odhlásiť sa',
                   }}
+                  sx={{bgColor:'blue'}}
                 />
               ),
             }}

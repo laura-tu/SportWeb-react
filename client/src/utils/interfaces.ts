@@ -6,20 +6,11 @@ export interface Sport {
   updatedAt: string
 }
 
-export interface ClubSport {
-  id: string
-  name: string
-  info: string
-
-  createdAt: string
-  updatedAt: string
-}
-
 export interface Club {
   id: string
   name: string
   short_name: string
-  sport: ClubSport
+  sport: Sport []
 
   createdAt: string
   updatedAt: string
