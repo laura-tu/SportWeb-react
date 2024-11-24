@@ -65,7 +65,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onClose }) => {
       <div className="bg-gray-100 p-8 rounded-lg shadow-lg border border-black max-w-md w-full text-black">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-2xl font-bold ">Prihlásenie</h1>
-          <button className="text-red-600 text-2xl" onClick={onClose}>
+          <button className="text-red-600 text-2xl hover:cursor-pointer" onClick={onClose}>
             <CloseOutlinedIcon />
           </button>
         </div>

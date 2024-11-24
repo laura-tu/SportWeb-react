@@ -56,7 +56,7 @@ const CoachReg = ({ userId, onClose }) => {
       <Box className="bg-white p-6 rounded-lg w-full max-w-lg shadow-lg border border-black relative">
         <div className="headerX flex justify-between items-center mb-10">
           <h1 className="text-2xl font-bold text-black text-bold ">Informácie o trénerovi</h1>
-          <button className="text-red-600 text-2xl " onClick={onClose}>
+          <button className="text-red-600 text-2xl  hover:cursor-pointer" onClick={onClose}>
             <CloseOutlinedIcon />
           </button>
         </div>

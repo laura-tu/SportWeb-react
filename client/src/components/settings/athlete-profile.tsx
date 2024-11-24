@@ -186,6 +186,7 @@ const SettingsAthlete: React.FC<SettingsProps> = ({ userId }) => {
           margin: '0 auto',
           border: 1,
           borderRadius: 3,
+          mt: 2,
         }}
       >
         <Box sx={{ textAlign: 'left', width: '100%', mt: 3 }}>

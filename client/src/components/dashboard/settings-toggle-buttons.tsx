@@ -14,9 +14,8 @@ export const SettingsToggleButtons = ({ session, setCurrentForm }) => {
         flexDirection: { xs: 'column', sm: 'row' }, // Stack vertically on small screens, row on larger screens
         justifyContent: 'center',
         gap: 2,
-        mb: 3,
         p: 2,
-        width: { xs: '70%', sm: '65%', md: '45%' },
+        width: { xs: '70%', sm: '65%', md: 600 },
         margin: '0 auto',
         alignItems: 'center',
         bgcolor: theme => (theme.palette.mode === 'dark' ? 'white' : 'black'),

@@ -107,7 +107,7 @@ const RegistrationForm: React.FC<{
       <Box className="bg-white p-6 rounded-lg shadow-lg border border-black max-w-lg w-full">
         <div className="headerX flex justify-between items-center mb-10">
           <h1 className="text-2xl font-bold text-black text-bold ">Vytvoriť účet</h1>
-          <button className="text-red-600 text-2xl " onClick={onClose}>
+          <button className="text-red-600 text-2xl hover:cursor-pointer" onClick={onClose}>
             <CloseOutlinedIcon />
           </button>
         </div>
