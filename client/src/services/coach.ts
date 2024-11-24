@@ -1,9 +1,19 @@
 import axios from 'axios'
 import { CoachFormData } from '../components/coach-reg/index.tsx'
-import { Coach } from '../utils/interfaces.ts'
+import { Coach, Athlete, Sport, Club } from '../utils/interfaces.ts'
 
 export interface CoachIdResponse {
   docs: Coach[]
+}
+
+export interface CoachResponse {
+  id: string
+  user: string
+  sport: Sport[]
+  club: Club
+  athlete: Athlete[]
+  createdAt: string
+  updatedAt: string
 }
 
 export const registerCoach = async (
@@ -20,6 +30,16 @@ export const registerCoach = async (
   } catch (error) {
     console.error(error.message)
     setErrorModal(true)
+  }
+}
+
+export const getCoachData = async (coachId: string): Promise<CoachResponse> => {
+  try {
+    const response = await axios.get(`http://localhost:3000/api/u_coach/${coachId}`)
+    return response.data
+  } catch (error) {
+    console.error('Error fetching coach data:', error)
+    throw new Error(error.response?.data?.message || 'Failed to fetch coach data')
   }
 }
 

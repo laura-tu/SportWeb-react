@@ -10,7 +10,7 @@ export interface Club {
   id: string
   name: string
   short_name: string
-  sport: Sport []
+  sport: Sport[]
 
   createdAt: string
   updatedAt: string
@@ -49,7 +49,7 @@ export interface Coach {
   user: User | string
   sport: Sport[]
   sport_club?: Club | string | null
-
+  athlete?: (string | Athlete)[] | null
   createdAt: string
   updatedAt: string
 }

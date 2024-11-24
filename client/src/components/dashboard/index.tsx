@@ -88,7 +88,6 @@ export default function DashboardLayoutAccount(props: DemoProps) {
             logo: <img src="./logo_black_50.jpg" alt="SportWeb logo" />,
             title: 'SportWeb',
           }}
-          
         >
           <DashboardLayout
             slots={{
@@ -98,7 +97,7 @@ export default function DashboardLayoutAccount(props: DemoProps) {
                     signInLabel: 'Prihlásiť sa',
                     signOutLabel: 'Odhlásiť sa',
                   }}
-                  sx={{bgColor:'blue'}}
+                  sx={{ bgColor: '#0492c2' }}
                 />
               ),
             }}

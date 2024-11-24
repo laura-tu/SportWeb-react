@@ -18,7 +18,7 @@ export const SettingsToggleButtons = ({ session, setCurrentForm }) => {
         width: { xs: '70%', sm: '65%', md: 600 },
         margin: '0 auto',
         alignItems: 'center',
-        bgcolor: theme => (theme.palette.mode === 'dark' ? 'white' : 'black'),
+        bgcolor: theme => (theme.palette.mode === 'dark' ? 'white' : '#0492c2'),
         color: theme => (theme.palette.mode === 'dark' ? 'black' : 'white'),
         borderRadius: 3,
       }}
@@ -28,9 +28,8 @@ export const SettingsToggleButtons = ({ session, setCurrentForm }) => {
       </Typography>
       <Button
         variant="contained"
-        color="primary"
         onClick={() => setCurrentForm('athlete')}
-        sx={{ width: { xs: '50%', sm: 'auto' } }}
+        sx={{ width: { xs: '50%', sm: 'auto' }, backgroundColor: '#BAE0F3', color: 'black' }}
       >
         profil športovca
       </Button>
