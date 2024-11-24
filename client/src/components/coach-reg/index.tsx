@@ -62,7 +62,7 @@ const CoachReg = ({ userId, onClose }) => {
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          <InputLabel>Venujem sa športu (športom):</InputLabel>
+          <InputLabel id="sport-id">Venujem sa športu (športom):</InputLabel>
           <FormControl fullWidth>
             <Controller
               name="sport"
@@ -71,7 +71,7 @@ const CoachReg = ({ userId, onClose }) => {
               render={({ field }) => (
                 <Select
                   {...field}
-                  label="Šport"
+                  labelId="sport-id"
                   multiple
                   value={field.value || []}
                   onChange={e => {
@@ -91,14 +91,18 @@ const CoachReg = ({ userId, onClose }) => {
             />
           </FormControl>
 
-          <InputLabel>Názov klubu:</InputLabel>
+          <InputLabel id="club-id">Názov klubu:</InputLabel>
           <FormControl fullWidth>
             <Controller
               name="club"
               control={control}
               defaultValue=""
               render={({ field }) => (
-                <Select {...field} label="Klub" onChange={e => setValue('club', e.target.value)}>
+                <Select
+                  {...field}
+                  labelId="club-id"
+                  onChange={e => setValue('club', e.target.value)}
+                >
                   {clubOptions.map(club => (
                     <MenuItem key={club.id} value={club.id}>
                       {club.name}

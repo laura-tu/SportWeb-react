@@ -152,7 +152,7 @@ const AthleteReg = ({ userId, onClose }) => {
             </FormControl>
           </div>
 
-          <InputLabel>Pohlavie:</InputLabel>
+          <InputLabel id="gender-id">Pohlavie:</InputLabel>
           <FormControl fullWidth>
             <Controller
               name="gender"
@@ -161,7 +161,7 @@ const AthleteReg = ({ userId, onClose }) => {
               render={({ field }) => (
                 <Select
                   {...field}
-                  label="Pohlavie"
+                  labelId="gender-id"
                   value={field.value ?? ''}
                   onChange={e => {
                     setValue('gender', e.target.value)
@@ -177,7 +177,7 @@ const AthleteReg = ({ userId, onClose }) => {
             />
           </FormControl>
 
-          <InputLabel>Venujem sa športu (športom):</InputLabel>
+          <InputLabel id="sport-id">Venujem sa športu (športom):</InputLabel>
           <FormControl fullWidth>
             <Controller
               name="sport"
@@ -186,7 +186,8 @@ const AthleteReg = ({ userId, onClose }) => {
               render={({ field }) => (
                 <Select
                   {...field}
-                  label="Šport"
+                  id="sport"
+                  labelId="sport-id"
                   multiple
                   value={field.value || []}
                   onChange={e => {
@@ -206,14 +207,18 @@ const AthleteReg = ({ userId, onClose }) => {
             />
           </FormControl>
 
-          <InputLabel>Názov klubu:</InputLabel>
+          <InputLabel id="club-id">Názov klubu:</InputLabel>
           <FormControl fullWidth>
             <Controller
               name="club"
               control={control}
               defaultValue=""
               render={({ field }) => (
-                <Select {...field} label="Klub" onChange={e => setValue('club', e.target.value)}>
+                <Select
+                  {...field}
+                  labelId="club-id"
+                  onChange={e => setValue('club', e.target.value)}
+                >
                   {clubOptions.map(club => (
                     <MenuItem key={club.id} value={club.id}>
                       {club.name}
