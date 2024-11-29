@@ -115,7 +115,8 @@ const AddAthleteToCoachBox: React.FC<CoachProps> = ({ coachId }) => {
                     },
                   }}
                 >
-                  <Typography variant="body2">{ath.gender === 'muz' ? 'Muž' : 'Žena'}</Typography>
+                  <Typography variant="h5">{ath.name}</Typography>
+                  <Typography variant="body2">{ath.gender === 'muz' ? 'muž' : 'žena'}</Typography>
                   <Typography variant="body2">
                     {new Date(ath.birth_date).toLocaleDateString('sk-SK')}
                   </Typography>
