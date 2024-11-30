@@ -14,13 +14,14 @@ import {
   AthleteIdResponse,
   updateAthleteData,
 } from '../../services/athlete.ts'
+import { fetchCoachByAthleteId, CoachIdResponse } from '../../services/coach.ts'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import LoadingOverlay from '../loading/loading-overlay.tsx'
 import SuccessModal from '../success-modal/index.tsx'
 import ErrorModal from '../error-modal/index.tsx'
 import { fetchSports } from '../../services/sports.ts'
 import { fetchSportClubs } from '../../services/sport-clubs.ts'
-import { Sport, Club } from '../../utils/interfaces.ts'
+import { Sport, Club, User } from '../../utils/interfaces.ts'
 
 export interface SettingsProps {
   userId: string
@@ -63,6 +64,7 @@ const SettingsAthlete: React.FC<SettingsProps> = ({ userId }) => {
   })
 
   const athlete = athleteData?.docs[0]
+
   const originalDataRef = useRef<any>(null)
 
   useEffect(() => {
@@ -80,6 +82,24 @@ const SettingsAthlete: React.FC<SettingsProps> = ({ userId }) => {
       originalDataRef.current = initialData // Save the original data for comparison
     }
   }, [athlete])
+
+  // Fetch coach data based on athlete ID
+  const {
+    data: coachData,
+    isLoading: isFetchingCoach,
+    error: coachError,
+  } = useQuery<CoachIdResponse>({
+    queryKey: ['coach', athlete?.id], // Use athlete.id as the query key
+    queryFn: () => {
+      if (athlete?.id) {
+        return fetchCoachByAthleteId(athlete.id) // Fetch coach using athlete ID
+      }
+      return Promise.reject('No athlete ID available') // Handle the case when athlete ID is not available
+    },
+    enabled: !!athlete?.id, // Only run the query when athlete ID exists
+  })
+
+  const coach = coachData?.docs[0]
 
   useEffect(() => {
     const loadOptions = async () => {
@@ -191,6 +211,7 @@ const SettingsAthlete: React.FC<SettingsProps> = ({ userId }) => {
       >
         <Box sx={{ textAlign: 'left', width: '100%', mt: 3 }}>
           <Typography variant="h6">Informácie o športovcovi:</Typography>
+
           <Box sx={{ mt: 2 }}>
             <TextField
               label="Dátum narodenia"
@@ -213,6 +234,9 @@ const SettingsAthlete: React.FC<SettingsProps> = ({ userId }) => {
                 input: {
                   readOnly: true,
                 },
+              }}
+              sx={{
+                backgroundColor: 'rgba(0, 0, 0, 0.04)',
               }}
             />
 
@@ -246,6 +270,22 @@ const SettingsAthlete: React.FC<SettingsProps> = ({ userId }) => {
                 ))}
               </Select>
             </FormControl>
+
+            <TextField
+              label="Tréner"
+              variant="outlined"
+              fullWidth
+              margin="normal"
+              value={isFetchingCoach ? 'Načítavam...' : coach?.name || ' -'}
+              slotProps={{
+                input: {
+                  readOnly: true,
+                },
+              }}
+              sx={{
+                backgroundColor: 'rgba(0, 0, 0, 0.04)',
+              }}
+            />
           </Box>
         </Box>
         <Button

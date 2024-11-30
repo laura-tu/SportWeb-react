@@ -58,6 +58,26 @@ export const fetchCoachByUserId = async (userId: string): Promise<CoachIdRespons
   return { docs: filteredCoach ? [filteredCoach] : [] }
 }
 
+export const fetchCoachByAthleteId = async (athleteId: string): Promise<CoachIdResponse> => {
+  try {
+    const response = await axios.get(`http://localhost:3000/api/u_coach`, {
+      params: {
+        where: {
+          athlete: {
+            equals: athleteId,
+          },
+        },
+        depth: 1,
+      },
+    })
+
+    return response.data
+  } catch (error) {
+    console.error('Error fetching coach by athlete ID:', error)
+    throw new Error(error.response?.data?.message || 'Failed to fetch coach by athlete ID')
+  }
+}
+
 export const updateCoachData = async (coachId: string, updateData: Record<string, any>) => {
   try {
     const response = await axios.patch(`http://localhost:3000/api/u_coach/${coachId}`, updateData, {

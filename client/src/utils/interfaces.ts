@@ -35,7 +35,7 @@ export interface User {
 export interface Athlete {
   id: string
   user: User | string
-  name: string
+  name: string | null 
   birth_date: string
   gender: string
   sport: Sport[]
@@ -47,6 +47,7 @@ export interface Athlete {
 export interface Coach {
   id: string
   user: User | string
+  name: string | null 
   sport: Sport[]
   sport_club?: Club | string | null
   athlete?: (string | Athlete)[] | null

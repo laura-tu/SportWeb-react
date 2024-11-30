@@ -13,7 +13,7 @@ const AddAthleteToCoachBox: React.FC<CoachProps> = ({ coachId }) => {
     queryKey: ['coach', coachId],
     queryFn: () => getCoachData(coachId),
   })
-  console.log('Data', data)
+
   if (isLoading) {
     return (
       <Box sx={{ textAlign: 'center', mt: 4 }}>
