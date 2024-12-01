@@ -39,7 +39,7 @@ export interface Athlete {
   birth_date: string
   gender: string
   sport: Sport[]
-  sport_club?: Club | null | string
+  club?: Club | null | string
   createdAt: string
   updatedAt: string
 }

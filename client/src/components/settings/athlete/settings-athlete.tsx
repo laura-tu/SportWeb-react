@@ -1,78 +1,58 @@
 import React, { useState, useEffect, useRef } from 'react'
-import {
-  Box,
-  Typography,
-  Button,
-  TextField,
-  FormControl,
-  Select,
-  InputLabel,
-  MenuItem,
-} from '@mui/material'
+import { Box, Typography, Button, TextField } from '@mui/material'
 import { useQueryClient, useMutation } from '@tanstack/react-query'
-import { fetchSports } from '../../../services/sports.ts'
-import { fetchSportClubs } from '../../../services/sport-clubs.ts'
 import useFetchAthlete from '../hooks/useFetchAthlete.ts'
 import useFetchCoach from '../hooks/useFetchCoach.ts'
 import BirthDateField from '../fields/birthdate-field.tsx'
 import GenderField from '../fields/gender-field.tsx'
+import SportField from '../fields/sport-field.tsx'
+import ClubField from '../fields/club-field.tsx'
+import CoachField from '../fields/coach-field.tsx'
 import SuccessModal from '../../success-modal/index.tsx'
 import ErrorModal from '../../error-modal/index.tsx'
 import { formatDateForInput } from '../../../utils/formatDate.ts'
 import { updateAthleteData } from '../../../services/athlete.ts'
-import { Sport, Club } from '../../../utils/interfaces.ts'
 
 interface AthleteFormData {
   birth_date: string
   gender: string
-  sport: string[] // sport should be an array of strings
-  sport_club: string
+  sport: string[]
+  club: string
   coach: string
 }
-const SettingsAthlete = ({ userId }) => {
+
+const SettingsAthlete = ({ userId }: { userId: string }) => {
   const queryClient = useQueryClient()
-  const originalDataRef = useRef<any>(null)
+  const originalDataRef = useRef<AthleteFormData | null>(null)
 
   const [successModalOpen, setSuccessModalOpen] = useState(false)
   const [errorModalOpen, setErrorModalOpen] = useState(false)
-  const [sports, setSports] = useState<Sport[]>([])
-  const [clubs, setClubs] = useState<Club[]>([])
 
   const [formData, setFormData] = useState<AthleteFormData>({
     birth_date: '',
     gender: '',
     sport: [],
-    sport_club: '',
+    club: '',
     coach: '',
   })
 
   const { athlete, isFetchingAthleteId, athleteError } = useFetchAthlete(userId)
   const { coach, isFetchingCoach } = useFetchCoach(athlete?.id)
 
+  // Load athlete and coach data into formData
   useEffect(() => {
-    const loadOptions = async () => {
-      const [fetchedSports, fetchedClubs] = await Promise.all([fetchSports(), fetchSportClubs()])
-      setSports(fetchedSports) // Populate sports state
-      setClubs(fetchedClubs) // Populate clubs state
-
-      if (athlete) {
-        const initialData = {
-          birth_date: athlete.birth_date ? formatDateForInput(athlete.birth_date) : '', // Format to `YYYY-MM-DD`
-          gender: athlete.gender || '',
-          sport: athlete.sport.map(s => s.id) || [],
-          sport_club:
-            typeof athlete.sport_club === 'string'
-              ? athlete.sport_club
-              : athlete.sport_club?.id || '',
-          coach: coach?.name || '',
-        }
-
-        setFormData(initialData)
-        originalDataRef.current = initialData
+    if (athlete) {
+      const initialData = {
+        birth_date: athlete.birth_date ? formatDateForInput(athlete.birth_date) : '',
+        gender: athlete.gender || '',
+        sport: athlete.sport.map(s => s.id) || [],
+        club: typeof athlete.club === 'string' ? athlete.club : athlete.club?.id || '',
+        coach: coach?.name || '',
       }
-    }
 
-    loadOptions()
+      setFormData(initialData)
+      originalDataRef.current = initialData
+    }
   }, [athlete, coach])
 
   const mutation = useMutation({
@@ -86,22 +66,15 @@ const SettingsAthlete = ({ userId }) => {
     }) => updateAthleteData(athleteId, updateData),
     onSuccess: () => {
       setSuccessModalOpen(true)
-      queryClient.invalidateQueries({ queryKey: ['athleteId', userId] }) // Refresh athlete data
+      queryClient.invalidateQueries({ queryKey: ['athleteId', userId] })
     },
     onError: () => {
       setErrorModalOpen(true)
     },
   })
 
-  const handleInputChange = (field, value) => {
-    setFormData(prevState => ({
-      ...prevState,
-      [field]: value,
-    }))
-  }
-
   const getModifiedData = () => {
-    const modifiedData = {}
+    const modifiedData: Record<string, any> = {}
     for (const key in formData) {
       if (formData[key] !== originalDataRef.current[key]) {
         modifiedData[key] = formData[key]
@@ -110,17 +83,44 @@ const SettingsAthlete = ({ userId }) => {
     return modifiedData
   }
 
+  const handleInputChange = (field: string, value: string | string[]) => {
+    if (field === 'birth_date') {
+      const isValidDate = !isNaN(new Date(value as string).getTime())
+
+      if (isValidDate) {
+        setFormData(prevState => ({
+          ...prevState,
+          [field]: new Date(value as string).toISOString().split('T')[0], // Format as YYYY-MM-DD
+        }))
+      } else {
+        console.error('Invalid date value:', value)
+      }
+    } else {
+      // Handle the case for 'sport' where value is an array of strings
+      setFormData(prevState => ({
+        ...prevState,
+        [field]: value,
+      }))
+    }
+  }
+
   const handleSaveChanges = () => {
-    if (!athlete) return
+    if (!athlete) {
+      //alert('No athlete data available to update.')
+      return
+    }
 
     const modifiedData = getModifiedData()
 
-    if (Object.keys(modifiedData).length > 0) {
-      mutation.mutate({
-        athleteId: athlete.id,
-        updateData: modifiedData,
-      })
+    if (Object.keys(modifiedData).length === 0) {
+      console.error('No changes to save.')
+      return
     }
+
+    mutation.mutate({
+      athleteId: athlete.id,
+      updateData: modifiedData, // Send only modified fields
+    })
   }
 
   if (isFetchingAthleteId) return <p>Loading...</p>
@@ -154,53 +154,14 @@ const SettingsAthlete = ({ userId }) => {
 
             <GenderField value={formData.gender} />
 
-            <FormControl fullWidth margin="normal">
-              <InputLabel>Šport</InputLabel>
-              <Select
-                label="Šport"
-                multiple
-                value={formData.sport}
-                onChange={e => handleInputChange('sport', e.target.value)}
-              >
-                {sports.map(sport => (
-                  <MenuItem key={sport.id} value={sport.id}>
-                    {sport.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-
-            <FormControl fullWidth margin="normal">
-              <InputLabel>Športový klub</InputLabel>
-              <Select
-                label="Športový klub"
-                value={formData.sport_club}
-                onChange={e => handleInputChange('sport_club', e.target.value)}
-              >
-                {clubs.map(club => (
-                  <MenuItem key={club.id} value={club.id}>
-                    {club.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-
-            {/* Coach */}
-            <TextField
-              label="Tréner"
-              variant="outlined"
-              fullWidth
-              margin="normal"
-              value={isFetchingCoach ? 'Načítavam...' : formData.coach || '-'}
-              slotProps={{
-                input: {
-                  readOnly: true,
-                },
-              }}
-              sx={{
-                backgroundColor: 'rgba(0, 0, 0, 0.04)',
-              }}
+            <SportField
+              value={formData.sport}
+              onChange={value => handleInputChange('sport', value)}
             />
+
+            <ClubField value={formData.club} onChange={value => handleInputChange('club', value)} />
+
+            {athlete?.id && <CoachField athleteId={athlete.id} />}
           </Box>
         </Box>
 
