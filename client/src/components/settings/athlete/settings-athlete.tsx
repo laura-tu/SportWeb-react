@@ -123,7 +123,7 @@ const SettingsAthlete = ({ userId }: { userId: string }) => {
     })
   }
 
-  if (isFetchingAthleteId) return <p>Loading...</p>
+  if (isFetchingAthleteId || isFetchingCoach) return <p>Loading...</p>
   if (athleteError) return <p>Error: {athleteError.message}</p>
 
   return (
@@ -161,7 +161,7 @@ const SettingsAthlete = ({ userId }: { userId: string }) => {
 
             <ClubField value={formData.club} onChange={value => handleInputChange('club', value)} />
 
-            {athlete?.id && <CoachField athleteId={athlete.id} />}
+            {athlete?.id && coach && <CoachField coach={coach} />}
           </Box>
         </Box>
 

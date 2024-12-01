@@ -1,19 +1,13 @@
 import React from 'react'
 import { TextField } from '@mui/material'
-import useFetchCoach from '../hooks/useFetchCoach.ts'
 
 interface CoachFieldProps {
-  athleteId: string
+  coach: { name: string | null } | null
 }
 
-const CoachField: React.FC<CoachFieldProps> = ({ athleteId }) => {
-  const { coach, isFetchingCoach, coachError } = useFetchCoach(athleteId)
-
-  const coachName = isFetchingCoach
-    ? 'Načítavam...'
-    : coachError
-      ? 'Chyba pri načítaní trénera'
-      : coach?.name || '-'
+const CoachField: React.FC<CoachFieldProps> = ({ coach }) => {
+  // If coach is null or coach.name is null, use a fallback value
+  const coachName = coach?.name || '-'
 
   return (
     <TextField
