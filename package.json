@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "cliui": "^8.0.1",
+    "qs-esm": "^7.0.2",
     "string-width": "^7.2.0"
   }
 }
