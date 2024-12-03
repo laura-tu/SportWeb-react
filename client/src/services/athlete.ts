@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { AthleteFormData } from '../components/athlete-reg/index.tsx'
 import { Athlete } from '../utils/interfaces.ts'
+import { stringify } from 'qs-esm'
 
 export interface AthleteIdResponse {
   docs: Athlete[]
@@ -30,6 +31,23 @@ export const registerAthlete = async (
     setErrorModal(true)
   }
 }
+export const searchAthletesByName = async (query: string): Promise<Athlete[]> => {
+  try {
+    const stringifiedParams = stringify(
+      { where: { name: { equals: query } } },
+      { addQueryPrefix: true },
+    )
+
+    const response = await fetch(`http://localhost:3000/api/u_athlete${stringifiedParams}`)
+
+    const data = await response.json()
+
+    return data?.docs || []
+  } catch (error) {
+    console.error('Error fetching athletes by name:', error.message)
+    throw new Error('Failed to fetch athletes. Please try again later.')
+  }
+}
 
 export const fetchAthleteByUserId = async (userId: string): Promise<AthleteIdResponse> => {
   const response = await axios.get(`http://localhost:3000/api/u_athlete`)
@@ -53,7 +71,7 @@ export const updateAthleteData = async (athleteId: string, updateData: Record<st
       updateData,
       {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`, 
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       },
     )

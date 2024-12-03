@@ -12800,6 +12800,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"qs-esm@npm:^7.0.2":
+  version: 7.0.2
+  resolution: "qs-esm@npm:7.0.2"
+  checksum: 10c0/b46e15883b91818fd6b0862cac97439dfe67a1401c00729756b16463fa97e094239017dd4f17369dd0cf586e262305b165ee485c0b1088ca4d2eb7ad11c0c8fe
+  languageName: node
+  linkType: hard
+
 "qs@npm:6.13.0, qs@npm:^6.12.3":
   version: 6.13.0
   resolution: "qs@npm:6.13.0"
@@ -14081,6 +14088,7 @@ __metadata:
     cliui: "npm:^8.0.1"
     concurrently: "npm:^8.0.1"
     prettier: "npm:^3.3.3"
+    qs-esm: "npm:^7.0.2"
     string-width: "npm:^7.2.0"
     ts-node: "npm:^10.9.2"
     typescript: "npm:^5.6.2"
