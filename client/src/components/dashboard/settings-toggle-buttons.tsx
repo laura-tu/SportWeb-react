@@ -12,18 +12,18 @@ export const SettingsToggleButtons = ({ session, setCurrentForm }) => {
       sx={{
         display: 'flex',
         flexDirection: { xs: 'column', sm: 'row' }, // Stack vertically on small screens, row on larger screens
-        justifyContent: 'center',
         gap: 2,
-        p: 2,
+        py: 2,
         width: { xs: '70%', sm: '65%', md: 600 },
-        margin: '0 auto',
+        /*margin: '0 auto',*/
+        marginLeft: 3,
         alignItems: 'center',
-        bgcolor: theme => (theme.palette.mode === 'dark' ? 'white' : '#0492c2'),
-        color: theme => (theme.palette.mode === 'dark' ? 'black' : 'white'),
+        /*bgcolor: theme => (theme.palette.mode === 'dark' ? 'white' : '#0492c2'),*/
+        color: theme => (theme.palette.mode === 'dark' ? 'white' : 'black'),
         borderRadius: 3,
       }}
     >
-      <Typography variant="h6" sx={{ textAlign: { xs: 'center', sm: 'left' } }}>
+      <Typography variant="h6" sx={{ textAlign: { xs: 'center', sm: 'left' } }} className="text-sky-500">
         Zobraziť:
       </Typography>
       <Button

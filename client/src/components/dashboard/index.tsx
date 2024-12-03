@@ -10,7 +10,7 @@ import { useDemoRouter } from '@toolpad/core/internal'
 import ThemeToggle from './theme-toggle.tsx'
 import { Account } from '@toolpad/core/Account'
 import SettingsAthlete from '../settings/athlete/settings-athlete.tsx'
-import SettingsCoach from '../settings/coach-profile.tsx'
+import SettingsCoach from '../settings/coach/settings-coach.tsx'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useAuthSession } from './hooks/useAuthSession.tsx'
 import { SettingsToggleButtons } from './settings-toggle-buttons.tsx'
@@ -104,11 +104,10 @@ export default function DashboardLayoutAccount(props: DemoProps) {
           >
             {router.pathname === '/settings' && session?.user ? (
               <>
-                <Box sx={{ m: 3 }}>
+                <Box sx={{ py: 3 ,margin:'0 auto'}}>
                   <Typography variant="h4" gutterBottom>
                     Profil
                   </Typography>
-                  <Typography variant="body1">Aktualizuj svoje informácie tu.</Typography>
                 </Box>
 
                 {/* Directly display the appropriate form based on user role */}

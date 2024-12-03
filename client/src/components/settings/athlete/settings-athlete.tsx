@@ -75,11 +75,18 @@ const SettingsAthlete = ({ userId }: { userId: string }) => {
 
   const getModifiedData = () => {
     const modifiedData: Record<string, any> = {}
+
+    // Check if originalDataRef.current is null
+    if (!originalDataRef.current) {
+      return modifiedData // Return an empty object if no original data
+    }
+
     for (const key in formData) {
       if (formData[key] !== originalDataRef.current[key]) {
         modifiedData[key] = formData[key]
       }
     }
+
     return modifiedData
   }
 
@@ -137,10 +144,11 @@ const SettingsAthlete = ({ userId }: { userId: string }) => {
           alignItems: 'center',
           textAlign: 'center',
           width: { xs: '75%', sm: '65%', md: 600 },
-          margin: '0 auto',
+          /*margin: '0 auto',*/
+          marginLeft:3,
           border: 1,
           borderRadius: 3,
-          mt: 2,
+
         }}
       >
         <Box sx={{ textAlign: 'left', width: '100%', mt: 3 }}>

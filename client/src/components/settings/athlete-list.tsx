@@ -8,7 +8,7 @@ export interface CoachProps {
   coachId: string
 }
 
-const AddAthleteToCoachBox: React.FC<CoachProps> = ({ coachId }) => {
+const AthleteList: React.FC<CoachProps> = ({ coachId }) => {
   const { data, isLoading, error } = useQuery({
     queryKey: ['coach', coachId],
     queryFn: () => getCoachData(coachId),
@@ -50,15 +50,9 @@ const AddAthleteToCoachBox: React.FC<CoachProps> = ({ coachId }) => {
 
   const { athlete } = coach
   return (
-    <Box
-      sx={{
-        py: 4,
-        px: 3,
-        pb: 5,
-      }}
-    >
-      <Box sx={{ textAlign: 'left', width: '100%', mt: 3 }}>
-        <Typography variant="h5" className="py-3 font-bolder text-sky-500 ">
+    <Box>
+      <Box sx={{ textAlign: 'left', width: '100%' }}>
+        <Typography variant="h5" className="py-3 font-bolder">
           Športovci
         </Typography>
         <Typography variant="body1" className="pb-5">
@@ -134,4 +128,4 @@ const AddAthleteToCoachBox: React.FC<CoachProps> = ({ coachId }) => {
   )
 }
 
-export default AddAthleteToCoachBox
+export default AthleteList
