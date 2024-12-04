@@ -21,7 +21,7 @@ const SearchAthlete: React.FC<SearchAthleteProps> = ({ coachId, currentAthletes 
   } = useQuery({
     queryKey: ['searchAthletes', searchQuery],
     queryFn: () => searchAthletesByName(searchQuery),
-    enabled: false, // Disable auto-fetching; use `refetchAthletes` to trigger it manually
+    enabled: false, // Disable auto-fetching;
   })
   console.log('searchQuery', searchQuery)
 
@@ -45,32 +45,36 @@ const SearchAthlete: React.FC<SearchAthleteProps> = ({ coachId, currentAthletes 
     }
   }
 
-  const handleAddAthlete = (athleteId: string) => {
-    if (!selectedAthletes.includes(athleteId)) {
-      const updatedAthletes = [...selectedAthletes, athleteId]
-      setSelectedAthletes(updatedAthletes)
+  const handleAddAthlete = async (athleteId: string) => {
+    try {
+      const currentCoachData = await getCoachData(coachId)
+      const updatedAthletes = [...new Set([...currentCoachData.athlete.map(a => a.id), athleteId])]
       patchCoachMutation.mutate({ updatedAthletes })
+    } catch (error) {
+      console.error('Failed to add athlete:', error.message)
     }
   }
 
   return (
     <Box sx={{ pt: 2, width: { xs: '75%', sm: '65%', md: 600 } }}>
-      <TextField
-        label="napr. Janko Hraško"
-        value={searchQuery}
-        onChange={e => setSearchQuery(e.target.value)}
-        onKeyDown={e => e.key === 'Enter' && handleSearch()}
-        fullWidth
-      />
-      <Button
-        onClick={handleSearch}
-        variant="contained"
-        color="primary"
-        sx={{ mt: 2 }}
-        disabled={isFetchingAthletes || patchCoachMutation.isPending}
-      >
-        {isFetchingAthletes ? 'Načítavam...' : 'Vyhľadať'}
-      </Button>
+      <Box sx={{ display: 'flex', gap: 2 }}>
+        <TextField
+          label="napr. Janko Hraško"
+          value={searchQuery}
+          onChange={e => setSearchQuery(e.target.value)}
+          onKeyDown={e => e.key === 'Enter' && handleSearch()}
+          fullWidth
+        />
+        <Button
+          onClick={handleSearch}
+          variant="contained"
+          color="primary"
+          sx={{ borderRadius: 2 }}
+          disabled={isFetchingAthletes || patchCoachMutation.isPending}
+        >
+          {isFetchingAthletes ? 'Načítavam...' : 'Vyhľadať'}
+        </Button>
+      </Box>
 
       {isFetchingAthletes && (
         <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
