@@ -9,6 +9,7 @@ export interface CoachIdResponse {
 export interface CoachResponse {
   id: string
   user: string
+  name: string
   sport: Sport[]
   club: Club
   athlete: Athlete[]

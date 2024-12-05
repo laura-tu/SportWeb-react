@@ -1,7 +1,18 @@
 import React from 'react'
-import { Box, Typography } from '@mui/material'
+import {
+  Box,
+  Typography,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  CircularProgress,
+  Card,
+} from '@mui/material'
 import { useQuery } from '@tanstack/react-query'
-import LoadingOverlay from '../loading/loading-overlay.tsx'
 import { getCoachData } from '../../services/coach.ts'
 
 export interface CoachProps {
@@ -17,7 +28,7 @@ const AthleteList: React.FC<CoachProps> = ({ coachId }) => {
   if (isLoading) {
     return (
       <Box sx={{ textAlign: 'center', mt: 4 }}>
-        <LoadingOverlay />
+        <CircularProgress />
         <Typography variant="body1" mt={2}>
           Načítavam dáta trénera...
         </Typography>
@@ -35,7 +46,6 @@ const AthleteList: React.FC<CoachProps> = ({ coachId }) => {
     )
   }
 
-  // Extract the first coach from docs
   const coach = data
 
   if (!coach) {
@@ -49,81 +59,62 @@ const AthleteList: React.FC<CoachProps> = ({ coachId }) => {
   }
 
   const { athlete } = coach
+
   return (
     <Box>
-      <Box sx={{ textAlign: 'left', width: '100%' }}>
-        <Typography variant="h5" className="py-3 font-bolder">
-          Športovci
-        </Typography>
-        <Typography variant="body1" className="pb-5">
-          Toto je zoznam športovcov vedených trénerom. Ak by ste chceli pridať športovca,
-          kontaktujte testera (admina).
-        </Typography>
+      <Typography variant="body1" gutterBottom>
+        Toto je zoznam športovcov vedených trénerom {coach.name}.
+      </Typography>
+      {athlete.length > 0 ? (
+        <TableContainer component={Paper} sx={{ mt: 3 }}>
+          <Table>
+            <TableHead>
+              <TableRow className="bg-cyan-200/80 ">
+                <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>Športovec</TableCell>
+                <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>Pohlavie</TableCell>
+                <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>
+                  Dátum narodenia
+                </TableCell>
+                <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', borderLeft: 1 }}>
+                  ID
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {athlete.map(ath => {
+                if (typeof ath === 'string') {
+                  return (
+                    <TableRow key={ath}>
+                      <TableCell colSpan={3} align="center">
+                        Športovec ID: {ath}
+                      </TableCell>
+                    </TableRow>
+                  )
+                }
 
-        <Box
-          sx={{
-            display: 'grid',
-            gridTemplateColumns: {
-              xs: 'repeat(2, 1fr)', // 2 boxes per row on extra small (mobile)
-              sm: 'repeat(3, 1fr)', // 3 boxes per row on small (tablet)
-              md: 'repeat(4, 1fr)', // 4 boxes per row on medium (laptop)
-            },
-            gap: 2,
-          }}
-        >
-          {athlete.length > 0 ? (
-            athlete.map(ath => {
-              if (typeof ath === 'string') {
                 return (
-                  <Box
-                    key={ath}
-                    sx={{
-                      p: 2,
-                      border: 1,
-                      borderRadius: '8px',
-                      textAlign: 'center',
-                      transition: 'box-shadow 0.3s ease-in-out',
-                      '&:hover': {
-                        boxShadow: 4,
-                        cursor: 'pointer',
-                      },
-                    }}
-                  >
-                    <Typography variant="body1">Športovec ID: {ath}</Typography>
-                  </Box>
+                  <TableRow key={ath.id}>
+                    <TableCell sx={{ textAlign: 'center' }}>{ath.name || 'Neznámy'}</TableCell>
+                    <TableCell sx={{ textAlign: 'center' }}>
+                      {ath.gender === 'muz' ? 'muž' : 'žena'}
+                    </TableCell>
+                    <TableCell sx={{ textAlign: 'center' }}>
+                      {new Date(ath.birth_date).toLocaleDateString('sk-SK')}
+                    </TableCell>
+                    <TableCell sx={{ textAlign: 'center', borderLeft: 1 }}>
+                      {ath.id || 'Neznáme'}
+                    </TableCell>
+                  </TableRow>
                 )
-              }
-
-              return (
-                <Box
-                  key={ath.id}
-                  sx={{
-                    p: 2,
-                    border: 1,
-                    borderRadius: '8px',
-                    textAlign: 'center',
-                    transition: 'box-shadow 0.3s ease-in-out',
-                    '&:hover': {
-                      boxShadow: 4,
-                      cursor: 'pointer',
-                    },
-                  }}
-                >
-                  <Typography variant="h5">{ath.name}</Typography>
-                  <Typography variant="body2">{ath.gender === 'muz' ? 'muž' : 'žena'}</Typography>
-                  <Typography variant="body2">
-                    {new Date(ath.birth_date).toLocaleDateString('sk-SK')}
-                  </Typography>
-                </Box>
-              )
-            })
-          ) : (
-            <Typography variant="body2" color="text.secondary">
-              Tento tréner nemá zatiaľ pridelených športovcov.
-            </Typography>
-          )}
-        </Box>
-      </Box>
+              })}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      ) : (
+        <Typography variant="body2" color="text.secondary" mt={2}>
+          Tento tréner nemá zatiaľ pridelených športovcov.
+        </Typography>
+      )}
     </Box>
   )
 }

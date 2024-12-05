@@ -8,7 +8,7 @@ import { Sport, Club } from '../../../utils/interfaces.ts'
 import LoadingOverlay from '../../loading/loading-overlay.tsx'
 import SuccessModal from '../../success-modal/index.tsx'
 import ErrorModal from '../../error-modal/index.tsx'
-import AddAthleteToCoachBox from '../athlete-list.tsx'
+import AthleteList from '../athlete-list.tsx'
 import SearchAthlete from './search-athlete.tsx'
 
 interface CoachFormData {
@@ -189,29 +189,6 @@ const SettingsCoach: React.FC<{ userId: string }> = ({ userId }) => {
             text="aktualizácia údajov zlyhala."
           />
         </Box>
-
-        <Box
-          sx={{
-            py: 4,
-            px: 3,
-            /*margin: '0 auto',*/
-            marginLeft: 3,
-          }}
-        >
-          <AddAthleteToCoachBox coachId={coach.id} />
-        </Box>
-      </Box>
-
-      <Box
-        sx={{
-          py: 4,
-          marginLeft: 3,
-        }}
-      >
-        <Typography variant="h6" sx={{ textAlign: 'left', width: '100%', mt: 3 }}>
-          Vyhľadať športovca
-          <SearchAthlete coachId={coach.id} />
-        </Typography>
       </Box>
     </Box>
   )

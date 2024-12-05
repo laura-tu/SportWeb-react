@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { Box, Typography, Button, TextField } from '@mui/material'
+import { Box, Typography, Button, TextField, CircularProgress } from '@mui/material'
 import { useQueryClient, useMutation } from '@tanstack/react-query'
 import useFetchAthlete from '../hooks/useFetchAthlete.ts'
 import useFetchCoach from '../hooks/useFetchCoach.ts'
@@ -130,8 +130,19 @@ const SettingsAthlete = ({ userId }: { userId: string }) => {
     })
   }
 
-  if (isFetchingAthleteId || isFetchingCoach) return <p>Loading...</p>
-  if (athleteError) return <p>Error: {athleteError.message}</p>
+  if (isFetchingAthleteId || isFetchingCoach)
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
+        <CircularProgress />
+      </Box>
+    )
+  if (athleteError)
+    return (
+      <Typography color="error" sx={{ mt: 3 }}>
+        {athleteError.message}
+        Nepodarilo sa načítať údaje trénera. Skúste to znova neskôr.
+      </Typography>
+    )
 
   return (
     <Box>
@@ -145,10 +156,9 @@ const SettingsAthlete = ({ userId }: { userId: string }) => {
           textAlign: 'center',
           width: { xs: '75%', sm: '65%', md: 600 },
           /*margin: '0 auto',*/
-          marginLeft:3,
+          marginLeft: 3,
           border: 1,
           borderRadius: 3,
-
         }}
       >
         <Box sx={{ textAlign: 'left', width: '100%', mt: 3 }}>
