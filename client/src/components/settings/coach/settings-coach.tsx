@@ -8,7 +8,7 @@ import { Sport, Club } from '../../../utils/interfaces.ts'
 import LoadingOverlay from '../../loading/loading-overlay.tsx'
 import SuccessModal from '../../success-modal/index.tsx'
 import ErrorModal from '../../error-modal/index.tsx'
-import AthleteList from '../athlete-list.tsx'
+import AthleteList from './athlete-list.tsx'
 import SearchAthlete from './search-athlete.tsx'
 
 interface CoachFormData {

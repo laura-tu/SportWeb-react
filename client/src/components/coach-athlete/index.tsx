@@ -1,18 +1,15 @@
 import React from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { Typography, Box, CircularProgress } from '@mui/material'
-import AthleteList from '../settings/athlete-list.tsx'
+import AthleteList from '../settings/coach/athlete-list.tsx'
 import SearchAthlete from '../settings/coach/search-athlete.tsx'
-import { getCoachData, fetchCoachByUserId } from '../../services/coach.ts'
+import { fetchCoachByUserId } from '../../services/coach.ts'
 
-interface CoachAthleteManagerProps {
+interface CoachAthletesManagerProps {
   userId: string
-  roles: ('admin' | 'user' | 'sportCoach')[]
 }
 
-const CoachAthleteManager: React.FC<CoachAthleteManagerProps> = ({ userId, roles }) => {
-  console.log('userId', userId)
-  // Only fetch coach data if the user is a coach
+const CoachAthletesManager: React.FC<CoachAthletesManagerProps> = ({ userId }) => {
   const {
     data: coachData,
     isLoading,
@@ -20,11 +17,8 @@ const CoachAthleteManager: React.FC<CoachAthleteManagerProps> = ({ userId, roles
   } = useQuery({
     queryKey: ['coachData', userId],
     queryFn: () => fetchCoachByUserId(userId),
-    enabled: roles.includes['sportCoach'],
   })
-  console.log('coachData', coachData)
 
-  // Handle loading state
   if (isLoading) {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
@@ -33,7 +27,6 @@ const CoachAthleteManager: React.FC<CoachAthleteManagerProps> = ({ userId, roles
     )
   }
 
-  // Handle error state
   if (error) {
     return (
       <Typography color="error" sx={{ mt: 3 }}>
@@ -42,12 +35,6 @@ const CoachAthleteManager: React.FC<CoachAthleteManagerProps> = ({ userId, roles
     )
   }
 
-  // Render when user is not a coach
-  if (!roles.includes('sportCoach')) {
-    return <Typography sx={{ mt: 3 }}>Táto funkcia je dostupná iba pre trénerov.</Typography>
-  }
-
-  // Ensure coachData is defined before rendering SearchAthlete
   if (!coachData) {
     return (
       <Typography sx={{ mt: 3 }}>
@@ -56,7 +43,6 @@ const CoachAthleteManager: React.FC<CoachAthleteManagerProps> = ({ userId, roles
     )
   }
 
-  // Render SearchAthlete when coach data is available
   return (
     <Box
       sx={{
@@ -77,4 +63,4 @@ const CoachAthleteManager: React.FC<CoachAthleteManagerProps> = ({ userId, roles
   )
 }
 
-export default CoachAthleteManager
+export default CoachAthletesManager

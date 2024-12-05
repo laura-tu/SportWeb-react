@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { Box, Typography, Button, TextField, CircularProgress } from '@mui/material'
+import { Box, Typography, Button, CircularProgress } from '@mui/material'
 import { useQueryClient, useMutation } from '@tanstack/react-query'
 import useFetchAthlete from '../hooks/useFetchAthlete.ts'
 import useFetchCoach from '../hooks/useFetchCoach.ts'

@@ -13,7 +13,7 @@ import {
   Card,
 } from '@mui/material'
 import { useQuery } from '@tanstack/react-query'
-import { getCoachData } from '../../services/coach.ts'
+import { getCoachData } from '../../../services/coach.ts'
 
 export interface CoachProps {
   coachId: string

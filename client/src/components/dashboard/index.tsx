@@ -17,8 +17,7 @@ import { Account } from '@toolpad/core/Account'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useAuthSession } from './hooks/useAuthSession.tsx'
 import SettingsForm from '../settings/index.tsx'
-import AddAthleteToCoachBox from '../settings/coach/search-athlete.tsx'
-import CoachAthleteManager from '../coach-athlete/index.tsx'
+import CoachAthletesManager from '../coach-athlete/index.tsx'
 
 const queryClient = new QueryClient()
 type Navigation = (NavigationItem | NavigationSubheaderItem)[]
@@ -137,7 +136,7 @@ export default function DashboardLayoutAccount(props: DemoProps) {
                 Športovci
               </Typography>
             </Box>
-            <CoachAthleteManager roles={session.user.roles} userId={session.user.id} />
+            <CoachAthletesManager userId={session.user.id} />
           </div>
         )
 
