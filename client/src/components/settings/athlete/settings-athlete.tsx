@@ -12,6 +12,7 @@ import SuccessModal from '../../success-modal/index.tsx'
 import ErrorModal from '../../error-modal/index.tsx'
 import { formatDateForInput } from '../../../utils/formatDate.ts'
 import { updateAthleteData } from '../../../services/athlete.ts'
+import SettingsUser from '../user/index.tsx'
 
 interface AthleteFormData {
   birth_date: string
@@ -145,7 +146,7 @@ const SettingsAthlete = ({ userId }: { userId: string }) => {
     )
 
   return (
-    <Box>
+    <Box className="flex flex-row">
       <Box
         sx={{
           py: 3,
@@ -185,7 +186,7 @@ const SettingsAthlete = ({ userId }: { userId: string }) => {
 
         <Button
           variant="contained"
-          color="success"
+          color="primary"
           sx={{ mt: 3 }}
           onClick={handleSaveChanges}
           disabled={mutation.isPending}
@@ -204,6 +205,9 @@ const SettingsAthlete = ({ userId }: { userId: string }) => {
           onClose={() => setErrorModalOpen(false)}
           text="aktualizácií údajov"
         />
+      </Box>
+      <Box>
+        <SettingsUser userId={userId} />
       </Box>
     </Box>
   )

@@ -114,7 +114,7 @@ export default function DashboardLayoutAccount(props: DemoProps) {
           <div>
             <Box sx={{ pt: 3, ml: 3 }}>
               <Typography variant="h4" gutterBottom>
-                Profil {session.user.name}
+                Profil
               </Typography>
             </Box>
             <SettingsForm

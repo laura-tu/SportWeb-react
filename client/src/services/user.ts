@@ -45,3 +45,16 @@ export const useAuth = () => {
     signOut,
   }
 }
+
+export const updateUserData = async (userId: string, updateData: Record<string, any>) => {
+  try {
+    const response = await axios.patch(`http://localhost:3000/api/users/${userId}`, updateData, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    })
+    return response.data
+  } catch (error) {
+    throw new Error(error.response?.data?.message || 'Failed to update user data')
+  }
+}
