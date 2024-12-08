@@ -13,7 +13,7 @@ export enum UserRole {
 }
 const HomeView = () => {
   const [showRegistration, setShowRegistration] = useState(false)
-  const [showLogin, setShowLogin] = useState(false)
+  const [showLogin, setShowLogin] = useState(true)
   const [showAthleteReg, setShowAthleteReg] = useState(false)
   const [showCoachReg, setShowCoachReg] = useState(false)
   const [userId, setUserId] = useState(null)
@@ -49,7 +49,7 @@ const HomeView = () => {
   }
 
   return (
-    <div>
+    <div className="bg-gradient-to-br from-cyan-200 via-blue-400 to-red-400 w-full h-screen">
       {!isDashboardRoute && (
         <HeaderComp onShowRegistration={toggleRegistration} onShowLogin={toggleLogin} />
       )}

@@ -61,7 +61,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onClose }) => {
   }
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75 z-50">
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-55 z-50">
       <div className="bg-gray-100 p-8 rounded-lg shadow-lg border border-black max-w-md w-full text-black">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-2xl font-bold ">Prihlásenie</h1>
