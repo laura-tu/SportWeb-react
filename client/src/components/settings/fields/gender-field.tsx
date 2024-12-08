@@ -11,7 +11,7 @@ const GenderField: React.FC<GenderFieldProps> = ({ value }) => (
     variant="outlined"
     fullWidth
     margin="normal"
-    value={value}
+    value={value === 'zena' ? 'žena' : 'muž'}
     slotProps={{
       input: {
         readOnly: true,

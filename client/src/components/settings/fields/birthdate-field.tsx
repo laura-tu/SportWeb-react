@@ -1,9 +1,9 @@
-import React from 'react';
-import { TextField } from '@mui/material';
+import React from 'react'
+import { TextField } from '@mui/material'
 
 interface BirthDateFieldProps {
-  value: string;
-  onChange: (value: string) => void;
+  value: string
+  onChange: (value: string) => void
 }
 
 const BirthDateField: React.FC<BirthDateFieldProps> = ({ value, onChange }) => (
@@ -15,7 +15,15 @@ const BirthDateField: React.FC<BirthDateFieldProps> = ({ value, onChange }) => (
     type="date"
     value={value}
     onChange={e => onChange(e.target.value)}
+    slotProps={{
+      input: {
+        readOnly: true,
+      },
+    }}
+    sx={{
+      backgroundColor: 'rgba(0, 0, 0, 0.04)',
+    }}
   />
-);
+)
 
-export default BirthDateField;
+export default BirthDateField

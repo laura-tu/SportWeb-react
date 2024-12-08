@@ -8,8 +8,7 @@ import { Sport, Club } from '../../../utils/interfaces.ts'
 import LoadingOverlay from '../../loading/loading-overlay.tsx'
 import SuccessModal from '../../success-modal/index.tsx'
 import ErrorModal from '../../error-modal/index.tsx'
-import AthleteList from './athlete-list.tsx'
-import SearchAthlete from './search-athlete.tsx'
+import SettingsUser from '../user/index.tsx'
 
 interface CoachFormData {
   sport: string[]
@@ -108,88 +107,83 @@ const SettingsCoach: React.FC<{ userId: string }> = ({ userId }) => {
   }
 
   return (
-    <Box>
-      <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-        <Box
+    <Box className="flex flex-col md:flex-row w-full h-screen p-4 ">
+      <Box className="flex" sx={{ width: { xs: '75%', sm: '65%', md: 350, lg: 380 } }}>
+        <SettingsUser userId={userId} />
+      </Box>
+      <Box
+        className="flex flex-col height-[85vh] border-0 md:border-l"
+        sx={{
+          py: 4,
+          px: 3,
+          marginLeft: 3,
+        }}
+      >
+        <Box sx={{ textAlign: 'left', width: { xs: '75%', sm: '65%', md: 300, lg: 380 } }}></Box>
+        <Typography variant="h5" sx={{ textAlign: 'left', width: '100%' }}>
+          Informácie o trénerovi:
+        </Typography>
+
+        <Box sx={{ mt: 2, width: '100%' }}>
+          <FormControl fullWidth margin="normal">
+            <InputLabel>Šport</InputLabel>
+            <Select
+              label="Šport"
+              multiple
+              value={formData.sport}
+              onChange={e => handleInputChange('sport', e.target.value)}
+            >
+              {sportsOptions.map(sport => (
+                <MenuItem key={sport.id} value={sport.id}>
+                  {sport.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+
+          <FormControl fullWidth margin="normal">
+            <InputLabel>Športový klub</InputLabel>
+            <Select
+              label="Športový klub"
+              value={formData.sport_club}
+              onChange={e => handleInputChange('sport_club', e.target.value)}
+            >
+              {clubOptions.map(club => (
+                <MenuItem key={club.id} value={club.id}>
+                  {club.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Box>
+        <Button
+          variant="contained"
+          color="primary"
           sx={{
-            py: 4,
-            px: 3,
             display: 'flex',
             flexDirection: 'column',
-            width: { xs: '75%', sm: '65%', md: 600 },
-            /*margin: '0 auto',*/
-            marginLeft: 3,
-            border: 1,
-            borderRadius: 3,
-            mt: 2,
+            justifyContent: 'center',
+            margin: '0 auto',
+            mt: 3,
           }}
+          onClick={handleSaveChanges}
+          disabled={mutation.isPending}
         >
-          <Typography variant="h6" sx={{ textAlign: 'left', width: '100%', mt: 3 }}>
-            Informácie o trénerovi:
-          </Typography>
-
-          <Box sx={{ mt: 2, width: '100%' }}>
-            <FormControl fullWidth margin="normal">
-              <InputLabel>Šport</InputLabel>
-              <Select
-                label="Šport"
-                multiple
-                value={formData.sport}
-                onChange={e => handleInputChange('sport', e.target.value)}
-              >
-                {sportsOptions.map(sport => (
-                  <MenuItem key={sport.id} value={sport.id}>
-                    {sport.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-
-            <FormControl fullWidth margin="normal">
-              <InputLabel>Športový klub</InputLabel>
-              <Select
-                label="Športový klub"
-                value={formData.sport_club}
-                onChange={e => handleInputChange('sport_club', e.target.value)}
-              >
-                {clubOptions.map(club => (
-                  <MenuItem key={club.id} value={club.id}>
-                    {club.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-
-            <Button
-              variant="contained"
-              color="success"
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                margin: '0 auto',
-                mt: 3,
-              }}
-              onClick={handleSaveChanges}
-              disabled={mutation.isPending}
-            >
-              {mutation.isPending ? 'Ukladám...' : 'Uložiť zmeny'}
-            </Button>
-          </Box>
-
-          <SuccessModal
-            open={successModalOpen}
-            onClose={() => setSuccessModalOpen(false)}
-            text="Údaje boli úspešne aktualizované!"
-          />
-
-          <ErrorModal
-            open={errorModalOpen}
-            onClose={() => setErrorModalOpen(false)}
-            text="aktualizácia údajov zlyhala."
-          />
-        </Box>
+          {mutation.isPending ? 'Ukladám...' : 'Uložiť zmeny'}
+        </Button>
       </Box>
+
+      <SuccessModal
+        open={successModalOpen}
+        onClose={() => setSuccessModalOpen(false)}
+        text="Údaje boli úspešne aktualizované!"
+      />
+
+      <ErrorModal
+        open={errorModalOpen}
+        onClose={() => setErrorModalOpen(false)}
+        text="aktualizácia údajov zlyhala."
+      />
     </Box>
   )
 }

@@ -111,13 +111,13 @@ const SettingsUser = ({ userId }: { userId: string }) => {
   return (
     <Box
       sx={{
-        py: 3,
+        py: 4,
         px: 3,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'flex-start',
         textAlign: 'left',
-        width: { xs: '75%', sm: '65%', md: 600 },
+        width: '100%',
         marginLeft: 3,
       }}
     >

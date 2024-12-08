@@ -146,24 +146,20 @@ const SettingsAthlete = ({ userId }: { userId: string }) => {
     )
 
   return (
-    <Box className="flex flex-row">
+    <Box className="flex flex-col md:flex-row w-full  p-4 ">
+      <Box className="flex" sx={{ width: { xs: '75%', sm: '65%', md: 350, lg: 380 } }}>
+        <SettingsUser userId={userId} />
+      </Box>
       <Box
+        className="flex flex-col h-[85vh] border-0 md:border-l "
         sx={{
-          py: 3,
+          py: 4,
           px: 3,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          textAlign: 'center',
-          width: { xs: '75%', sm: '65%', md: 600 },
-          /*margin: '0 auto',*/
           marginLeft: 3,
-          border: 1,
-          borderRadius: 3,
         }}
       >
-        <Box sx={{ textAlign: 'left', width: '100%', mt: 3 }}>
-          <Typography variant="h6">Informácie o športovcovi:</Typography>
+        <Box sx={{ textAlign: 'left', width: { xs: '75%', sm: '65%', md: 300, lg: 380 } }}>
+          <Typography variant="h5">Informácie o športovcovi:</Typography>
 
           <Box sx={{ mt: 2 }}>
             <BirthDateField
@@ -182,17 +178,16 @@ const SettingsAthlete = ({ userId }: { userId: string }) => {
 
             {athlete?.id && coach && <CoachField coach={coach} />}
           </Box>
+          <Button
+            variant="contained"
+            color="primary"
+            sx={{ mt: 3 }}
+            onClick={handleSaveChanges}
+            disabled={mutation.isPending}
+          >
+            {mutation.isPending ? 'Ukladám...' : 'Uložiť zmeny'}
+          </Button>
         </Box>
-
-        <Button
-          variant="contained"
-          color="primary"
-          sx={{ mt: 3 }}
-          onClick={handleSaveChanges}
-          disabled={mutation.isPending}
-        >
-          {mutation.isPending ? 'Ukladám...' : 'Uložiť zmeny'}
-        </Button>
 
         <SuccessModal
           open={successModalOpen}
@@ -205,9 +200,6 @@ const SettingsAthlete = ({ userId }: { userId: string }) => {
           onClose={() => setErrorModalOpen(false)}
           text="aktualizácií údajov"
         />
-      </Box>
-      <Box>
-        <SettingsUser userId={userId} />
       </Box>
     </Box>
   )

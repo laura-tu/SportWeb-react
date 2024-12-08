@@ -18,6 +18,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useAuthSession } from './hooks/useAuthSession.tsx'
 import SettingsForm from '../settings/index.tsx'
 import CoachAthletesManager from '../coach-athlete/index.tsx'
+import LoginForm from '../login-form/index.tsx'
 
 const queryClient = new QueryClient()
 type Navigation = (NavigationItem | NavigationSubheaderItem)[]
@@ -75,6 +76,16 @@ export default function DashboardLayoutAccount(props: DemoProps) {
       createTheme({
         palette: {
           mode: isDarkMode ? 'dark' : 'light',
+          primary: {
+            main: '#3998cc', // Replace with your primary color
+          },
+          secondary: {
+            main: '#f50057', // Replace with your secondary color
+          },
+          background: {
+            default: isDarkMode ? '#121212' : '#ffffff', // Default background
+            paper: isDarkMode ? '#1e1e1e' : '#f5f5f5', // Paper background
+          },
         },
       }),
     [isDarkMode],
@@ -101,9 +112,24 @@ export default function DashboardLayoutAccount(props: DemoProps) {
     })
   }, [session])
 
+
   const renderPageContent = () => {
-    if (!session?.user) {
+    /* if (!session?.user) {
       return <DemoPageContent pathname={router.pathname} />
+    }*/
+    if (!session?.user) {
+      return (
+        <div>
+          <Typography variant="h5" sx={{ textAlign: 'center', marginTop: 4 }}>
+            Nie ste prihlásený
+          </Typography>
+          {/* Pass the handleLogin function to the LoginForm */}
+          <LoginForm
+           // onSubmit={(email, password) => handleLogin(email, password)}
+            onClose={() => console.log('Close login form')}
+          />
+        </div>
+      )
     }
 
     const hasSportCoachRole = session.user.roles?.includes('sportCoach')
@@ -111,8 +137,8 @@ export default function DashboardLayoutAccount(props: DemoProps) {
     switch (router.pathname) {
       case '/settings':
         return (
-          <div>
-            <Box sx={{ pt: 3, ml: 3 }}>
+          <div className="">
+            <Box sx={{ pt: 3, px: 3, ml: 3 }}>
               <Typography variant="h4" gutterBottom>
                 Profil
               </Typography>
@@ -159,6 +185,7 @@ export default function DashboardLayoutAccount(props: DemoProps) {
             logo: <img src="./logo_black_50.jpg" alt="SportWeb logo" />,
             title: 'SportWeb',
           }}
+          colorScheme={{ primary: '#3998cc', secondary: '#f50057', complementary: '#0a2396' }}
         >
           <DashboardLayout
             slots={{

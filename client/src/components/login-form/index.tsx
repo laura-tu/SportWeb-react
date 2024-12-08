@@ -41,8 +41,10 @@ const LoginForm: React.FC<LoginFormProps> = ({ onClose }) => {
         localStorage.setItem('token', data.token)
 
         axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`
+        onClose()
 
         navigate('/dashboard')
+        window.location.reload()
       } else {
         console.error('Login failed')
         setShowErrorLoginModal(true)
