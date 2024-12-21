@@ -10,10 +10,10 @@ import SuccessModal from '../success-modal/index.tsx'
 import { Club, Sport } from '../../utils/interfaces.ts'
 
 export interface AthleteFormData {
-  day?: number | null
-  month?: number | null
-  year?: number | null
-  birth_date?: string //formatted day,month,year
+  day: number | null
+  month: number | null
+  year: number | null
+  birth_date: string //formatted day,month,year
   gender: string
   sport: string[]
   club?: string
@@ -84,6 +84,7 @@ const AthleteReg = ({ userId, onClose }) => {
                     {...field}
                     label="Deň"
                     value={field.value ?? ''}
+                    required
                     onChange={e => {
                       const value = Number(e.target.value)
                       setValue('day', isNaN(value) ? null : value)
@@ -110,6 +111,7 @@ const AthleteReg = ({ userId, onClose }) => {
                     {...field}
                     label="Mesiac"
                     value={field.value ?? ''}
+                    required
                     onChange={e => {
                       const value = Number(e.target.value)
                       setValue('month', isNaN(value) ? null : value)
@@ -136,6 +138,7 @@ const AthleteReg = ({ userId, onClose }) => {
                     {...field}
                     label="Rok"
                     value={field.value ?? ''}
+                    required
                     onChange={e => {
                       const value = Number(e.target.value)
                       setValue('year', isNaN(value) ? null : value)
@@ -163,6 +166,7 @@ const AthleteReg = ({ userId, onClose }) => {
                   {...field}
                   labelId="gender-id"
                   value={field.value ?? ''}
+                  required
                   onChange={e => {
                     setValue('gender', e.target.value)
                   }}
@@ -190,6 +194,7 @@ const AthleteReg = ({ userId, onClose }) => {
                   labelId="sport-id"
                   multiple
                   value={field.value || []}
+                  required
                   onChange={e => {
                     const selectedSportIds = e.target.value as string[]
                     if (selectedSportIds.length <= 3) {

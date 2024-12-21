@@ -73,6 +73,7 @@ const CoachReg = ({ userId, onClose }) => {
                   {...field}
                   labelId="sport-id"
                   multiple
+                  required
                   value={field.value || []}
                   onChange={e => {
                     const selectedSportIds = e.target.value as string[]

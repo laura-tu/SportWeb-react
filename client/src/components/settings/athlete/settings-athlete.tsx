@@ -68,6 +68,7 @@ const SettingsAthlete = ({ userId }: { userId: string }) => {
     onSuccess: () => {
       setSuccessModalOpen(true)
       queryClient.invalidateQueries({ queryKey: ['athleteId', userId] })
+      queryClient.invalidateQueries({ queryKey: ['user'] })
     },
     onError: () => {
       setErrorModalOpen(true)
