@@ -5,22 +5,28 @@ import SuccessModal from '../../success-modal/index.tsx'
 import ErrorModal from '../../error-modal/index.tsx'
 import { updateUserData } from '../../../services/user.ts'
 import useFetchUser from '../hooks/useFetchUser.ts'
+import { useFormValidation } from './hook.ts'
 
 interface UserFormData {
   name: string
   email: string
+  changedPassword: string
+  changedPasswordConfirm: string
 }
 
 const SettingsUser = ({ userId }: { userId: string }) => {
   const queryClient = useQueryClient()
   const originalDataRef = useRef<UserFormData | null>(null)
+  const { validate } = useFormValidation()
 
   const [successModalOpen, setSuccessModalOpen] = useState(false)
   const [errorModalOpen, setErrorModalOpen] = useState(false)
-
+  const [errors, setErrors] = useState<Record<string, string>>({})
   const [formData, setFormData] = useState<UserFormData>({
     name: '',
     email: '',
+    changedPassword: '',
+    changedPasswordConfirm: '',
   })
 
   // Fetch user data
@@ -32,6 +38,8 @@ const SettingsUser = ({ userId }: { userId: string }) => {
       const initialData: UserFormData = {
         name: userData.name || '',
         email: userData.email || '',
+        changedPassword: '',
+        changedPasswordConfirm: '',
       }
       setFormData(initialData)
       originalDataRef.current = initialData
@@ -76,9 +84,58 @@ const SettingsUser = ({ userId }: { userId: string }) => {
     }))
   }
 
-  const handleSaveChanges = () => {
-    if (!userData) return
+  /* const resetPasswordMutation = useMutation({
+    mutationKey: ['reset_password'],
+    mutationFn: async ({ token, password }: { token: string; password: string }) => {
+      const res = await fetch(`http://localhost:3000/api/users/reset-password`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ token, password }),
+      })
 
+      if (!res.ok) {
+        throw new Error('Failed to reset password')
+      }
+
+      return res.json()
+    },
+    onSuccess: () => {
+      setSuccessModalOpen(true)
+      queryClient.invalidateQueries({ queryKey: ['user', userId] })
+    },
+    onError: () => {
+      setErrorModalOpen(true)
+    },
+  })*/
+
+  const handleSaveChanges = () => {
+    const { valid, errors: validationErrors } = validate(formData)
+
+    if (!valid) {
+      setErrors(validationErrors || {})
+      return
+    }
+
+    // Handle password reset
+    if (formData.changedPassword) {
+      if (formData.changedPassword !== formData.changedPasswordConfirm) {
+        console.log('Passwords do not match')
+        setErrorModalOpen(true)
+        return
+      }
+
+      if (formData.changedPassword.length < 8) {
+        console.log('Password must be at least 8 characters long')
+        setErrorModalOpen(true)
+        return
+      }
+
+      return
+    }
+
+    // Handle other updates
     const modifiedData = getModifiedData()
 
     if (Object.keys(modifiedData).length === 0) {
@@ -143,12 +200,39 @@ const SettingsUser = ({ userId }: { userId: string }) => {
         onChange={e => handleInputChange('email', e.target.value)}
       />
 
+      <Box sx={{ mt: 2, borderTop: '1px solid #ccc', pt: 2, width: '100%' }}>
+        <Typography variant="body2" color="textSecondary">
+          Zmeniť heslo
+        </Typography>
+        <TextField
+          label="Heslo"
+          variant="outlined"
+          fullWidth
+          margin="normal"
+          type="password"
+          disabled
+          value={formData.changedPassword}
+          onChange={e => handleInputChange('changedPassword', e.target.value)}
+        />
+        <TextField
+          label="Potvrdenie hesla"
+          variant="outlined"
+          fullWidth
+          margin="normal"
+          type="password"
+          disabled
+          value={formData.changedPasswordConfirm}
+          onChange={e => handleInputChange('changedPasswordConfirm', e.target.value)}
+        />
+      </Box>
+
       <Button
         variant="contained"
         color="primary"
         sx={{ mt: 2 }}
         onClick={handleSaveChanges}
-        disabled={mutation.isPending}
+        /*disabled={mutation.isPending}*/
+        disabled
       >
         {mutation.isPending ? 'Ukladám...' : 'Uložiť zmeny'}
       </Button>

@@ -14,23 +14,24 @@ export const registerAthlete = async (
   setErrorModal: (value: boolean) => void,
 ) => {
   try {
-    if (data.year && data.month && data.day) {
-      data.birth_date = `${data.year}-${String(data.month).padStart(2, '0')}-${String(data.day).padStart(2, '0')}`
-    }
+    // Format the birth_date using day, month, and year
+    const birth_date = `${data.year}-${String(data.month).padStart(2, '0')}-${String(data.day).padStart(2, '0')}`
 
-    delete data.day
-    delete data.month
-    delete data.year
+    // Create a new object without day, month, and year
+    const { day, month, year, ...rest } = data
 
-    data.user = userId
+    // Add birth_date and user to the new object
+    const payload = { ...rest, birth_date, user: userId }
 
-    await axios.post('http://localhost:3000/api/u_athlete', data)
+    await axios.post('http://localhost:3000/api/u_athlete', payload)
+
     setSuccessModalVisible(true)
   } catch (error) {
     console.error(error.message)
     setErrorModal(true)
   }
 }
+
 export const searchAthletesByName = async (query: string): Promise<Athlete[]> => {
   try {
     const stringifiedParams = stringify(

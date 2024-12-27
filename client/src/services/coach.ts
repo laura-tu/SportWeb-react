@@ -1,20 +1,9 @@
 import axios from 'axios'
 import { CoachFormData } from '../components/coach-reg/index.tsx'
-import { Coach, Athlete, Sport, Club } from '../utils/interfaces.ts'
+import { Coach } from '../utils/interfaces.ts'
 
 export interface CoachIdResponse {
   docs: Coach[]
-}
-
-export interface CoachResponse {
-  id: string
-  user: string
-  name: string
-  sport: Sport[]
-  club: Club
-  athlete: Athlete[]
-  createdAt: string
-  updatedAt: string
 }
 
 export const registerCoach = async (
@@ -34,7 +23,7 @@ export const registerCoach = async (
   }
 }
 
-export const getCoachData = async (coachId: string): Promise<CoachResponse> => {
+export const getCoachData = async (coachId: string): Promise<Coach> => {
   try {
     const response = await axios.get(`http://localhost:3000/api/u_coach/${coachId}`)
     return response.data
@@ -59,20 +48,23 @@ export const fetchCoachByUserId = async (userId: string): Promise<CoachIdRespons
   return { docs: filteredCoach ? [filteredCoach] : [] }
 }
 
-export const fetchCoachByAthleteId = async (athleteId: string): Promise<CoachIdResponse> => {
+export const fetchCoachByAthleteId = async (athleteId: string): Promise<CoachIdResponse | null> => {
   try {
     const response = await axios.get(`http://localhost:3000/api/u_coach`, {
       params: {
         where: {
-          athlete: {
+          athletes: {
             equals: athleteId,
           },
         },
         depth: 1,
       },
     })
+    if (response.data?.docs?.length > 0) {
+      return response.data
+    }
 
-    return response.data
+    return null
   } catch (error) {
     console.error('Error fetching coach by athlete ID:', error)
     throw new Error(error.response?.data?.message || 'Failed to fetch coach by athlete ID')

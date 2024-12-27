@@ -1,17 +1,17 @@
 import React, { useState } from 'react'
-import { useQuery, useMutation } from '@tanstack/react-query'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { Box, TextField, List, ListItem, Button, Typography, CircularProgress } from '@mui/material'
 import { updateCoachData, getCoachData } from '../../../services/coach.ts'
 import { searchAthletesByName } from '../../../services/athlete.ts'
 
 interface SearchAthleteProps {
   coachId: string
-  currentAthletes?: string[]
 }
 
-const SearchAthlete: React.FC<SearchAthleteProps> = ({ coachId, currentAthletes }) => {
+const SearchAthlete: React.FC<SearchAthleteProps> = ({ coachId }) => {
+  const queryClient = useQueryClient()
+
   const [searchQuery, setSearchQuery] = useState('')
-  const [selectedAthletes, setSelectedAthletes] = useState<string[]>([])
 
   const {
     data: searchResults,
@@ -23,15 +23,14 @@ const SearchAthlete: React.FC<SearchAthleteProps> = ({ coachId, currentAthletes 
     queryFn: () => searchAthletesByName(searchQuery),
     enabled: false, // Disable auto-fetching;
   })
-  console.log('searchQuery', searchQuery)
 
   const patchCoachMutation = useMutation({
     mutationKey: ['update_coach_data', coachId],
     mutationFn: ({ updatedAthletes }: { updatedAthletes: string[] }) =>
-      updateCoachData(coachId, { athlete: updatedAthletes }),
+      updateCoachData(coachId, { athletes: updatedAthletes }),
     onSuccess: () => {
-      console.log('Athletes updated successfully.')
-      // Optionally refresh the coach's athletes list or show a success message
+      console.log('Athletes list updated successfully.')
+      queryClient.invalidateQueries({ queryKey: ['coach', coachId] })
     },
     onError: (error: any) => {
       console.error('Failed to update coach data:', error.message)
@@ -48,7 +47,12 @@ const SearchAthlete: React.FC<SearchAthleteProps> = ({ coachId, currentAthletes 
   const handleAddAthlete = async (athleteId: string) => {
     try {
       const currentCoachData = await getCoachData(coachId)
-      const updatedAthletes = [...new Set([...currentCoachData.athlete.map(a => a.id), athleteId])]
+      const updatedAthletes = [
+        ...new Set([
+          ...(currentCoachData.athletes?.map(a => (typeof a === 'string' ? a : a.id)) || []),
+          athleteId,
+        ]),
+      ]
       patchCoachMutation.mutate({ updatedAthletes })
     } catch (error) {
       console.error('Failed to add athlete:', error.message)
@@ -101,12 +105,8 @@ const SearchAthlete: React.FC<SearchAthleteProps> = ({ coachId, currentAthletes 
             >
               <Typography>{athlete.name || 'Neznámy'}</Typography>
               {/* Fallback to 'Unknown' if name is null */}
-              <Button
-                onClick={() => handleAddAthlete(athlete.id)}
-                disabled={selectedAthletes.includes(athlete.id)}
-                variant="outlined"
-              >
-                {selectedAthletes.includes(athlete.id) ? 'Pridaný' : 'Pridať'}
+              <Button onClick={() => handleAddAthlete(athlete.id)} variant="outlined">
+                {'Pridať'}
               </Button>
             </ListItem>
           ))}

@@ -50,7 +50,7 @@ export interface Coach {
   name: string | null 
   sport: Sport[]
   sport_club?: Club | string | null
-  athlete?: (string | Athlete)[] | null
+  athletes?: (string | Athlete)[] | null
   createdAt: string
   updatedAt: string
 }

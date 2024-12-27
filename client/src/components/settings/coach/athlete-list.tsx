@@ -10,7 +10,6 @@ import {
   TableRow,
   Paper,
   CircularProgress,
-  Card,
 } from '@mui/material'
 import { useQuery } from '@tanstack/react-query'
 import { getCoachData } from '../../../services/coach.ts'
@@ -58,14 +57,14 @@ const AthleteList: React.FC<CoachProps> = ({ coachId }) => {
     )
   }
 
-  const { athlete } = coach
+  const athletes = coach.athletes || []
 
   return (
     <Box>
       <Typography variant="body1" gutterBottom>
         Toto je zoznam športovcov vedených trénerom {coach.name}.
       </Typography>
-      {athlete.length > 0 ? (
+      {athletes.length > 0 ? (
         <TableContainer component={Paper} sx={{ mt: 3 }}>
           <Table>
             <TableHead>
@@ -81,7 +80,7 @@ const AthleteList: React.FC<CoachProps> = ({ coachId }) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {athlete.map(ath => {
+              {athletes.map(ath => {
                 if (typeof ath === 'string') {
                   return (
                     <TableRow key={ath}>
