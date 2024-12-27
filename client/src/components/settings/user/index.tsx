@@ -121,13 +121,13 @@ const SettingsUser = ({ userId }: { userId: string }) => {
     // Handle password reset
     if (formData.changedPassword) {
       if (formData.changedPassword !== formData.changedPasswordConfirm) {
-        console.log('Passwords do not match')
+        console.log('Heslá sa nezhodujú')
         setErrorModalOpen(true)
         return
       }
 
       if (formData.changedPassword.length < 8) {
-        console.log('Password must be at least 8 characters long')
+        console.log('Heslo musú mať minimálne 8 znakov')
         setErrorModalOpen(true)
         return
       }
@@ -139,7 +139,7 @@ const SettingsUser = ({ userId }: { userId: string }) => {
     const modifiedData = getModifiedData()
 
     if (Object.keys(modifiedData).length === 0) {
-      console.log('No changes to save.')
+      console.log('Žiadne zmeny')
       return
     }
 

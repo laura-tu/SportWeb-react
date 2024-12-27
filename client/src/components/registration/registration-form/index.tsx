@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
-import ErrorModal from '../error-modal/index.tsx'
+import ErrorModal from '../../error-modal/index.tsx'
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined'
 import Radio from '@mui/material/Radio'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import FormLabel from '@mui/material/FormLabel'
-import GreenCheckbox from '../green-checkbox/index.tsx'
-import CustomTextField from '../custom-textfield/index.tsx'
+import GreenCheckbox from '../../green-checkbox/index.tsx'
+import CustomTextField from '../../custom-textfield/index.tsx'
 import KeyIcon from '@mui/icons-material/Key'
 import PersonAddAlt1OutlinedIcon from '@mui/icons-material/PersonAddAlt1Outlined'
 import AlternateEmailOutlinedIcon from '@mui/icons-material/AlternateEmailOutlined'
@@ -13,8 +13,8 @@ import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined'
 import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined'
 import { Button } from '@mui/material'
 import { Box } from '@mui/material'
-import { registerUser } from '../../services/user.ts'
-import { UserRole } from '../homeview/index.tsx'
+import { registerUser } from '../../../services/user.ts'
+import { UserRole } from '../../homeview/index.tsx'
 
 const RegistrationForm: React.FC<{
   onClose: () => void
@@ -81,7 +81,7 @@ const RegistrationForm: React.FC<{
 
       onNext(userId, user)
     } catch (error) {
-      console.error('Error registering user:', error)
+      console.error('Chyba pri registrácii používateľa:', error)
       let errorMessage = 'Chyba pri registrácii používateľa.'
 
       if (

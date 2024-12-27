@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import HeaderComp from '../header/index.tsx'
-import RegistrationForm from '../registration-form/index.tsx'
-import AthleteReg from '../athlete-reg/index.tsx'
-import CoachReg from '../coach-reg/index.tsx'
+import RegistrationForm from '../registration/registration-form/index.tsx'
+import AthleteRegistration from '../registration/athlete-registration/index.tsx'
+import CoachRegistration from '../registration/coach-registration/index.tsx'
 import LoginForm from '../login-form/index.tsx'
 
 export enum UserRole {
@@ -57,8 +57,8 @@ const HomeView = () => {
       {showRegistration && (
         <RegistrationForm onClose={closeRegistration} onNext={showNextComponent} />
       )}
-      {showAthleteReg && <AthleteReg onClose={closeAthleteReg} userId={userId} />}
-      {showCoachReg && <CoachReg onClose={closeCoachReg} userId={userId} />}
+      {showAthleteReg && <AthleteRegistration onClose={closeAthleteReg} userId={userId} />}
+      {showCoachReg && <CoachRegistration onClose={closeCoachReg} userId={userId} />}
       {showLogin && !isDashboardRoute && <LoginForm onClose={closeLogin} />}
     </div>
   )

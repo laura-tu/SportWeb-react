@@ -1,7 +1,7 @@
 import React from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { Typography, Box, CircularProgress } from '@mui/material'
-import AthleteList from '../settings/coach/athlete-list.tsx'
+import AthletesTable from '../settings/coach/athletes-table.tsx'
 import SearchAthlete from '../settings/coach/search-athlete.tsx'
 import { fetchCoachByUserId } from '../../services/coach.ts'
 
@@ -56,7 +56,7 @@ const CoachAthletesManager: React.FC<CoachAthletesManagerProps> = ({ userId }) =
         </Typography>
         <SearchAthlete coachId={coachData.docs[0].id} />
         <div className="pt-8">
-          <AthleteList coachId={coachData.docs[0].id} />
+          <AthletesTable coachId={coachData.docs[0].id} />
         </div>
       </Box>
     </Box>

@@ -55,6 +55,6 @@ export const updateUserData = async (userId: string, updateData: Record<string, 
     })
     return response.data
   } catch (error) {
-    throw new Error(error.response?.data?.message || 'Failed to update user data')
+    throw new Error(error.response?.data?.message || 'Nepodarilo sa načítať údaje o používateľovi')
   }
 }

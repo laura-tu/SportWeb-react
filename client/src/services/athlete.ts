@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { AthleteFormData } from '../components/athlete-reg/index.tsx'
+import { AthleteFormData } from '../components/registration/athlete-registration/index.tsx'
 import { Athlete } from '../utils/interfaces.ts'
 import { stringify } from 'qs-esm'
 
@@ -45,8 +45,8 @@ export const searchAthletesByName = async (query: string): Promise<Athlete[]> =>
 
     return data?.docs || []
   } catch (error) {
-    console.error('Error fetching athletes by name:', error.message)
-    throw new Error('Failed to fetch athletes. Please try again later.')
+    console.error('Chyba pri načítaní športovcov podla mena:', error.message)
+    throw new Error('Nepodarilo sa načítať športovcov. Prosím skúste to znovu neskôr.')
   }
 }
 
@@ -78,6 +78,8 @@ export const updateAthleteData = async (athleteId: string, updateData: Record<st
     )
     return response.data
   } catch (error) {
-    throw new Error(error.response?.data?.message || 'Failed to update athlete data')
+    throw new Error(
+      error.response?.data?.message || 'Nepodarilo sa aktualizovať údaje o športovcovi',
+    )
   }
 }

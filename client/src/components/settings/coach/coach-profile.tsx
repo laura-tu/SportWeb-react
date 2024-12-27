@@ -15,7 +15,7 @@ interface CoachFormData {
   sport_club?: string
 }
 
-const SettingsCoach: React.FC<{ userId: string }> = ({ userId }) => {
+const CoachProfile: React.FC<{ userId: string }> = ({ userId }) => {
   const queryClient = useQueryClient()
   const [successModalOpen, setSuccessModalOpen] = useState(false)
   const [errorModalOpen, setErrorModalOpen] = useState(false)
@@ -79,7 +79,7 @@ const SettingsCoach: React.FC<{ userId: string }> = ({ userId }) => {
 
   const handleSaveChanges = () => {
     if (!coach) {
-      console.error('No coach data available to update.')
+      console.error('Nie sú dostupné žiadne informácie o trénerovi k aktualizácii.')
       return
     }
 
@@ -99,11 +99,13 @@ const SettingsCoach: React.FC<{ userId: string }> = ({ userId }) => {
   }
 
   if (coachIdError) {
-    return <p>Error loading coach information by user ID: {coachIdError.message}</p>
+    return (
+      <p>Chyba pri načítavaní informácií o trénerovi cez id používateľa: {coachIdError.message}</p>
+    )
   }
 
   if (!coach) {
-    return <p>Coach not found for this user.</p>
+    return <p>Nebol nájdený tréner</p>
   }
 
   return (
@@ -188,4 +190,4 @@ const SettingsCoach: React.FC<{ userId: string }> = ({ userId }) => {
   )
 }
 
-export default SettingsCoach
+export default CoachProfile

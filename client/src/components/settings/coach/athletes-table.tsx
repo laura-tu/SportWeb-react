@@ -18,7 +18,7 @@ export interface CoachProps {
   coachId: string
 }
 
-const AthleteList: React.FC<CoachProps> = ({ coachId }) => {
+const AthletesTable: React.FC<CoachProps> = ({ coachId }) => {
   const { data, isLoading, error } = useQuery({
     queryKey: ['coach', coachId],
     queryFn: () => getCoachData(coachId),
@@ -118,4 +118,4 @@ const AthleteList: React.FC<CoachProps> = ({ coachId }) => {
   )
 }
 
-export default AthleteList
+export default AthletesTable

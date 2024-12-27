@@ -8,7 +8,7 @@ const useFetchCoach = (athleteId?: string) => {
       if (athleteId) {
         return fetchCoachByAthleteId(athleteId) // Fetch coach using athlete ID
       }
-      return Promise.reject('No athlete ID available') // Handle the case when athlete ID is not available
+      return Promise.reject('Nie je dostupné žiadne ID športovca')
     },
     enabled: !!athleteId, // Only run the query when athlete ID exists
   })

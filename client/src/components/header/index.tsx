@@ -7,7 +7,6 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ onShowRegistration, onShowLogin }) => {
-  const [scrollPosition, setScrollPosition] = useState(false)
   const [mobileNav, setMobileNav] = useState(false)
 
   const toggleMobileNav = () => {
@@ -15,9 +14,7 @@ const Header: React.FC<HeaderProps> = ({ onShowRegistration, onShowLogin }) => {
   }
 
   return (
-    <header
-      className={`bg-gray-900 text-white transition-all duration-300 ${scrollPosition ? 'shadow-lg' : ''}`}
-    >
+    <header className="bg-gray-900 text-white transition-all duration-300 shadow-lg">
       <nav className="flex justify-between items-center p-4">
         <div className="flex items-center">
           <img src="/logo_black_50.jpg" alt="black logo" className="mr-3" />

@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { Select, MenuItem, InputLabel, FormControl, Button, Box } from '@mui/material'
 import { useForm, Controller } from 'react-hook-form'
-import ErrorModal from '../error-modal/index.tsx'
+import ErrorModal from '../../error-modal/index.tsx'
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined'
-import { fetchSports } from '../../services/sports.ts'
-import { fetchSportClubs } from '../../services/sport-clubs.ts'
-import { registerAthlete } from '../../services/athlete.ts'
-import SuccessModal from '../success-modal/index.tsx'
-import { Club, Sport } from '../../utils/interfaces.ts'
+import { fetchSports } from '../../../services/sports.ts'
+import { fetchSportClubs } from '../../../services/sport-clubs.ts'
+import { registerAthlete } from '../../../services/athlete.ts'
+import SuccessModal from '../../success-modal/index.tsx'
+import { Club, Sport } from '../../../utils/interfaces.ts'
 
 export interface AthleteFormData {
   day: number | null
@@ -20,7 +20,7 @@ export interface AthleteFormData {
   user?: string
 }
 
-const AthleteReg = ({ userId, onClose }) => {
+const AthleteRegistration = ({ userId, onClose }) => {
   const [successModalVisible, setSuccessModalVisible] = useState(false)
   const [errorModal, setErrorModal] = useState(false)
   const [sportsOptions, setSportsOptions] = useState<Sport[]>([])
@@ -262,4 +262,4 @@ const AthleteReg = ({ userId, onClose }) => {
   )
 }
 
-export default AthleteReg
+export default AthleteRegistration

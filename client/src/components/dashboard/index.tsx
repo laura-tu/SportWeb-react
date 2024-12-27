@@ -17,7 +17,7 @@ import { Account } from '@toolpad/core/Account'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useAuthSession } from './hooks/useAuthSession.tsx'
 import SettingsForm from '../settings/index.tsx'
-import CoachAthletesManager from '../coach-athlete/index.tsx'
+import CoachAthletesManager from '../coach-athletes-manager/index.tsx'
 import LoginForm from '../login-form/index.tsx'
 
 const queryClient = new QueryClient()
@@ -112,7 +112,6 @@ export default function DashboardLayoutAccount(props: DemoProps) {
     })
   }, [session])
 
-
   const renderPageContent = () => {
     /* if (!session?.user) {
       return <DemoPageContent pathname={router.pathname} />
@@ -125,8 +124,8 @@ export default function DashboardLayoutAccount(props: DemoProps) {
           </Typography>
           {/* Pass the handleLogin function to the LoginForm */}
           <LoginForm
-           // onSubmit={(email, password) => handleLogin(email, password)}
-            onClose={() => console.log('Close login form')}
+            // onSubmit={(email, password) => handleLogin(email, password)}
+            onClose={() => console.log('Zatvor prihlasovací formulár')}
           />
         </div>
       )

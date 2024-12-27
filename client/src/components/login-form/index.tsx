@@ -46,16 +46,16 @@ const LoginForm: React.FC<LoginFormProps> = ({ onClose }) => {
         navigate('/dashboard')
         window.location.reload()
       } else {
-        console.error('Login failed')
+        console.error('Prihlasovanie zlyhalo')
         setShowErrorLoginModal(true)
       }
     } catch (error) {
-      console.log('Error during login:', error)
+      console.log('Chyba počas prihlasovania:', error)
 
       // Check if the error response exists and show appropriate message
       if (axios.isAxiosError(error) && error.response) {
         setShowErrorLoginModal(true)
-        console.error('Error response:', error.response.data)
+        console.error('Chyba:', error.response.data)
       } else {
         setShowErrorLoginModal(true)
       }

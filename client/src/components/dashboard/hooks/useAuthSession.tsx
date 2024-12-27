@@ -19,7 +19,7 @@ export const useAuthSession = () => {
         const user = await fetchUserData()
         setSession({ user })
       } catch (error) {
-        console.error('Failed to fetch user data:', error)
+        console.error('Nepodarilo sa načítať údaje o používateľovi:', error)
       }
     }
     fetchData()
@@ -54,11 +54,11 @@ export const useAuthSession = () => {
               // Update session with user data
               setSession({ user: data.user })
             } else {
-              console.error('Login failed: Invalid token or user data')
+              console.error('Prihlásenie zlyhalo: Neplatný token alebo používateľské dáta')
             }
           })
           .catch(error => {
-            console.error('Error during login:', error)
+            console.error('Chyba počas prihlasovania:', error)
           })
       },
       signOut: () => {

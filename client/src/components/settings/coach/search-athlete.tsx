@@ -29,11 +29,11 @@ const SearchAthlete: React.FC<SearchAthleteProps> = ({ coachId }) => {
     mutationFn: ({ updatedAthletes }: { updatedAthletes: string[] }) =>
       updateCoachData(coachId, { athletes: updatedAthletes }),
     onSuccess: () => {
-      console.log('Athletes list updated successfully.')
+      console.log('Zoznam športovcov bol úspešne aktualizovaný.')
       queryClient.invalidateQueries({ queryKey: ['coach', coachId] })
     },
     onError: (error: any) => {
-      console.error('Failed to update coach data:', error.message)
+      console.error('Zlyhalo aktualizovanie zoznamu športovcov:', error.message)
       // Optionally show an error message to the user
     },
   })
@@ -55,7 +55,7 @@ const SearchAthlete: React.FC<SearchAthleteProps> = ({ coachId }) => {
       ]
       patchCoachMutation.mutate({ updatedAthletes })
     } catch (error) {
-      console.error('Failed to add athlete:', error.message)
+      console.error('Zlyhalo pridávanie športovca:', error.message)
     }
   }
 
@@ -116,7 +116,7 @@ const SearchAthlete: React.FC<SearchAthleteProps> = ({ coachId }) => {
       {/* Mutation Loading Indicator */}
       {patchCoachMutation.isPending && (
         <Typography color="primary" sx={{ mt: 2 }}>
-          Updating coach's athletes...
+          Aktualizuje sa zoznam trénerových zverencov...
         </Typography>
       )}
     </Box>

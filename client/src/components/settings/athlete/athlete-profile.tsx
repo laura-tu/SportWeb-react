@@ -22,7 +22,7 @@ interface AthleteFormData {
   coach: string
 }
 
-const SettingsAthlete = ({ userId }: { userId: string }) => {
+const AthleteProfile = ({ userId }: { userId: string }) => {
   const queryClient = useQueryClient()
   const originalDataRef = useRef<AthleteFormData | null>(null)
 
@@ -102,7 +102,7 @@ const SettingsAthlete = ({ userId }: { userId: string }) => {
           [field]: new Date(value as string).toISOString().split('T')[0], // Format as YYYY-MM-DD
         }))
       } else {
-        console.error('Invalid date value:', value)
+        console.error('Nesprávny formát dátumu:', value)
       }
     } else {
       // Handle the case for 'sport' where value is an array of strings
@@ -122,7 +122,7 @@ const SettingsAthlete = ({ userId }: { userId: string }) => {
     const modifiedData = getModifiedData()
 
     if (Object.keys(modifiedData).length === 0) {
-      console.error('No changes to save.')
+      console.error('Žiadne zmeny.')
       return
     }
 
@@ -206,4 +206,4 @@ const SettingsAthlete = ({ userId }: { userId: string }) => {
   )
 }
 
-export default SettingsAthlete
+export default AthleteProfile
