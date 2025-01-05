@@ -4,6 +4,10 @@ import Typography from '@mui/material/Typography'
 import DashboardIcon from '@mui/icons-material/Dashboard'
 import SettingsAccessibilityIcon from '@mui/icons-material/SettingsAccessibility'
 import PersonPinOutlinedIcon from '@mui/icons-material/PersonPinOutlined'
+import AnalyticsIcon from '@mui/icons-material/Analytics'
+import PersonSearchIcon from '@mui/icons-material/PersonSearch'
+import MonitorHeartIcon from '@mui/icons-material/MonitorHeart'
+import ScoreboardOutlinedIcon from '@mui/icons-material/ScoreboardOutlined'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import {
   AppProvider,
@@ -37,6 +41,30 @@ const NAVIGATION: Navigation = [
     segment: 'settings',
     title: 'Nastavenie profilu',
     icon: <SettingsAccessibilityIcon />,
+  },
+  {
+    segment: 'test_results',
+    title: 'Výsledky testov',
+    icon: <AnalyticsIcon />,
+    children: [
+      {
+        kind: 'page',
+        segment: 'inbody_results',
+        title: 'Inbody meranie',
+        icon: <PersonSearchIcon />,
+      },
+      {
+        kind: 'page',
+        segment: 'spiroergometry',
+        title: 'Spiroergometria',
+        icon: <MonitorHeartIcon />,
+      },
+    ],
+  },
+  {
+    segment: 'competitions',
+    title: 'Súťaže',
+    icon: <ScoreboardOutlinedIcon />,
   },
 ]
 
@@ -162,6 +190,45 @@ export default function DashboardLayoutAccount(props: DemoProps) {
               </Typography>
             </Box>
             <CoachAthletesManager userId={session.user.id} />
+          </div>
+        )
+
+      case '/test_results/inbody_results':
+        if (hasSportCoachRole) {
+          return <DemoPageContent pathname={router.pathname} />
+        }
+        return (
+          <div>
+            <Box sx={{ pt: 3, ml: 3 }}>
+              <Typography variant="h4" gutterBottom>
+                Výsledky testov z Inbody merania
+              </Typography>
+            </Box>
+          </div>
+        )
+
+      case '/test_results/spiroergometry':
+        if (hasSportCoachRole) {
+          return <DemoPageContent pathname={router.pathname} />
+        }
+        return (
+          <div>
+            <Box sx={{ pt: 3, ml: 3 }}>
+              <Typography variant="h4" gutterBottom>
+                Výsledky testov zo spiroergometrie
+              </Typography>
+            </Box>
+          </div>
+        )
+
+      case '/competitions':
+        return (
+          <div>
+            <Box sx={{ pt: 3, ml: 3 }}>
+              <Typography variant="h4" gutterBottom>
+                Súťaže (kalendár, výsledky)
+              </Typography>
+            </Box>
           </div>
         )
 
