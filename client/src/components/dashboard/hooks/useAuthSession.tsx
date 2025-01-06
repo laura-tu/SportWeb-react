@@ -11,47 +11,42 @@ interface Session extends ToolpadSession {
 
 export const useAuthSession = () => {
   const { signOut } = useAuth()
-  const [session, setSession] = useState<Session | null>(null) //session object holds the authenticated user's data
+  const [session, setSession] = useState<Session | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setLoading(true)
         const user = await fetchUserData()
         setSession({ user })
+        setError(null)
       } catch (error) {
         console.error('Nepodarilo sa načítať údaje o používateľovi:', error)
+        setError('Nepodarilo sa načítať údaje o používateľovi')
+      } finally {
+        setLoading(false)
       }
     }
     fetchData()
   }, [])
 
-  // Temporary credentials storage
   let credentials: { email: string; password: string } | null = null
 
   const authentication = useMemo(
     () => ({
-      /*signIn: () => {
-        if (!session?.user) {
-          console.error('No user data available for sign-in')
-          return
-        }
-        setSession({ user: session.user })
-      },*/
       signIn: () => {
         if (!credentials) {
           console.error('No credentials provided for sign-in')
           return
         }
 
-        // Perform login with stored credentials
         loginUser(credentials)
           .then(data => {
             if (data.token && data.user) {
-              // Save token and set headers
               localStorage.setItem('token', data.token)
               axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`
-
-              // Update session with user data
               setSession({ user: data.user })
             } else {
               console.error('Prihlásenie zlyhalo: Neplatný token alebo používateľské dáta')
@@ -75,5 +70,7 @@ export const useAuthSession = () => {
     setLoginCredentials: (email: string, password: string) => {
       credentials = { email, password }
     },
+    loading,
+    error,
   }
 }

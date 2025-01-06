@@ -1,19 +1,8 @@
 import React, { useState, useMemo } from 'react'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
-import DashboardIcon from '@mui/icons-material/Dashboard'
-import SettingsAccessibilityIcon from '@mui/icons-material/SettingsAccessibility'
-import PersonPinOutlinedIcon from '@mui/icons-material/PersonPinOutlined'
-import AnalyticsIcon from '@mui/icons-material/Analytics'
-import PersonSearchIcon from '@mui/icons-material/PersonSearch'
-import MonitorHeartIcon from '@mui/icons-material/MonitorHeart'
-import ScoreboardOutlinedIcon from '@mui/icons-material/ScoreboardOutlined'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
-import {
-  AppProvider,
-  type NavigationItem,
-  type NavigationSubheaderItem,
-} from '@toolpad/core/AppProvider'
+import { AppProvider } from '@toolpad/core/AppProvider'
 import { DashboardLayout } from '@toolpad/core/DashboardLayout'
 import { useDemoRouter } from '@toolpad/core/internal'
 import ThemeToggle from './theme-toggle.tsx'
@@ -23,66 +12,11 @@ import { useAuthSession } from './hooks/useAuthSession.tsx'
 import SettingsForm from '../settings/index.tsx'
 import CoachAthletesManager from '../coach-athletes-manager/index.tsx'
 import LoginForm from '../login-form/index.tsx'
+import DemoPageContent from './demo-page-content.tsx'
+import { NAVIGATION } from './navigation-config.tsx'
+import LoadingOverlay from '../loading/loading-overlay.tsx'
 
 const queryClient = new QueryClient()
-type Navigation = (NavigationItem | NavigationSubheaderItem)[]
-const NAVIGATION: Navigation = [
-  {
-    segment: 'dashboard',
-    title: 'Dashboard',
-    icon: <DashboardIcon />,
-  },
-  {
-    segment: 'athletes',
-    title: 'Športovci',
-    icon: <PersonPinOutlinedIcon />,
-  },
-  {
-    segment: 'settings',
-    title: 'Nastavenie profilu',
-    icon: <SettingsAccessibilityIcon />,
-  },
-  {
-    segment: 'test_results',
-    title: 'Výsledky testov',
-    icon: <AnalyticsIcon />,
-    children: [
-      {
-        kind: 'page',
-        segment: 'inbody_results',
-        title: 'Inbody meranie',
-        icon: <PersonSearchIcon />,
-      },
-      {
-        kind: 'page',
-        segment: 'spiroergometry',
-        title: 'Spiroergometria',
-        icon: <MonitorHeartIcon />,
-      },
-    ],
-  },
-  {
-    segment: 'competitions',
-    title: 'Súťaže',
-    icon: <ScoreboardOutlinedIcon />,
-  },
-]
-
-function DemoPageContent({ pathname }: { pathname: string }) {
-  return (
-    <Box
-      sx={{
-        py: 4,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        textAlign: 'center',
-      }}
-    >
-      <Typography>Dashboard content for {pathname}</Typography>
-    </Box>
-  )
-}
 
 interface DemoProps {
   window?: () => Window
@@ -105,10 +39,10 @@ export default function DashboardLayoutAccount(props: DemoProps) {
         palette: {
           mode: isDarkMode ? 'dark' : 'light',
           primary: {
-            main: '#3998cc', // Replace with your primary color
+            main: '#3998cc',
           },
           secondary: {
-            main: '#f50057', // Replace with your secondary color
+            main: '#f50057',
           },
           background: {
             default: isDarkMode ? '#121212' : '#ffffff', // Default background
@@ -141,20 +75,32 @@ export default function DashboardLayoutAccount(props: DemoProps) {
   }, [session])
 
   const renderPageContent = () => {
-    /* if (!session?.user) {
-      return <DemoPageContent pathname={router.pathname} />
-    }*/
+    const { session, loading, error } = useAuthSession()
+
+    if (loading) {
+      return (
+        <Typography variant="h5" sx={{ textAlign: 'center', marginTop: 4 }}>
+          Načítavam...
+          <LoadingOverlay />
+        </Typography>
+      )
+    }
+
+    if (error) {
+      return (
+        <Typography variant="h5" sx={{ textAlign: 'center', marginTop: 4, color: 'red' }}>
+          {error}
+        </Typography>
+      )
+    }
+
     if (!session?.user) {
       return (
         <div>
           <Typography variant="h5" sx={{ textAlign: 'center', marginTop: 4 }}>
             Nie ste prihlásený
           </Typography>
-          {/* Pass the handleLogin function to the LoginForm */}
-          <LoginForm
-            // onSubmit={(email, password) => handleLogin(email, password)}
-            onClose={() => console.log('Zatvor prihlasovací formulár')}
-          />
+          <LoginForm onClose={() => console.log('Zatvor prihlasovací formulár')} />
         </div>
       )
     }
