@@ -15,6 +15,7 @@ import LoginForm from '../login-form/index.tsx'
 import DemoPageContent from './demo-page-content.tsx'
 import { NAVIGATION } from './navigation-config.tsx'
 import LoadingOverlay from '../loading/loading-overlay.tsx'
+import TestResults from '../sport-tests/index.tsx'
 
 const queryClient = new QueryClient()
 
@@ -149,6 +150,7 @@ export default function DashboardLayoutAccount(props: DemoProps) {
               <Typography variant="h4" gutterBottom>
                 Výsledky testov z Inbody merania
               </Typography>
+              <TestResults session={session} />
             </Box>
           </div>
         )
@@ -163,6 +165,7 @@ export default function DashboardLayoutAccount(props: DemoProps) {
               <Typography variant="h4" gutterBottom>
                 Výsledky testov zo spiroergometrie
               </Typography>
+              <TestResults session={session} />
             </Box>
           </div>
         )
