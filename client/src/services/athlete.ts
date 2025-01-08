@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { AthleteFormData } from '../components/registration/athlete-registration/index.tsx'
-import { Athlete } from '../utils/interfaces.ts'
+import type { Athlete } from '../utils/interfaces.ts'
 import { stringify } from 'qs-esm'
 
 export interface AthleteIdResponse {
