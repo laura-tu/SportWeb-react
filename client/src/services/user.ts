@@ -19,7 +19,7 @@ export const loginUser = async (user: { email: string; password: string }) => {
 export const fetchUserData = async () => {
   const token = localStorage.getItem('token')
   if (!token) {
-    throw new Error('No token found')
+    throw new Error('Token sa nenšiel')
   }
 
   try {
@@ -29,7 +29,23 @@ export const fetchUserData = async () => {
     // Return the first user in the docs array
     return response.data.docs[0]
   } catch (error) {
-    throw new Error('Failed to fetch user data')
+    throw new Error('Načítanie údajov o používateľovi zlyhalo')
+  }
+}
+
+export const fetchUser = async (userId: string) => {
+  const token = localStorage.getItem('token')
+  if (!token) {
+    throw new Error('Token sa nenašiel')
+  }
+
+  try {
+    const response = await axios.get(`http://localhost:3000/api/users/${userId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    return response.data // Adjust according to your API's response structure
+  } catch (error) {
+    throw new Error(error.response?.data?.message || 'Načítanie údajov o používateľovi zlyhalo')
   }
 }
 
