@@ -10,7 +10,7 @@ interface Session extends ToolpadSession {
 }
 
 export const useAuthSession = () => {
-  const { signOut } = useAuth()
+  const { signOut, signIn } = useAuth()
   const [session, setSession] = useState<Session | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -38,11 +38,12 @@ export const useAuthSession = () => {
     () => ({
       signIn: () => {
         if (!credentials) {
-          console.error('No credentials provided for sign-in')
+          signIn() //redirected to /dashboard and loginForm
+          //console.error('No credentials provided for sign-in')
           return
         }
 
-        loginUser(credentials)
+        /*loginUser(credentials)
           .then(data => {
             if (data.token && data.user) {
               localStorage.setItem('token', data.token)
@@ -54,7 +55,7 @@ export const useAuthSession = () => {
           })
           .catch(error => {
             console.error('Chyba počas prihlasovania:', error)
-          })
+          })*/
       },
       signOut: () => {
         signOut()

@@ -57,8 +57,13 @@ export const useAuth = () => {
     navigate('/')
   }
 
+  const signIn = () => {
+    navigate('/')
+  }
+
   return {
     signOut,
+    signIn,
   }
 }
 
