@@ -4,6 +4,7 @@ import { fetchUser } from '../../services/user.ts'
 import LoadingOverlay from '../loading/loading-overlay.tsx'
 import useFetchAthlete from '../settings/hooks/useFetchAthlete.ts'
 import useFetchTestResults from './hooks/useFetchTestResults.ts'
+import DateFilter from './date-filter/index.tsx'
 
 interface SportTestsProps {
   session: any
@@ -14,6 +15,8 @@ const TestResults: React.FC<SportTestsProps> = ({ session }) => {
   const [userData, setUserData] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [startDate, setStartDate] = useState<Date | null>(null)
+  const [endDate, setEndDate] = useState<Date | null>(null)
 
   const { athlete, isFetchingAthleteId, athleteError } = useFetchAthlete(userId)
   const { testResults, isFetchingTestResults, testResultsError } = useFetchTestResults(athlete?.id)
@@ -25,7 +28,7 @@ const TestResults: React.FC<SportTestsProps> = ({ session }) => {
         const data = await fetchUser(userId)
         setUserData(data)
       } catch (err: any) {
-        setError(err.message || 'Error fetching user data')
+        setError(err.message || 'Nepodarilo sa načítať údaje o používateľovi')
       } finally {
         setLoading(false)
       }
@@ -50,6 +53,14 @@ const TestResults: React.FC<SportTestsProps> = ({ session }) => {
 
   const flattenedTestResults = flattenResults(testResults || [])
 
+  // Filter results by selected date range
+  const filteredResults = flattenedTestResults.filter((result: any) => {
+    const testDate = new Date(result.date)
+    if (startDate && testDate < startDate) return false
+    if (endDate && testDate > endDate) return false
+    return true
+  })
+
   return (
     <Box className="flex flex-col w-full p-4">
       <Box className="w-full my-2">
@@ -58,9 +69,18 @@ const TestResults: React.FC<SportTestsProps> = ({ session }) => {
         </Typography>
       </Box>
 
+      {/* Use the DateFilter component here */}
+      <DateFilter
+        startDate={startDate}
+        endDate={endDate}
+        setStartDate={setStartDate}
+        setEndDate={setEndDate}
+      />
+
+      {/* Filtered Results Section */}
       <Box className="w-full my-4">
-        {flattenedTestResults.length > 0 ? (
-          flattenedTestResults.map((result: any, index: number) => (
+        {filteredResults.length > 0 ? (
+          filteredResults.map((result: any, index: number) => (
             <Card key={index} className="mb-4">
               <CardContent>
                 <Typography variant="h6">
@@ -69,7 +89,7 @@ const TestResults: React.FC<SportTestsProps> = ({ session }) => {
                 <Typography>Typ testu: {result.testType?.name || 'N/A'}</Typography>
                 {result.resultData?.url && (
                   <Typography>
-                    Súbor na stiahnutie:{' '}
+                    Result File:{' '}
                     <Link href={result.resultData.url} target="_blank">
                       {result.resultData.title || 'Stiahnuť'}
                     </Link>
@@ -80,7 +100,9 @@ const TestResults: React.FC<SportTestsProps> = ({ session }) => {
             </Card>
           ))
         ) : (
-          <Typography variant="body1">Žiadne výsledky na zobrazenie.</Typography>
+          <Typography variant="body1" color="text.secondary">
+            Žiadne výsledky na zobrazenie.
+          </Typography>
         )}
       </Box>
     </Box>

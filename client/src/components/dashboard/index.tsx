@@ -16,6 +16,8 @@ import DemoPageContent from './demo-page-content.tsx'
 import { NAVIGATION } from './navigation-config.tsx'
 import LoadingOverlay from '../loading/loading-overlay.tsx'
 import TestResults from '../sport-tests/index.tsx'
+import { LocalizationProvider } from '@mui/x-date-pickers'
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 
 const queryClient = new QueryClient()
 
@@ -150,7 +152,9 @@ export default function DashboardLayoutAccount(props: DemoProps) {
               <Typography variant="h4" gutterBottom>
                 Výsledky testov z Inbody merania
               </Typography>
-              <TestResults session={session} />
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <TestResults session={session} />
+              </LocalizationProvider>
             </Box>
           </div>
         )
@@ -165,7 +169,9 @@ export default function DashboardLayoutAccount(props: DemoProps) {
               <Typography variant="h4" gutterBottom>
                 Výsledky testov zo spiroergometrie
               </Typography>
-              <TestResults session={session} />
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <TestResults session={session} />
+              </LocalizationProvider>
             </Box>
           </div>
         )
