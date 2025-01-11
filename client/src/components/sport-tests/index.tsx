@@ -10,7 +10,10 @@ interface SportTestsProps {
   session: any
 }
 
-const TestResults: React.FC<SportTestsProps> = ({ session }) => {
+const TestResults: React.FC<SportTestsProps & { onResultClick: (result: any) => void }> = ({
+  session,
+  onResultClick,
+}) => {
   const userId = session.user.id
   const [userData, setUserData] = useState<any>(null)
   const [loading, setLoading] = useState(true)
@@ -81,7 +84,12 @@ const TestResults: React.FC<SportTestsProps> = ({ session }) => {
       <Box className="w-full my-4">
         {filteredResults.length > 0 ? (
           filteredResults.map((result: any, index: number) => (
-            <Card key={index} className="mb-4">
+            <Card
+              key={index}
+              className="mb-4"
+              onClick={() => onResultClick(result)}
+              sx={{ cursor: 'pointer' }}
+            >
               <CardContent>
                 <Typography variant="h6">
                   Dátum: {new Date(result.date).toLocaleDateString() || 'N/A'}

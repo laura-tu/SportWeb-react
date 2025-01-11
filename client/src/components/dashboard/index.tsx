@@ -18,6 +18,7 @@ import LoadingOverlay from '../loading/loading-overlay.tsx'
 import TestResults from '../sport-tests/index.tsx'
 import { LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
+import WhiteWindow from '../white-window/index.tsx'
 
 const queryClient = new QueryClient()
 
@@ -80,6 +81,14 @@ export default function DashboardLayoutAccount(props: DemoProps) {
   const renderPageContent = () => {
     const { session, loading, error } = useAuthSession()
 
+    const [showWhiteDashboard, setShowWhiteDashboard] = useState(false)
+    const [selectedTestResult, setSelectedTestResult] = useState(null)
+
+    const handleResultClick = (result: any) => {
+      setSelectedTestResult(result)
+      setShowWhiteDashboard(true)
+    }
+
     if (loading) {
       return (
         <Typography variant="h5" sx={{ textAlign: 'center', marginTop: 4 }}>
@@ -106,6 +115,10 @@ export default function DashboardLayoutAccount(props: DemoProps) {
           <LoginForm onClose={() => console.log('Zatvor prihlasovací formulár')} />
         </div>
       )
+    }
+
+    if (showWhiteDashboard) {
+      return <WhiteWindow result={selectedTestResult} onBack={() => setShowWhiteDashboard(false)} />
     }
 
     const hasSportCoachRole = session.user.roles?.includes('sportCoach')
@@ -153,7 +166,7 @@ export default function DashboardLayoutAccount(props: DemoProps) {
                 Výsledky testov z Inbody merania
               </Typography>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <TestResults session={session} />
+                <TestResults session={session} onResultClick={handleResultClick} />
               </LocalizationProvider>
             </Box>
           </div>
@@ -170,7 +183,7 @@ export default function DashboardLayoutAccount(props: DemoProps) {
                 Výsledky testov zo spiroergometrie
               </Typography>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <TestResults session={session} />
+                <TestResults session={session} onResultClick={handleResultClick} />
               </LocalizationProvider>
             </Box>
           </div>
