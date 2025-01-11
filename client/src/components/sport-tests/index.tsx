@@ -92,12 +92,12 @@ const TestResults: React.FC<SportTestsProps & { onResultClick: (result: any) => 
             >
               <CardContent>
                 <Typography variant="h6">
-                  Dátum: {new Date(result.date).toLocaleDateString() || 'N/A'}
+                  Dátum: {new Date(result.date).toLocaleDateString()}
                 </Typography>
-                <Typography>Typ testu: {result.testType?.name || 'N/A'}</Typography>
+                <Typography>Typ testu: {result.testType?.name}</Typography>
                 {result.resultData?.url && (
                   <Typography>
-                    Result File:{' '}
+                    Súbor:
                     <Link href={result.resultData.url} target="_blank">
                       {result.resultData.title || 'Stiahnuť'}
                     </Link>
