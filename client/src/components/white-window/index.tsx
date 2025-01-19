@@ -43,7 +43,7 @@ const WhiteWindow: React.FC<{ result: any; onBack: () => void }> = ({ result, on
 
   return (
     <div className="flex items-center justify-center max-h-[80vh] my-auto  bg-white">
-      <div className="relative bg-blue-100/70 p-8 rounded shadow-md w-full max-w-7xl max-h-[80vh] mb-14 overflow-hidden">
+      <div className="relative bg-blue-100/70 p-8 rounded shadow-md w-full max-w-[75vw] max-h-[80vh] mb-14 overflow-hidden">
         <Box className="absolute top-4 left-4">
           <IconButton onClick={onBack} color="primary" aria-label="go back">
             <ArrowBackIcon />
@@ -51,7 +51,7 @@ const WhiteWindow: React.FC<{ result: any; onBack: () => void }> = ({ result, on
         </Box>
 
         <Box className="pl-6">
-          <Typography variant="h6" gutterBottom className="pt-4">
+          <Typography variant="h6" gutterBottom className="pt-4 !font-bold">
             Detail výsledku športového testu
           </Typography>
           <Typography variant="body1">
