@@ -127,8 +127,6 @@ export const constructUrlWithParams = (url: string, params: BaseParams = {}): st
   }
   const queryParams = qs.stringify(adjustedParams)
   const queryString = queryParams ? `?${queryParams}` : ''
-  console.log('url', url)
-  console.log('queryString', queryString)
   return `${url}${queryString}`
 }
 
