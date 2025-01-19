@@ -8,12 +8,11 @@ import DateFilter from './date-filter/index.tsx'
 
 interface SportTestsProps {
   session: any
+  onResultClick: (result: any) => void
+  testType: string
 }
 
-const TestResults: React.FC<SportTestsProps & { onResultClick: (result: any) => void }> = ({
-  session,
-  onResultClick,
-}) => {
+const TestResults: React.FC<SportTestsProps> = ({ session, onResultClick, testType }) => {
   const userId = session.user.id
   const [userData, setUserData] = useState<any>(null)
   const [loading, setLoading] = useState(true)
@@ -22,7 +21,10 @@ const TestResults: React.FC<SportTestsProps & { onResultClick: (result: any) => 
   const [endDate, setEndDate] = useState<Date | null>(null)
 
   const { athlete, isFetchingAthleteId, athleteError } = useFetchAthlete(userId)
-  const { testResults, isFetchingTestResults, testResultsError } = useFetchTestResults(athlete?.id)
+  const { testResults, isFetchingTestResults, testResultsError } = useFetchTestResults(
+    testType,
+    athlete?.id,
+  )
 
   useEffect(() => {
     const fetchData = async () => {

@@ -58,7 +58,7 @@ export class AjaxError extends Error {
 type AjaxMethod = 'GET' | 'POST' | 'PUT' | 'DELETE'
 
 export const ajax = async <T>(method: AjaxMethod, url: string, data?: object): Promise<T> => {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/${url}`, {
+  const response = await fetch(`http://localhost:3000/${url}`, {
     method,
     credentials: runsOnServerSide() ? undefined : 'include',
     headers: {
@@ -127,6 +127,8 @@ export const constructUrlWithParams = (url: string, params: BaseParams = {}): st
   }
   const queryParams = qs.stringify(adjustedParams)
   const queryString = queryParams ? `?${queryParams}` : ''
+  console.log('url', url)
+  console.log('queryString', queryString)
   return `${url}${queryString}`
 }
 

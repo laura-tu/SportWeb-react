@@ -1,5 +1,6 @@
 import axios from 'axios'
 import type { TestResult } from '../utils/interfaces.ts'
+import { ApiGetList, constructUrlWithParams, ajax, BaseParams } from '../utils/api/index.ts'
 
 export interface TestResultResponse {
   docs: TestResult[]
@@ -13,17 +14,17 @@ export const fetchTestResults = async (): Promise<TestResultResponse> => {
 
 export const fetchTestResultsByAthleteId = async (
   athleteId: string,
+  testType: string,
 ): Promise<TestResultResponse> => {
-  const response = await axios.get(`http://localhost:3000/api/test_results`)
-  const testResults = response.data.docs
+  const params: BaseParams = {
+    where: {
+      and: [{ athlete: { equals: athleteId } }, { 'testType.name': { equals: testType } }],
+    },
+  }
 
-  const filteredTestResults = testResults.filter((testResult: TestResult) => {
-    if (typeof testResult.athlete === 'object' && 'id' in testResult.athlete) {
-      return testResult.athlete.id === athleteId
-    } else {
-      return testResult.athlete === athleteId
-    }
-  })
+  const url = constructUrlWithParams('api/test_results', params)
+  return ajax<ApiGetList<TestResult>>('GET', url)
 
-  return { docs: filteredTestResults ? [filteredTestResults] : [] }
+  // const response = await axios.get('http://localhost:3000/' + url)
+  // return response.data
 }

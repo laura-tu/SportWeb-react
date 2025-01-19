@@ -1,22 +1,21 @@
 import { useQuery } from '@tanstack/react-query'
 import { fetchTestResultsByAthleteId, TestResultResponse } from '../../../services/sport-tests.ts'
 
-const useFetchTestResults = (athleteId?: string) => {
+const useFetchTestResults = (testType: string, athleteId?: string) => {
   const {
     data: testResultsData,
     isLoading,
     error,
   } = useQuery<TestResultResponse>({
-    queryKey: ['testResults', athleteId],
+    queryKey: ['testResults', athleteId, testType],
     queryFn: () => {
       if (athleteId) {
-        return fetchTestResultsByAthleteId(athleteId)
+        return fetchTestResultsByAthleteId(athleteId, testType)
       }
       return Promise.reject('Nie je dostupné žiadne ID športovca')
     },
     enabled: !!athleteId,
   })
-
   const testResults = testResultsData?.docs
 
   return { testResults, isFetchingTestResults: isLoading, testResultsError: error }

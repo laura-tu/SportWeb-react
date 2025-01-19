@@ -83,7 +83,7 @@ const WhiteWindow: React.FC<{ result: any; onBack: () => void }> = ({ result, on
         {parsedData.length > 0 && result.testType?.name === 'INBODY' ? (
           <ParsedInbodyTest parsedData={parsedData} />
         ) : (
-          <Box className="my-8 max-h-[50vh]">
+          <Box className="my-8 max-h-[50vh] pl-6">
             <Typography variant="h6" gutterBottom>
               Výsledok testu:
             </Typography>

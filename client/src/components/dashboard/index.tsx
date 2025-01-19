@@ -166,7 +166,11 @@ export default function DashboardLayoutAccount(props: DemoProps) {
                 Výsledky testov z Inbody merania
               </Typography>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <TestResults session={session} onResultClick={handleResultClick} />
+                <TestResults
+                  session={session}
+                  onResultClick={handleResultClick}
+                  testType={'INBODY'}
+                />
               </LocalizationProvider>
             </Box>
           </div>
@@ -183,7 +187,11 @@ export default function DashboardLayoutAccount(props: DemoProps) {
                 Výsledky testov zo spiroergometrie
               </Typography>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <TestResults session={session} onResultClick={handleResultClick} />
+                <TestResults
+                  session={session}
+                  onResultClick={handleResultClick}
+                  testType={'Pnoe'}
+                />
               </LocalizationProvider>
             </Box>
           </div>
