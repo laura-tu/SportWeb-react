@@ -54,9 +54,9 @@ const TestResults: React.FC<SportTestsProps> = ({ session, onResultClick, testTy
     )
   }
 
+  const docs = testResults || []
   const flattenResults = (results: any[]) => results.flat()
-
-  const flattenedTestResults = flattenResults(testResults || [])
+  const flattenedTestResults = flattenResults(docs)
 
   // Filter results by selected date range
   const filteredResults = flattenedTestResults.filter((result: any) => {

@@ -1,28 +1,23 @@
-import axios from 'axios'
-import type { TestResult } from '../utils/interfaces.ts'
+import type { TestResult } from '../utils/payload/payload-types'
 import { ApiGetList, constructUrlWithParams, ajax, BaseParams } from '../utils/api/index.ts'
 
-export interface TestResultResponse {
-  docs: TestResult[]
-}
+const URL = 'api/test_results'
 
-export const fetchTestResults = async (): Promise<TestResultResponse> => {
-  const response = await axios.get('http://localhost:3000/api/test_results')
-
-  return response.data
+export const fetchTestResults = async (): Promise<ApiGetList<TestResult>> => {
+  return ajax<ApiGetList<TestResult>>('GET', URL)
 }
 
 export const fetchTestResultsByAthleteId = async (
   athleteId: string,
   testType: string,
-): Promise<TestResultResponse> => {
+): Promise<ApiGetList<TestResult>> => {
   const params: BaseParams = {
     where: {
       and: [{ athlete: { equals: athleteId } }, { 'testType.name': { equals: testType } }],
     },
   }
 
-  const url = constructUrlWithParams('api/test_results', params)
+  const url = constructUrlWithParams(URL, params)
   return ajax<ApiGetList<TestResult>>('GET', url)
 
   // const response = await axios.get('http://localhost:3000/' + url)

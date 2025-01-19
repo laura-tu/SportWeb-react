@@ -1,5 +1,10 @@
 import { useQuery } from '@tanstack/react-query'
-import { fetchTestResultsByAthleteId, TestResultResponse } from '../../../services/sport-tests.ts'
+import { fetchTestResultsByAthleteId } from '../../../services/sport-tests.ts'
+import type { TestResult } from '../../../utils/payload/payload-types.ts'
+
+export interface TestResultResponse {
+  docs: TestResult[]
+}
 
 const useFetchTestResults = (testType: string, athleteId?: string) => {
   const {
@@ -16,7 +21,7 @@ const useFetchTestResults = (testType: string, athleteId?: string) => {
     },
     enabled: !!athleteId,
   })
-  const testResults = testResultsData?.docs
+  const testResults = testResultsData?.docs ?? []
 
   return { testResults, isFetchingTestResults: isLoading, testResultsError: error }
 }
