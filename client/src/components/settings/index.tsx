@@ -1,8 +1,8 @@
 import React from 'react'
 
-import AthleteProfile from './athlete/athlete-profile.tsx'
-import CoachProfile from './coach/coach-profile.tsx'
-import { SettingsToggleButtons } from '../dashboard/settings-toggle-buttons.tsx'
+import AthleteProfile from './athlete/athlete-profile'
+import CoachProfile from './coach/coach-profile'
+import { SettingsToggleButtons } from '../dashboard/settings-toggle-buttons'
 
 interface SettingsFormProps {
   session: any

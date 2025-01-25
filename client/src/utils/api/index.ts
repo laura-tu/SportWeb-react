@@ -1,6 +1,6 @@
 import qs from 'qs'
 import { camelCase } from 'lodash'
-import { runsOnServerSide } from '../index.ts'
+import { runsOnServerSide } from '../index'
 import {
   Config,
   Post,
@@ -13,7 +13,7 @@ import {
   CSportClub,
   CSportTest,
   TestResult,
-} from '../payload/payload-types.ts'
+} from '../payload/payload-types'
 
 export type CollectionKey = keyof Config['collections']
 export type Collection =

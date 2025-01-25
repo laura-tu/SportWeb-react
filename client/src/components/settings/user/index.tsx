@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Box, Typography, Button, CircularProgress, TextField } from '@mui/material'
 import { useQueryClient, useMutation } from '@tanstack/react-query'
-import SuccessModal from '../../success-modal/index.tsx'
-import ErrorModal from '../../error-modal/index.tsx'
-import { updateUserData } from '../../../services/user.ts'
-import useFetchUser from '../hooks/useFetchUser.ts'
-import { useFormValidation } from './hook.ts'
+import SuccessModal from '../../success-modal/index'
+import ErrorModal from '../../error-modal/index'
+import { updateUserData } from '../../../services/user'
+import useFetchUser from '../hooks/useFetchUser'
+import { useFormValidation } from './hook'
 
 interface UserFormData {
   name: string

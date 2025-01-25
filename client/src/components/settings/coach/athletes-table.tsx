@@ -12,7 +12,7 @@ import {
   CircularProgress,
 } from '@mui/material'
 import { useQuery } from '@tanstack/react-query'
-import { getCoachData } from '../../../services/coach.ts'
+import { getCoachData } from '../../../services/coach'
 
 export interface CoachProps {
   coachId: string

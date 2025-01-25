@@ -1,15 +1,15 @@
 import React, { useState } from 'react'
 import axios from 'axios'
-import ErrorModal from '../error-modal/index.tsx'
+import ErrorModal from '../error-modal/index'
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined'
 import { useNavigate } from 'react-router-dom'
-import CustomTextField from '../custom-textfield/index.tsx'
+import CustomTextField from '../custom-textfield/index'
 import AlternateEmailOutlinedIcon from '@mui/icons-material/AlternateEmailOutlined'
 import KeyIcon from '@mui/icons-material/Key'
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined'
 import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined'
 import Button from '@mui/material/Button'
-import { loginUser } from '../../services/user.ts'
+import { loginUser } from '../../services/user'
 
 interface User {
   email: string

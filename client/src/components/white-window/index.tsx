@@ -15,7 +15,7 @@ import {
   Paper,
 } from '@mui/material'
 import * as XLSX from 'xlsx'
-import ParsedInbodyTest from './parsed-inbody/index.tsx'
+import ParsedInbodyTest from './parsed-inbody/index'
 
 const WhiteWindow: React.FC<{ result: any; onBack: () => void }> = ({ result, onBack }) => {
   const [parsedData, setParsedData] = useState<any[]>([])

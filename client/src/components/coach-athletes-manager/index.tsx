@@ -1,9 +1,9 @@
 import React from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { Typography, Box, CircularProgress } from '@mui/material'
-import AthletesTable from '../settings/coach/athletes-table.tsx'
-import SearchAthlete from '../settings/coach/search-athlete.tsx'
-import { fetchCoachByUserId } from '../../services/coach.ts'
+import AthletesTable from '../settings/coach/athletes-table'
+import SearchAthlete from '../settings/coach/search-athlete'
+import { fetchCoachByUserId } from '../../services/coach'
 
 interface CoachAthletesManagerProps {
   userId: string

@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { Select, MenuItem, InputLabel, FormControl, Button, Box } from '@mui/material'
 import { useForm, Controller } from 'react-hook-form'
-import ErrorModal from '../../error-modal/index.tsx'
+import ErrorModal from '../../error-modal/index'
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined'
-import { fetchSports } from '../../../services/sports.ts'
-import { fetchSportClubs } from '../../../services/sport-clubs.ts'
-import { registerAthlete } from '../../../services/athlete.ts'
-import SuccessModal from '../../success-modal/index.tsx'
-import { Club, Sport } from '../../../utils/interfaces.ts'
+import { fetchSports } from '../../../services/sports'
+import { fetchSportClubs } from '../../../services/sport-clubs'
+import { registerAthlete } from '../../../services/athlete'
+import SuccessModal from '../../success-modal/index'
+import { Club, Sport } from '../../../utils/interfaces'
 
 export interface AthleteFormData {
   day: number | null

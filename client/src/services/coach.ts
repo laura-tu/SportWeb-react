@@ -1,6 +1,6 @@
 import axios from 'axios'
-import { CoachFormData } from '../components/coach-registration/index.tsx'
-import { Coach } from '../utils/interfaces.ts'
+import { CoachFormData } from '../components/registration/coach-registration/index'
+import { Coach } from '../utils/interfaces'
 
 export interface CoachIdResponse {
   docs: Coach[]

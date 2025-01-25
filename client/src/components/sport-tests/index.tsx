@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { Box, Typography, Card, CardContent, Link } from '@mui/material'
-import { fetchUser } from '../../services/user.ts'
-import LoadingOverlay from '../loading/loading-overlay.tsx'
-import useFetchAthlete from '../settings/hooks/useFetchAthlete.ts'
-import useFetchTestResults from './hooks/useFetchTestResults.ts'
-import DateFilter from './date-filter/index.tsx'
+import { fetchUser } from '../../services/user'
+import LoadingOverlay from '../loading/loading-overlay'
+import useFetchAthlete from '../settings/hooks/useFetchAthlete'
+import useFetchTestResults from './hooks/useFetchTestResults'
+import DateFilter from './date-filter/index'
 
 interface SportTestsProps {
   session: any

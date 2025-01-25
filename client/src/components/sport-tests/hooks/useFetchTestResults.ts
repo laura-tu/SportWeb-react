@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
-import { fetchTestResultsByAthleteId } from '../../../services/sport-tests.ts'
-import type { TestResult } from '../../../utils/payload/payload-types.ts'
+import { fetchTestResultsByAthleteId } from '../../../services/sport-tests'
+import type { TestResult } from '../../../utils/payload/payload-types'
 
 export interface TestResultResponse {
   docs: TestResult[]

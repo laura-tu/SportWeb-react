@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { Box, Typography, Button, FormControl, InputLabel, MenuItem, Select } from '@mui/material'
-import { fetchCoachByUserId, CoachIdResponse, updateCoachData } from '../../../services/coach.ts'
+import { fetchCoachByUserId, CoachIdResponse, updateCoachData } from '../../../services/coach'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { fetchSports } from '../../../services/sports.ts'
-import { fetchSportClubs } from '../../../services/sport-clubs.ts'
-import { Sport, Club } from '../../../utils/interfaces.ts'
-import LoadingOverlay from '../../loading/loading-overlay.tsx'
-import SuccessModal from '../../success-modal/index.tsx'
-import ErrorModal from '../../error-modal/index.tsx'
-import SettingsUser from '../user/index.tsx'
+import { fetchSports } from '../../../services/sports'
+import { fetchSportClubs } from '../../../services/sport-clubs'
+import { Sport, Club } from '../../../utils/interfaces'
+import LoadingOverlay from '../../loading/loading-overlay'
+import SuccessModal from '../../success-modal/index'
+import ErrorModal from '../../error-modal/index'
+import SettingsUser from '../user/index'
 
 interface CoachFormData {
   sport: string[]

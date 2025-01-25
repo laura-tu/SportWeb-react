@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { fetchAthleteByUserId, AthleteIdResponse } from '../../../services/athlete.ts'
+import { fetchAthleteByUserId, AthleteIdResponse } from '../../../services/athlete'
 import { useRef } from 'react'
 
 const useFetchAthlete = (userId: string) => {

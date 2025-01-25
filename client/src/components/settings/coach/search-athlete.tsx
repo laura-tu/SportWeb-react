@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { Box, TextField, List, ListItem, Button, Typography, CircularProgress } from '@mui/material'
-import { updateCoachData, getCoachData } from '../../../services/coach.ts'
-import { searchAthletesByName } from '../../../services/athlete.ts'
+import { updateCoachData, getCoachData } from '../../../services/coach'
+import { searchAthletesByName } from '../../../services/athlete'
 
 interface SearchAthleteProps {
   coachId: string

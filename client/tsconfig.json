@@ -10,11 +10,14 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "outDir": "./dist",
-    "rootDir": "./",
-    "jsx": "react",             
+    "rootDir": "./src",
+    "jsx": "react",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
-  "include": ["**/*.ts", "server/types/**/*.d.ts"],
-  "exclude": ["node_modules"],
+  "include": ["src"],
+  "exclude": ["node_modules", "dist", "build"],
   "ts-node": {
     "transpileOnly": true,
     "swc": true

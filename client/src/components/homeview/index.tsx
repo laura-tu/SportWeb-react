@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import { useLocation } from 'react-router-dom'
-import HeaderComp from '../header/index.tsx'
-import RegistrationForm from '../registration/registration-form/index.tsx'
-import AthleteRegistration from '../registration/athlete-registration/index.tsx'
-import CoachRegistration from '../registration/coach-registration/index.tsx'
-import LoginForm from '../login-form/index.tsx'
+import HeaderComp from '../header/index'
+import RegistrationForm from '../registration/registration-form/index'
+import AthleteRegistration from '../registration/athlete-registration/index'
+import CoachRegistration from '../registration/coach-registration/index'
+import LoginForm from '../login-form/index'
 
 export enum UserRole {
   USER = 'user',

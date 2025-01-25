@@ -66,7 +66,7 @@ const DateFilter: React.FC<DateFilterProps> = ({
           Vymazať filter
         </Button>
       </Box>
-      
+
       <Box className="w-full my-4 flex gap-4">
         {dateError && <Typography color="error">{dateError}</Typography>}
       </Box>

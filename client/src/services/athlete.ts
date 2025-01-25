@@ -1,7 +1,7 @@
 import axios from 'axios'
-import { AthleteFormData } from '../components/registration/athlete-registration/index.tsx'
+import { AthleteFormData } from '../components/registration/athlete-registration/index.js'
 import type { Athlete } from '../utils/interfaces.ts'
-import { stringify } from 'qs-esm'
+import qs from 'qs'
 
 export interface AthleteIdResponse {
   docs: Athlete[]
@@ -34,7 +34,7 @@ export const registerAthlete = async (
 
 export const searchAthletesByName = async (query: string): Promise<Athlete[]> => {
   try {
-    const stringifiedParams = stringify(
+    const stringifiedParams = qs.stringify(
       { where: { name: { equals: query } } },
       { addQueryPrefix: true },
     )

@@ -1,5 +1,5 @@
-import type { TestResult } from '../utils/payload/payload-types'
-import { ApiGetList, constructUrlWithParams, ajax, BaseParams } from '../utils/api/index.ts'
+import type { TestResult } from '../utils/payload/payload-types.ts'
+import { ApiGetList, constructUrlWithParams, ajax, BaseParams } from '../utils/api/index.js'
 
 const URL = 'api/test_results'
 
