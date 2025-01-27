@@ -103,7 +103,7 @@ const RegistrationForm: React.FC<{
   }
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-55 flex justify-center items-center z-50">
+    <div className="fixed inset-0 bg-black/70 flex justify-center items-center z-50">
       <Box className="bg-white p-6 rounded-lg shadow-lg border border-black max-w-lg w-full">
         <div className="headerX flex justify-between items-center mb-10">
           <h1 className="text-2xl font-bold text-black text-bold ">Vytvoriť účet</h1>

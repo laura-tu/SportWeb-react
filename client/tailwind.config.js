@@ -1,8 +1,8 @@
 /** @type {import('tailwindcss').Config} */
-const colors = require('tailwindcss/colors')
+import colors from 'tailwindcss/colors';
 
-module.exports = {
-  content: ['./src/**/*.{js,jsx,ts,tsx}'],
+export default {
+  content: ['./src/**/*.{js,jsx,ts,tsx}'], // Paths to all your template files
   darkMode: 'class', // Enable dark mode based on a CSS class
   theme: {
     extend: {
@@ -15,10 +15,9 @@ module.exports = {
         xl: '1024px',
         hd: '1280px',
         '2xl': '1920px',
-        '3xl': '2560px'
+        '3xl': '2560px',
       },
       colors: {
-        // Define colors for both light and dark themes
         light: {
           background: colors.gray[100],
           text: colors.gray[900],
@@ -35,4 +34,4 @@ module.exports = {
     },
   },
   plugins: [],
-}
+};
