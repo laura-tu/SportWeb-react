@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { AppProvider } from '@toolpad/core/AppProvider'
 import { DashboardLayout } from '@toolpad/core/DashboardLayout'
-import ThemeToggle from './theme-toggle'
+//import ThemeToggle from './theme-toggle'
 import { Account } from '@toolpad/core/Account'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useAuthSession } from './hooks/useAuthSession'
@@ -28,7 +28,6 @@ interface DemoProps {
 
 export default function DashboardLayoutAccount(props: DemoProps) {
   const { window } = props
-  const [isDarkMode, setIsDarkMode] = useState(false)
   const [currentForm, setCurrentForm] = useState<'athlete' | 'coach' | null>(null)
   const [showWhiteDashboard, setShowWhiteDashboard] = useState(false)
   const [selectedTestResult, setSelectedTestResult] = useState(null)
@@ -36,28 +35,46 @@ export default function DashboardLayoutAccount(props: DemoProps) {
   const { session, loading, error, authentication } = useAuthSession()
   const navigate = useNavigate()
 
-  // Always call hooks first, no early returns
-  const theme = useMemo(() => {
-    return createTheme({
-      palette: {
-        mode: isDarkMode ? 'dark' : 'light',
-        primary: {
-          main: '#3998cc',
-        },
-        secondary: {
-          main: '#f50057',
-        },
-        background: {
-          default: isDarkMode ? '#121212' : '#ffffff',
-          paper: isDarkMode ? '#1e1e1e' : '#f5f5f5',
+  const customTheme = createTheme({
+    cssVariables: {
+      colorSchemeSelector: 'data-toolpad-color-scheme',
+    },
+    colorSchemes: {
+      light: {
+        palette: {
+          background: {
+            default: '#ffffff', //vnutorne okno
+            paper: '#f5f5f5', //menu
+          },
+          text: {
+            primary: '#000000', // Default text color
+            secondary: '#555555', // Less prominent text
+          },
         },
       },
-    })
-  }, [isDarkMode])
-
-  const toggleTheme = () => {
-    setIsDarkMode(prevMode => !prevMode)
-  }
+      dark: {
+        palette: {
+          background: {
+            default: '#131614', //black,vnutorne okno
+            paper: '#1D201E', //menu
+          },
+          text: {
+            primary: '#90caf9', // White text for dark mode
+            secondary: '#bbbbbb', // Lighter text for contrast
+          },
+        },
+      },
+    },
+    breakpoints: {
+      values: {
+        xs: 0,
+        sm: 600,
+        md: 600,
+        lg: 1200,
+        xl: 1536,
+      },
+    },
+  })
 
   const demoWindow = window ? window() : undefined
 
@@ -126,12 +143,12 @@ export default function DashboardLayoutAccount(props: DemoProps) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={customTheme}>
         <AppProvider
           session={session}
           authentication={authentication}
           navigation={filteredNavigation}
-          theme={theme}
+          theme={customTheme}
           window={demoWindow}
           branding={{
             logo: <img src="/logo_black_50.jpg" alt="SportWeb logo" />,
@@ -248,7 +265,7 @@ export default function DashboardLayoutAccount(props: DemoProps) {
               <Route path="*" element={<DemoPageContent />} />
             </Routes>
 
-            <Box
+            {/*<Box
               sx={{
                 display: 'flex',
                 justifyContent: 'start',
@@ -261,7 +278,7 @@ export default function DashboardLayoutAccount(props: DemoProps) {
               }}
             >
               <ThemeToggle isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
-            </Box>
+            </Box>*/}
           </DashboardLayout>
         </AppProvider>
       </ThemeProvider>

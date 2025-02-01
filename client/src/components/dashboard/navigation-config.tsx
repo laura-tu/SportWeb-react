@@ -27,6 +27,13 @@ export const NAVIGATION: Navigation = [
     icon: <SettingsAccessibilityIcon />,
   },
   {
+    kind: 'divider',
+  },
+  {
+    kind: 'header',
+    title: 'Analýza',
+  },
+  {
     segment: 'dashboard/test_results',
     title: 'Výsledky testov',
     icon: <AnalyticsIcon />,
@@ -44,6 +51,9 @@ export const NAVIGATION: Navigation = [
         icon: <MonitorHeartIcon />,
       },
     ],
+  },
+  {
+    kind: 'divider',
   },
   {
     segment: 'dashboard/competitions',
