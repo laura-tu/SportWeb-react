@@ -35,6 +35,7 @@ const SettingsUser = ({ userId }: { userId: string }) => {
   // Load user data into formData
   useEffect(() => {
     if (userData) {
+      console.log('Fetched User Data:', userData)
       const initialData: UserFormData = {
         name: userData.name || '',
         email: userData.email || '',
@@ -111,31 +112,35 @@ const SettingsUser = ({ userId }: { userId: string }) => {
   })*/
 
   const handleSaveChanges = () => {
-    const { valid, errors: validationErrors } = validate(formData)
+    const { changedPassword, changedPasswordConfirm, ...otherFields } = formData
+
+    // Validate only non-empty fields
+    const { valid, errors: validationErrors } = validate(otherFields)
 
     if (!valid) {
+      //console.log('Validation errors:', validationErrors)
       setErrors(validationErrors || {})
       return
     }
 
-    // Handle password reset
-    if (formData.changedPassword) {
-      if (formData.changedPassword !== formData.changedPasswordConfirm) {
-        console.log('Heslá sa nezhodujú')
+    // Skip password validation if user is not changing it
+    if (changedPassword || changedPasswordConfirm) {
+      if (changedPassword !== changedPasswordConfirm) {
+        //console.log('Heslá sa nezhodujú')
+        setErrors({ changedPasswordConfirm: 'Heslá sa nezhodujú' })
         setErrorModalOpen(true)
         return
       }
 
-      if (formData.changedPassword.length < 8) {
-        console.log('Heslo musú mať minimálne 8 znakov')
+      if (changedPassword.length < 8) {
+        //console.log('Heslo musí mať minimálne 8 znakov')
+        setErrors({ changedPassword: 'Heslo musí mať minimálne 8 znakov' })
         setErrorModalOpen(true)
         return
       }
-
-      return
     }
 
-    // Handle other updates
+    // Get modified fields
     const modifiedData = getModifiedData()
 
     if (Object.keys(modifiedData).length === 0) {
@@ -143,10 +148,16 @@ const SettingsUser = ({ userId }: { userId: string }) => {
       return
     }
 
-    mutation.mutate({
-      userId,
-      updateData: modifiedData,
-    })
+    mutation.mutate(
+      {
+        userId,
+        updateData: modifiedData,
+      },
+      {
+        onSuccess: data => console.log('Update Success:', data),
+        onError: error => console.error('Update Failed:', error),
+      },
+    )
   }
 
   if (isFetchingUser) {
@@ -231,8 +242,8 @@ const SettingsUser = ({ userId }: { userId: string }) => {
         color="primary"
         sx={{ mt: 2 }}
         onClick={handleSaveChanges}
-        /*disabled={mutation.isPending}*/
-        disabled
+        // disabled={mutation.isPending}
+        //disabled
       >
         {mutation.isPending ? 'Ukladám...' : 'Uložiť zmeny'}
       </Button>
