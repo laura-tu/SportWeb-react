@@ -16,9 +16,11 @@ import {
 } from '@mui/material'
 import * as XLSX from 'xlsx'
 import ParsedInbodyTest from './parsed-inbody/index'
+import { useNavigate } from 'react-router-dom'
 
-const WhiteWindow: React.FC<{ result: any; onBack: () => void }> = ({ result, onBack }) => {
+const WhiteWindow: React.FC<{ result: any }> = ({ result }) => {
   const [parsedData, setParsedData] = useState<any[]>([])
+  const navigate = useNavigate()
 
   const parseFile = async (url: string) => {
     try {
@@ -45,7 +47,7 @@ const WhiteWindow: React.FC<{ result: any; onBack: () => void }> = ({ result, on
     <div className="flex items-center justify-center max-h-[80vh] my-auto  bg-white">
       <div className="relative bg-blue-100/70 p-8 rounded shadow-md w-full max-w-[75vw] max-h-[80vh] mb-14 overflow-hidden">
         <Box className="absolute top-4 left-4">
-          <IconButton onClick={onBack} color="primary" aria-label="go back">
+          <IconButton onClick={() => navigate(-1)} color="primary" aria-label="go back">
             <ArrowBackIcon />
           </IconButton>
         </Box>
@@ -55,7 +57,7 @@ const WhiteWindow: React.FC<{ result: any; onBack: () => void }> = ({ result, on
             Detail výsledku športového testu
           </Typography>
           <Typography variant="body1">
-            Dátum: {new Date(result.date).toLocaleDateString()}
+            Dátum: {new Date(result?.date).toLocaleDateString()}
           </Typography>
           <Typography variant="body1">Typ testu: {result.testType?.name || 'N/A'}</Typography>
           <Typography variant="body1">Poznámky: {result.notes || 'Žiadne poznámky'}</Typography>

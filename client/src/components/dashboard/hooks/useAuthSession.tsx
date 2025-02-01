@@ -1,9 +1,7 @@
 import { useState, useEffect, useMemo } from 'react'
-import { fetchUserData, useAuth } from '../../../services/user.ts'
+import { fetchUserData, useAuth } from '../../../services/user'
 import { Session as ToolpadSession } from '@toolpad/core/AppProvider'
-import { User } from '../../../utils/interfaces.ts'
-import { loginUser } from '../../../services/user.ts'
-import axios from 'axios'
+import { User } from '../../../utils/interfaces'
 
 interface Session extends ToolpadSession {
   user: User
@@ -23,7 +21,7 @@ export const useAuthSession = () => {
         setSession({ user })
         setError(null)
       } catch (error) {
-        console.error('Nepodarilo sa načítať údaje o používateľovi:', error)
+        console.error(error)
         setError('Nepodarilo sa načítať údaje o používateľovi')
       } finally {
         setLoading(false)

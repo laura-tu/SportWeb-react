@@ -17,17 +17,17 @@ export const NAVIGATION: Navigation = [
     icon: <DashboardIcon />,
   },
   {
-    segment: 'athletes',
+    segment: 'dashboard/athletes',
     title: 'Športovci',
     icon: <PersonPinOutlinedIcon />,
   },
   {
-    segment: 'settings',
+    segment: 'dashboard/settings',
     title: 'Nastavenie profilu',
     icon: <SettingsAccessibilityIcon />,
   },
   {
-    segment: 'test_results',
+    segment: 'dashboard/test_results',
     title: 'Výsledky testov',
     icon: <AnalyticsIcon />,
     children: [
@@ -46,7 +46,7 @@ export const NAVIGATION: Navigation = [
     ],
   },
   {
-    segment: 'competitions',
+    segment: 'dashboard/competitions',
     title: 'Súťaže',
     icon: <ScoreboardOutlinedIcon />,
   },

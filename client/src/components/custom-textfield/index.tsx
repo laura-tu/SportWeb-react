@@ -1,31 +1,29 @@
-import React from 'react'
-import { makeStyles } from '@material-ui/core/styles'
-import TextField from '@material-ui/core/TextField'
-import InputAdornment from '@mui/material/InputAdornment'
-
-const useStyles = makeStyles(theme => ({
-  root: {
-    '& > *': {
-      //target all direct child elements of the .root class
-      display: 'flex',
-      width: '100%',
-    },
-  },
-}))
+import React from 'react';
+import { styled } from '@mui/material/styles';
+import TextField from '@mui/material/TextField';
+import InputAdornment from '@mui/material/InputAdornment';
 
 interface CustomTextFieldProps {
-  name: string
-  type?: string
-  label: string
-  id?: string
-  variant?: 'filled' | 'outlined' | 'standard'
-  value?: string
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
-  required?: boolean
-  maxLength?: number
-  minLength?: number
-  icon?: React.ReactNode
+  name: string;
+  type?: string;
+  label: string;
+  id?: string;
+  variant?: 'filled' | 'outlined' | 'standard';
+  value?: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  required?: boolean;
+  maxLength?: number;
+  minLength?: number;
+  icon?: React.ReactNode;
 }
+
+// Use the styled API to create a styled wrapper
+const Root = styled('div')({
+  '& > *': {
+    display: 'flex',
+    width: '100%',
+  },
+});
 
 const CustomTextField: React.FC<CustomTextFieldProps> = ({
   label,
@@ -39,10 +37,8 @@ const CustomTextField: React.FC<CustomTextFieldProps> = ({
   minLength,
   icon,
 }) => {
-  const classes = useStyles()
-
   return (
-    <div className={classes.root}>
+    <Root>
       <TextField
         name={name}
         type={type}
@@ -56,8 +52,8 @@ const CustomTextField: React.FC<CustomTextFieldProps> = ({
           startAdornment: icon ? <InputAdornment position="start">{icon}</InputAdornment> : null,
         }}
       />
-    </div>
-  )
-}
+    </Root>
+  );
+};
 
-export default CustomTextField
+export default CustomTextField;

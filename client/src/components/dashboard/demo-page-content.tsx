@@ -2,7 +2,7 @@ import React from 'react'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 
-export default function DemoPageContent({ pathname }: { pathname: string }) {
+export default function DemoPageContent() {
   return (
     <Box
       sx={{
@@ -13,7 +13,7 @@ export default function DemoPageContent({ pathname }: { pathname: string }) {
         textAlign: 'center',
       }}
     >
-      <Typography>Dashboard content for {pathname}</Typography>
+      <Typography>Dashboard content for DemoPage</Typography>
     </Box>
   )
 }

@@ -1,22 +1,19 @@
 import React from 'react'
 import { Checkbox } from '@mui/material'
-import { withStyles } from '@material-ui/core/styles'
-import { green } from '@material-ui/core/colors'
+import { styled } from '@mui/material/styles'
+import { green } from '@mui/material/colors'
 
 interface GreenCheckboxProps extends React.ComponentProps<typeof Checkbox> {}
 
-const StyledCheckbox = withStyles({
-  root: {
-    color: green[400],
-    '&$checked': {
-      color: green[600],
-    },
+const StyledCheckbox = styled(Checkbox)(({ theme }) => ({
+  color: green[400],
+  '&.Mui-checked': {
+    color: green[600],
   },
-  checked: {},
-})((props: GreenCheckboxProps) => <Checkbox color="default" {...props} />)
+}))
 
 const GreenCheckbox: React.FC<GreenCheckboxProps> = props => {
-  return <StyledCheckbox {...props} />
+  return <StyledCheckbox color="default" {...props} />
 }
 
 export default GreenCheckbox
