@@ -19,6 +19,7 @@ import TestResults from '../sport-tests/index'
 import { LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import WhiteWindow from '../white-window'
+//import { blue, lightBlue, blueGrey, green, lightGreen } from '@mui/material/colors'
 
 const queryClient = new QueryClient()
 
@@ -169,7 +170,7 @@ export default function DashboardLayoutAccount(props: DemoProps) {
             }}
           >
             <Routes>
-              <Route path="/" element={<DemoPageContent />} />
+              <Route path="/" element={<DemoPageContent userId={session.user.id} />} />
               <Route
                 path="settings"
                 element={
@@ -206,7 +207,7 @@ export default function DashboardLayoutAccount(props: DemoProps) {
                 path="test_results/inbody_results"
                 element={
                   hasSportCoachRole ? (
-                    <DemoPageContent />
+                    <DemoPageContent userId={session.user.id} />
                   ) : session?.user ? (
                     <div>
                       <Box sx={{ pt: 3, ml: 3 }}>
@@ -215,7 +216,7 @@ export default function DashboardLayoutAccount(props: DemoProps) {
                         </Typography>
                         <LocalizationProvider dateAdapter={AdapterDateFns}>
                           <TestResults
-                            session={session}
+                            userId={session.user.id}
                             onResultClick={handleResultClick}
                             testType={'INBODY'}
                           />
@@ -234,7 +235,7 @@ export default function DashboardLayoutAccount(props: DemoProps) {
                 path="test_results/spiroergometry"
                 element={
                   hasSportCoachRole ? (
-                    <DemoPageContent />
+                    <DemoPageContent userId={session.user.id} />
                   ) : session?.user ? (
                     <div>
                       <Box sx={{ pt: 3, ml: 3 }}>
@@ -243,7 +244,7 @@ export default function DashboardLayoutAccount(props: DemoProps) {
                         </Typography>
                         <LocalizationProvider dateAdapter={AdapterDateFns}>
                           <TestResults
-                            session={session}
+                            userId={session.user.id}
                             onResultClick={handleResultClick}
                             testType={'Pnoe'}
                           />
@@ -262,7 +263,7 @@ export default function DashboardLayoutAccount(props: DemoProps) {
                 element={<WhiteWindow result={selectedTestResult} />}
               />
 
-              <Route path="*" element={<DemoPageContent />} />
+              <Route path="*" element={<DemoPageContent userId={session.user.id} />} />
             </Routes>
 
             {/*<Box
