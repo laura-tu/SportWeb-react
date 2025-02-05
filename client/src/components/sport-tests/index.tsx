@@ -1,22 +1,18 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Box, Typography, Card, CardContent, Link } from '@mui/material'
-import { fetchUser } from '../../services/user'
 import LoadingOverlay from '../loading/loading-overlay'
 import useFetchAthlete from '../settings/hooks/useFetchAthlete'
 import useFetchTestResults from './hooks/useFetchTestResults'
 import DateFilter from './date-filter/index'
+import useFetchUserById from '../../utils/api/useFetchUserById'
 
 interface SportTestsProps {
-  session: any
+  userId: string
   onResultClick: (result: any) => void
   testType: string
 }
 
-const TestResults: React.FC<SportTestsProps> = ({ session, onResultClick, testType }) => {
-  const userId = session.user.id
-  const [userData, setUserData] = useState<any>(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
+const TestResults: React.FC<SportTestsProps> = ({ userId, onResultClick, testType }) => {
   const [startDate, setStartDate] = useState<Date | null>(null)
   const [endDate, setEndDate] = useState<Date | null>(null)
 
@@ -26,23 +22,9 @@ const TestResults: React.FC<SportTestsProps> = ({ session, onResultClick, testTy
     athlete?.id,
   )
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true)
-        const data = await fetchUser(userId)
-        setUserData(data)
-      } catch (err: any) {
-        setError(err.message || 'Nepodarilo sa načítať údaje o používateľovi')
-      } finally {
-        setLoading(false)
-      }
-    }
+  const { data: userData, isLoading, error } = useFetchUserById(userId)
 
-    fetchData()
-  }, [userId])
-
-  if (loading || isFetchingTestResults || isFetchingAthleteId) {
+  if (isLoading || isFetchingTestResults || isFetchingAthleteId) {
     return <LoadingOverlay />
   }
 
