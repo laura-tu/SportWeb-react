@@ -2,10 +2,8 @@ import React, { useState, useMemo } from 'react'
 import { Routes, Route, useNavigate } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
-import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { AppProvider } from '@toolpad/core/AppProvider'
 import { DashboardLayout } from '@toolpad/core/DashboardLayout'
-//import ThemeToggle from './theme-toggle'
 import { Account } from '@toolpad/core/Account'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useAuthSession } from './hooks/useAuthSession'
@@ -19,7 +17,7 @@ import TestResults from '../sport-tests/index'
 import { LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import WhiteWindow from '../white-window'
-//import { blue, lightBlue, blueGrey, green, lightGreen } from '@mui/material/colors'
+import { CustomThemeSwitcher, demoTheme } from './theme-switcher'
 
 const queryClient = new QueryClient()
 
@@ -35,47 +33,6 @@ export default function DashboardLayoutAccount(props: DemoProps) {
 
   const { session, loading, error, authentication } = useAuthSession()
   const navigate = useNavigate()
-
-  const customTheme = createTheme({
-    cssVariables: {
-      colorSchemeSelector: 'data-toolpad-color-scheme',
-    },
-    colorSchemes: {
-      light: {
-        palette: {
-          background: {
-            default: '#ffffff', //vnutorne okno
-            paper: '#f5f5f5', //menu
-          },
-          text: {
-            primary: '#000000', // Default text color
-            secondary: '#555555', // Less prominent text
-          },
-        },
-      },
-      dark: {
-        palette: {
-          background: {
-            default: '#131614', //black,vnutorne okno
-            paper: '#1D201E', //menu
-          },
-          text: {
-            primary: '#90caf9', // White text for dark mode
-            secondary: '#bbbbbb', // Lighter text for contrast
-          },
-        },
-      },
-    },
-    breakpoints: {
-      values: {
-        xs: 0,
-        sm: 600,
-        md: 600,
-        lg: 1200,
-        xl: 1536,
-      },
-    },
-  })
 
   const demoWindow = window ? window() : undefined
 
@@ -144,145 +101,128 @@ export default function DashboardLayoutAccount(props: DemoProps) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider theme={customTheme}>
-        <AppProvider
-          session={session}
-          authentication={authentication}
-          navigation={filteredNavigation}
-          theme={customTheme}
-          window={demoWindow}
-          branding={{
-            logo: <img src="/logo_black_50.jpg" alt="SportWeb logo" />,
-            title: 'SportWeb',
+      <AppProvider
+        session={session}
+        authentication={authentication}
+        navigation={filteredNavigation}
+        theme={demoTheme}
+        window={demoWindow}
+        branding={{
+          logo: <img src="/logo_black_50.jpg" alt="SportWeb logo" />,
+          title: 'SportWeb',
+        }}
+      >
+        <DashboardLayout
+          slots={{
+            toolbarAccount: () => (
+              <Account
+                localeText={{
+                  signInLabel: 'Prihlásiť sa',
+                  signOutLabel: 'Odhlásiť sa',
+                }}
+              />
+            ),
+            toolbarActions: CustomThemeSwitcher,
           }}
-          // colorScheme={{ primary: '#3998cc', secondary: '#f50057', complementary: '#0a2396' }}
         >
-          <DashboardLayout
-            slots={{
-              toolbarAccount: () => (
-                <Account
-                  localeText={{
-                    signInLabel: 'Prihlásiť sa',
-                    signOutLabel: 'Odhlásiť sa',
-                  }}
-                />
-              ),
-            }}
-          >
-            <Routes>
-              <Route path="/" element={<DemoPageContent userId={session.user.id} />} />
+          <Routes>
+            <Route path="/" element={<DemoPageContent userId={session.user.id} />} />
+            <Route
+              path="settings"
+              element={
+                <div>
+                  <Box sx={{ pt: 3, px: 3, ml: 3 }}>
+                    <Typography variant="h4" gutterBottom>
+                      Profil
+                    </Typography>
+                  </Box>
+                  <SettingsForm
+                    session={session}
+                    currentForm={currentForm}
+                    setCurrentForm={setCurrentForm}
+                  />
+                </div>
+              }
+            />
+            {hasSportCoachRole && (
               <Route
-                path="settings"
+                path="athletes"
                 element={
                   <div>
-                    <Box sx={{ pt: 3, px: 3, ml: 3 }}>
+                    <Box sx={{ pt: 3, ml: 3 }}>
                       <Typography variant="h4" gutterBottom>
-                        Profil
+                        Športovci
                       </Typography>
                     </Box>
-                    <SettingsForm
-                      session={session}
-                      currentForm={currentForm}
-                      setCurrentForm={setCurrentForm}
-                    />
+                    <CoachAthletesManager userId={session.user.id} />
                   </div>
                 }
               />
-              {hasSportCoachRole && (
-                <Route
-                  path="athletes"
-                  element={
-                    <div>
-                      <Box sx={{ pt: 3, ml: 3 }}>
-                        <Typography variant="h4" gutterBottom>
-                          Športovci
-                        </Typography>
-                      </Box>
-                      <CoachAthletesManager userId={session.user.id} />
-                    </div>
-                  }
-                />
-              )}
-              <Route
-                path="test_results/inbody_results"
-                element={
-                  hasSportCoachRole ? (
-                    <DemoPageContent userId={session.user.id} />
-                  ) : session?.user ? (
-                    <div>
-                      <Box sx={{ pt: 3, ml: 3 }}>
-                        <Typography variant="h4" gutterBottom>
-                          Výsledky testov z Inbody merania
-                        </Typography>
-                        <LocalizationProvider dateAdapter={AdapterDateFns}>
-                          <TestResults
-                            userId={session.user.id}
-                            onResultClick={handleResultClick}
-                            testType={'INBODY'}
-                          />
-                        </LocalizationProvider>
-                      </Box>
-                    </div>
-                  ) : (
-                    <Typography variant="h5" color="error">
-                      Používateľ nie je prihlásený
-                    </Typography>
-                  )
-                }
-              />
+            )}
+            <Route
+              path="test_results/inbody_results"
+              element={
+                hasSportCoachRole ? (
+                  <DemoPageContent userId={session.user.id} />
+                ) : session?.user ? (
+                  <div>
+                    <Box sx={{ pt: 3, ml: 3 }}>
+                      <Typography variant="h4" gutterBottom>
+                        Výsledky testov z Inbody merania
+                      </Typography>
+                      <LocalizationProvider dateAdapter={AdapterDateFns}>
+                        <TestResults
+                          userId={session.user.id}
+                          onResultClick={handleResultClick}
+                          testType={'INBODY'}
+                        />
+                      </LocalizationProvider>
+                    </Box>
+                  </div>
+                ) : (
+                  <Typography variant="h5" color="error">
+                    Používateľ nie je prihlásený
+                  </Typography>
+                )
+              }
+            />
 
-              <Route
-                path="test_results/spiroergometry"
-                element={
-                  hasSportCoachRole ? (
-                    <DemoPageContent userId={session.user.id} />
-                  ) : session?.user ? (
-                    <div>
-                      <Box sx={{ pt: 3, ml: 3 }}>
-                        <Typography variant="h4" gutterBottom>
-                          Výsledky testov zo spiroergometrie
-                        </Typography>
-                        <LocalizationProvider dateAdapter={AdapterDateFns}>
-                          <TestResults
-                            userId={session.user.id}
-                            onResultClick={handleResultClick}
-                            testType={'Pnoe'}
-                          />
-                        </LocalizationProvider>
-                      </Box>
-                    </div>
-                  ) : (
-                    <Typography variant="h5" color="error">
-                      Používateľ nie je prihlásený
-                    </Typography>
-                  )
-                }
-              />
-              <Route
-                path="test_results/:resultId"
-                element={<WhiteWindow result={selectedTestResult} />}
-              />
+            <Route
+              path="test_results/spiroergometry"
+              element={
+                hasSportCoachRole ? (
+                  <DemoPageContent userId={session.user.id} />
+                ) : session?.user ? (
+                  <div>
+                    <Box sx={{ pt: 3, ml: 3 }}>
+                      <Typography variant="h4" gutterBottom>
+                        Výsledky testov zo spiroergometrie
+                      </Typography>
+                      <LocalizationProvider dateAdapter={AdapterDateFns}>
+                        <TestResults
+                          userId={session.user.id}
+                          onResultClick={handleResultClick}
+                          testType={'Pnoe'}
+                        />
+                      </LocalizationProvider>
+                    </Box>
+                  </div>
+                ) : (
+                  <Typography variant="h5" color="error">
+                    Používateľ nie je prihlásený
+                  </Typography>
+                )
+              }
+            />
+            <Route
+              path="test_results/:resultId"
+              element={<WhiteWindow result={selectedTestResult} />}
+            />
 
-              <Route path="*" element={<DemoPageContent userId={session.user.id} />} />
-            </Routes>
-
-            {/*<Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'start',
-                padding: 2,
-                position: 'fixed',
-                bottom: 0,
-                width: '100%',
-                backgroundColor: theme.palette.background.paper,
-                borderTop: `1px solid ${theme.palette.divider}`,
-              }}
-            >
-              <ThemeToggle isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
-            </Box>*/}
-          </DashboardLayout>
-        </AppProvider>
-      </ThemeProvider>
+            <Route path="*" element={<DemoPageContent userId={session.user.id} />} />
+          </Routes>
+        </DashboardLayout>
+      </AppProvider>
     </QueryClientProvider>
   )
 }
