@@ -16,7 +16,7 @@ import LoadingOverlay from '../loading/loading-overlay'
 import TestResults from '../sport-tests/index'
 import { LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
-import WhiteWindow from '../white-window'
+import TestDetailWindow from '../white-window'
 import { CustomThemeSwitcher, demoTheme } from './theme-switcher'
 
 const queryClient = new QueryClient()
@@ -216,7 +216,7 @@ export default function DashboardLayoutAccount(props: DemoProps) {
             />
             <Route
               path="test_results/:resultId"
-              element={<WhiteWindow result={selectedTestResult} />}
+              element={<TestDetailWindow result={selectedTestResult} />}
             />
 
             <Route path="*" element={<DemoPageContent userId={session.user.id} />} />

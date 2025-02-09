@@ -13,12 +13,14 @@ import {
   TableHead,
   TableRow,
   Paper,
+  Card,
 } from '@mui/material'
 import * as XLSX from 'xlsx'
 import ParsedInbodyTest from './parsed-inbody/index'
 import { useNavigate } from 'react-router-dom'
+import params from '../../data/inbody-params.json'
 
-const WhiteWindow: React.FC<{ result: any }> = ({ result }) => {
+const TestDetailWindow: React.FC<{ result: any }> = ({ result }) => {
   const [parsedData, setParsedData] = useState<any[]>([])
   const navigate = useNavigate()
 
@@ -81,41 +83,34 @@ const WhiteWindow: React.FC<{ result: any }> = ({ result }) => {
           )}
         </Box>
 
-        {/* Conditionally render ParsedInbodyTest or default table */}
+        {parsedData.length > 0 && (
+          <Box className="pl-6">
+            <Box>
+              {['Name', 'Age', 'Height'].map(key => {
+                const paramKey = Object.keys(params).find(k => k.includes(key))
+                const label = paramKey ? params[paramKey] : key
+                const value = paramKey ? parsedData[0][paramKey] : 'N/A'
+
+                return (
+                  <Card key={key} className="w-52 my-2 p-4">
+                    <Typography variant="body1" className="font-bold">
+                      {label}: {value} {key === 'Age' ? 'rokov' : key === 'Height' ? 'cm' : ''}
+                    </Typography>
+                  </Card>
+                )
+              })}
+            </Box>
+          </Box>
+        )}
+
         {parsedData.length > 0 && result.testType?.name === 'INBODY' ? (
           <ParsedInbodyTest parsedData={parsedData} />
         ) : (
-          <Box className="my-8 max-h-[50vh] pl-6">
-            <Typography variant="h6" gutterBottom>
-              Výsledok testu:
-            </Typography>
-            {parsedData.length > 0 && (
-              <TableContainer component={Paper} className="overflow-auto max-h-[45vh]">
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      {Object.keys(parsedData[0]).map(key => (
-                        <TableCell key={key}>{key}</TableCell>
-                      ))}
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {parsedData.map((row, index) => (
-                      <TableRow key={index}>
-                        {Object.values(row).map((value, cellIndex) => (
-                          <TableCell key={cellIndex}>{String(value)}</TableCell>
-                        ))}
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            )}
-          </Box>
+          <div>nic</div>
         )}
       </div>
     </div>
   )
 }
 
-export default WhiteWindow
+export default TestDetailWindow
