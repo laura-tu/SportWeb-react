@@ -73,7 +73,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onClose }) => {
         </div>
 
         <form onSubmit={loginAthlete}>
-          <div className="mb-4">
+          <div className="mb-5">
             <CustomTextField
               name="email"
               label="E-mail"
@@ -83,7 +83,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onClose }) => {
             />
           </div>
 
-          <div className="mb-4 relative">
+          <div className="mb-8 relative">
             <CustomTextField
               name="password"
               label="Heslo"

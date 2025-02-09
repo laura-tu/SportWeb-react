@@ -54,7 +54,7 @@ const CoachRegistration = ({ userId, onClose }) => {
   return (
     <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
       <Box className="bg-white p-6 rounded-lg w-full max-w-lg shadow-lg border border-black relative">
-        <div className="headerX flex justify-between items-center mb-10">
+        <div className="headerX flex justify-between items-center mb-8">
           <h1 className="text-2xl font-bold text-black text-bold ">Informácie o trénerovi</h1>
           <button className="text-red-600 text-2xl  hover:cursor-pointer" onClick={onClose}>
             <CloseOutlinedIcon />
@@ -62,67 +62,72 @@ const CoachRegistration = ({ userId, onClose }) => {
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          <InputLabel id="sport-id">Venujem sa športu (športom):</InputLabel>
-          <FormControl fullWidth>
-            <Controller
-              name="sport"
-              control={control}
-              defaultValue={[]}
-              render={({ field }) => (
-                <Select
-                  {...field}
-                  labelId="sport-id"
-                  multiple
-                  required
-                  value={field.value || []}
-                  onChange={e => {
-                    const selectedSportIds = e.target.value as string[]
-                    if (selectedSportIds.length <= 3) {
-                      setValue('sport', selectedSportIds)
-                    }
-                  }}
-                >
-                  {sportsOptions.map(sport => (
-                    <MenuItem key={sport.id} value={sport.id}>
-                      {sport.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              )}
-            />
-          </FormControl>
+          <div className="flex flex-col gap-2">
+            <InputLabel id="sport-id">Venujem sa športu (športom):</InputLabel>
+            <FormControl fullWidth>
+              <Controller
+                name="sport"
+                control={control}
+                defaultValue={[]}
+                render={({ field }) => (
+                  <Select
+                    {...field}
+                    labelId="sport-id"
+                    multiple
+                    required
+                    value={field.value || []}
+                    onChange={e => {
+                      const selectedSportIds = e.target.value as string[]
+                      if (selectedSportIds.length <= 3) {
+                        setValue('sport', selectedSportIds)
+                      }
+                    }}
+                  >
+                    {sportsOptions.map(sport => (
+                      <MenuItem key={sport.id} value={sport.id}>
+                        {sport.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                )}
+              />
+            </FormControl>
+          </div>
 
-          <InputLabel id="club-id">Názov klubu:</InputLabel>
-          <FormControl fullWidth>
-            <Controller
-              name="club"
-              control={control}
-              defaultValue=""
-              render={({ field }) => (
-                <Select
-                  {...field}
-                  labelId="club-id"
-                  onChange={e => setValue('club', e.target.value)}
-                >
-                  {clubOptions.map(club => (
-                    <MenuItem key={club.id} value={club.id}>
-                      {club.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              )}
-            />
-          </FormControl>
-
-          <Button
-            type="submit"
-            variant="contained"
-            color="success"
-            fullWidth
-            className=" text-white py-2 px-4 rounded hover:bg-green-600"
-          >
-            ZAREGISTROVAŤ SA
-          </Button>
+          <div className="flex flex-col gap-2">
+            <InputLabel id="club-id">Názov klubu:</InputLabel>
+            <FormControl fullWidth>
+              <Controller
+                name="club"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <Select
+                    {...field}
+                    labelId="club-id"
+                    onChange={e => setValue('club', e.target.value)}
+                  >
+                    {clubOptions.map(club => (
+                      <MenuItem key={club.id} value={club.id}>
+                        {club.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                )}
+              />
+            </FormControl>
+          </div>
+          <div className="mt-8">
+            <Button
+              type="submit"
+              variant="contained"
+              color="success"
+              fullWidth
+              className=" text-white py-2 px-4 rounded hover:bg-green-600"
+            >
+              ZAREGISTROVAŤ SA
+            </Button>
+          </div>
         </form>
       </Box>
 

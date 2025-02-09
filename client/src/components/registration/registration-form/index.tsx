@@ -105,7 +105,7 @@ const RegistrationForm: React.FC<{
   return (
     <div className="fixed inset-0 bg-black/70 flex justify-center items-center z-50">
       <Box className="bg-white p-6 rounded-lg shadow-lg border border-black max-w-lg w-full">
-        <div className="headerX flex justify-between items-center mb-10">
+        <div className="headerX flex justify-between items-center mb-8">
           <h1 className="text-2xl font-bold text-black text-bold ">Vytvoriť účet</h1>
           <button className="text-red-600 text-2xl hover:cursor-pointer" onClick={onClose}>
             <CloseOutlinedIcon />
@@ -179,7 +179,7 @@ const RegistrationForm: React.FC<{
 
           {passwordError && <div className="text-red-600 text-sm mb-4">{passwordError}</div>}
 
-          <div className="form-row mb-8 text-black">
+          <div className="form-row mb-4 text-black">
             <FormLabel component="legend" required>
               Rola
             </FormLabel>
@@ -224,14 +224,14 @@ const RegistrationForm: React.FC<{
           </div>
 
           {/**nechat? */}
-          <div className="form-row mb-4 text-black">
+          <div className="form-row text-black">
             <FormControlLabel
               control={<GreenCheckbox checked={user.terms} onChange={handleChange} name="terms" />}
               label="Súhlasím s podmienkami"
             />
           </div>
 
-          <div className="flex justify-between mt-4 ">
+          <div className="flex justify-between mt-8 ">
             <Button
               type="submit"
               variant="contained"
