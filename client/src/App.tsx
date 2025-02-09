@@ -6,13 +6,11 @@ import 'tailwindcss'
 
 const App: React.FC = () => {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<HomeView />} />
-        <Route path="/dashboard/*" element={<DashboardLayoutAccount />} />
-        <Route path="*" element={<div>404 Not Found</div>} />
-      </Routes>
-    </Router>
+    <Routes>
+      <Route path="/" element={<HomeView />} />
+      <Route path="/dashboard/*" element={<DashboardLayoutAccount />} />
+      <Route path="*" element={<div>404 Not Found</div>} />
+    </Routes>
   )
 }
 
