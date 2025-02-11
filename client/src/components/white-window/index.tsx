@@ -1,6 +1,19 @@
 import React, { useState, useEffect } from 'react'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
-import { IconButton, Box, Typography, Link, Card } from '@mui/material'
+import {
+  IconButton,
+  Box,
+  Typography,
+  Link,
+  Card,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+} from '@mui/material'
 import * as XLSX from 'xlsx'
 import ParsedInbodyTest from './parsed-inbody/index'
 import { useNavigate } from 'react-router-dom'
@@ -40,6 +53,44 @@ const TestDetailWindow: React.FC<{ result: any }> = ({ result }) => {
     }
   }, [result.resultData?.url])
 
+  const bodyCompositionMetrics = [
+    {
+      key: '18. TBW (Total Body Water)',
+      label: 'Celková telesná voda',
+      unit: 'L',
+      lower: '19. Lower Limit (TBW Normal Range)',
+      upper: '20. Upper Limit (TBW Normal Range)',
+    },
+    {
+      key: '21. Protein',
+      label: 'Proteín',
+      unit: 'kg',
+      lower: '22. Lower Limit (Protein Normal Range)',
+      upper: '23. Upper Limit (Protein Normal Range)',
+    },
+    {
+      key: '24. Minerals',
+      label: 'Minerály',
+      unit: 'kg',
+      lower: '25. Lower Limit (Minerals Normal Range)',
+      upper: '26. Upper Limit (Minerals Normal Range)',
+    },
+    {
+      key: '27. BFM (Body Fat Mass)',
+      label: 'Telesný tuk',
+      unit: 'kg',
+      lower: '28. Lower Limit (BFM Normal Range)',
+      upper: '29. Upper Limit (BFM Normal Range)',
+    },
+    {
+      key: '15. Weight',
+      label: 'Hmotnosť',
+      unit: 'kg',
+      lower: '16. Lower Limit (Weight Normal Range)',
+      upper: '17. Upper Limit (Weight Normal Range)',
+    },
+  ]
+
   return (
     <div className="flex items-center justify-center ">
       <div className="relative bg-blue-100/20 p-8 rounded shadow-md w-full max-w-[75vw] max-h-[86vh] my-8 overflow-auto">
@@ -72,7 +123,7 @@ const TestDetailWindow: React.FC<{ result: any }> = ({ result }) => {
         )}
 
         {parsedData.length > 0 && (
-          <Box className="p-6 flex flex-row gap-6">
+          <Box className="p-6 flex flex-row gap-6 flex-wrap">
             <Box className="flex flex-col gap-2">
               {['Name', 'Group', 'Age', 'Test Date'].map(key => {
                 const paramKey = Object.keys(params).find(k => k.includes(key))
@@ -102,6 +153,52 @@ const TestDetailWindow: React.FC<{ result: any }> = ({ result }) => {
                   </Card>
                 )
               })}
+            </Box>
+
+            <Box className="flex flex-col gap-2 ">
+              <Typography variant="h6" className="mt-6 mb-4 !font-bold">
+                Analýza telesného zloženia
+              </Typography>
+              <TableContainer component={Paper} className="mb-6">
+                <Table>
+                  <TableHead className="border-b-2 border-b-blue-300">
+                    <TableRow>
+                      <TableCell>
+                        <strong>Parameter</strong>
+                      </TableCell>
+                      <TableCell>
+                        <strong>Hodnota</strong>
+                      </TableCell>
+                      <TableCell>
+                        <strong>Normálny Rozsah</strong>
+                      </TableCell>
+                      <TableCell>
+                        <strong>Jednotka</strong>
+                      </TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {bodyCompositionMetrics.map(({ key, unit, lower, upper }) => {
+                      const paramKey = Object.keys(params).find(k => k.startsWith(key))
+                      const label = paramKey ? params[paramKey] : key
+                      const value = paramKey ? parsedData[0][paramKey] : 'N/A'
+                      const lowerLimit = parsedData[0]?.[lower] || 'N/A'
+                      const upperLimit = parsedData[0]?.[upper] || 'N/A'
+
+                      return (
+                        <TableRow key={key}>
+                          <TableCell>{label}</TableCell>
+                          <TableCell>{value}</TableCell>
+                          <TableCell>
+                            {lowerLimit} - {upperLimit}
+                          </TableCell>
+                          <TableCell>{unit}</TableCell>
+                        </TableRow>
+                      )
+                    })}
+                  </TableBody>
+                </Table>
+              </TableContainer>
             </Box>
           </Box>
         )}
