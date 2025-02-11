@@ -18,6 +18,7 @@ import * as XLSX from 'xlsx'
 import ParsedInbodyTest from './parsed-inbody/index'
 import { useNavigate } from 'react-router-dom'
 import params from '../../data/inbody-params.json'
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts'
 
 const TestDetailWindow: React.FC<{ result: any }> = ({ result }) => {
   const [parsedData, setParsedData] = useState<any[]>([])
@@ -90,6 +91,51 @@ const TestDetailWindow: React.FC<{ result: any }> = ({ result }) => {
       upper: '17. Upper Limit (Weight Normal Range)',
     },
   ]
+
+  const bodyComposition = [
+    {
+      key: '27. BFM (Body Fat Mass)',
+      label: 'Telesný tuk',
+      unit: 'kg',
+      lower: '28. Lower Limit (BFM Normal Range)',
+      upper: '29. Upper Limit (BFM Normal Range)',
+    },
+    {
+      key: '30. SLM (Soft Lean Mass)',
+      label: 'Mäkká bez-tuková hmota',
+      unit: 'kg',
+      lower: '31. Lower Limit (SLM Normal Range)',
+      upper: '32. Upper Limit (SLM Normal Range)',
+    },
+    {
+      key: '33. FFM (Fat Free Mass)',
+      label: 'Bez-tuková telesná hmota',
+      unit: 'kg',
+      lower: '34. Lower Limit (FFM Normal Range)',
+      upper: '35. Upper Limit (FFM Normal Range)',
+    },
+    {
+      key: '36. SMM (Skeletal Muscle Mass)',
+      label: 'Kostrová svalová hmota',
+      unit: 'kg',
+      lower: '37. Lower Limit (SMM Normal Range)',
+      upper: '38. Upper Limit (SMM Normal Range)',
+    },
+    {
+      key: '15. Weight',
+      label: 'Hmotnosť',
+      unit: 'kg',
+      lower: '16. Lower Limit (Weight Normal Range)',
+      upper: '17. Upper Limit (Weight Normal Range)',
+    },
+  ]
+
+  const chartData = bodyComposition.map(({ key, label }) => ({
+    name: label,
+    value: Number((parsedData[0]?.[key] || '0').replace(',', '.')), // Convert to number
+  }))
+
+  console.log('chartData', chartData)
 
   return (
     <div className="flex items-center justify-center ">
@@ -200,6 +246,19 @@ const TestDetailWindow: React.FC<{ result: any }> = ({ result }) => {
                 </Table>
               </TableContainer>
             </Box>
+
+            <Typography variant="h6" className="mt-6 mb-4 font-bold">
+              Graf telesného zloženia
+            </Typography>
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart data={chartData} layout="vertical" margin={{ left: 30, right: 30 }}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis type="number" />
+                <YAxis dataKey="name" type="category" width={150} />
+                <Tooltip />
+                <Bar dataKey="value" fill="#8884d8" minPointSize={5} />
+              </BarChart>
+            </ResponsiveContainer>
           </Box>
         )}
 
