@@ -19,6 +19,9 @@ import ParsedInbodyTest from './parsed-inbody/index'
 import { useNavigate } from 'react-router-dom'
 import params from '../../data/inbody-params.json'
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts'
+import BodyCompositionTable from './body-composition-table'
+import SegmentalAnalysisImage from './segmental-analysis'
+import SmallBox from './small-box'
 
 const TestDetailWindow: React.FC<{ result: any }> = ({ result }) => {
   const [parsedData, setParsedData] = useState<any[]>([])
@@ -53,44 +56,6 @@ const TestDetailWindow: React.FC<{ result: any }> = ({ result }) => {
       parseFile(result.resultData.url)
     }
   }, [result.resultData?.url])
-
-  const bodyCompositionMetrics = [
-    {
-      key: '18. TBW (Total Body Water)',
-      label: 'Celková telesná voda',
-      unit: 'L',
-      lower: '19. Lower Limit (TBW Normal Range)',
-      upper: '20. Upper Limit (TBW Normal Range)',
-    },
-    {
-      key: '21. Protein',
-      label: 'Proteín',
-      unit: 'kg',
-      lower: '22. Lower Limit (Protein Normal Range)',
-      upper: '23. Upper Limit (Protein Normal Range)',
-    },
-    {
-      key: '24. Minerals',
-      label: 'Minerály',
-      unit: 'kg',
-      lower: '25. Lower Limit (Minerals Normal Range)',
-      upper: '26. Upper Limit (Minerals Normal Range)',
-    },
-    {
-      key: '27. BFM (Body Fat Mass)',
-      label: 'Telesný tuk',
-      unit: 'kg',
-      lower: '28. Lower Limit (BFM Normal Range)',
-      upper: '29. Upper Limit (BFM Normal Range)',
-    },
-    {
-      key: '15. Weight',
-      label: 'Hmotnosť',
-      unit: 'kg',
-      lower: '16. Lower Limit (Weight Normal Range)',
-      upper: '17. Upper Limit (Weight Normal Range)',
-    },
-  ]
 
   const bodyComposition = [
     {
@@ -135,8 +100,6 @@ const TestDetailWindow: React.FC<{ result: any }> = ({ result }) => {
     value: Number((parsedData[0]?.[key] || '0').replace(',', '.')), // Convert to number
   }))
 
-  console.log('chartData', chartData)
-
   return (
     <div className="flex items-center justify-center ">
       <div className="relative bg-blue-100/20 p-8 rounded shadow-md w-full max-w-[75vw] max-h-[86vh] my-8 overflow-auto">
@@ -169,97 +132,125 @@ const TestDetailWindow: React.FC<{ result: any }> = ({ result }) => {
         )}
 
         {parsedData.length > 0 && (
-          <Box className="p-6 flex flex-row gap-6 flex-wrap">
-            <Box className="flex flex-col gap-2">
-              {['Name', 'Group', 'Age', 'Test Date'].map(key => {
-                const paramKey = Object.keys(params).find(k => k.includes(key))
-                const label = paramKey ? params[paramKey] : key
-                const value = paramKey ? parsedData[0][paramKey] : 'N/A'
+          <>
+            <Box className="p-6 flex flex-row gap-16 flex-wrap">
+              <Box className="flex flex-row gap-4 justify-self-center mx-auto">
+                {['Name', 'Group', 'Age', 'Test Date'].map(key => {
+                  const paramKey = Object.keys(params).find(k => k.includes(key))
+                  const label = paramKey ? params[paramKey] : key
+                  const value = paramKey ? parsedData[0][paramKey] : 'N/A'
 
-                return (
-                  <Card key={key} className="w-52 p-4">
-                    <Typography variant="body1" className="font-bold">
-                      {label}: {value} {key === 'Age' ? 'rokov' : ''}
-                    </Typography>
-                  </Card>
-                )
-              })}
+                  return (
+                    <Paper key={key} className="flex p-4 space-x-1!" elevation={4}>
+                      <Typography variant="body1" className="font-bold!">
+                        {label}:{' '}
+                      </Typography>
+                      <Typography variant="body1">
+                        {value} {key === 'Age' ? 'rokov' : ''}
+                      </Typography>
+                    </Paper>
+                  )
+                })}
+              </Box>
+
+              <div className="flex gap-2 justify-between w-full">
+                <div className="flex flex-col gap-2">
+                  <SmallBox
+                    title={'Výsledok InBody'}
+                    parsedData={parsedData}
+                    params={params}
+                    mapData={['InBody Score']}
+                  >
+                    <Typography variant="h5">/ 100 bodov</Typography>
+                  </SmallBox>
+
+                  <SmallBox
+                    title={'Bazálny metabolizmus'}
+                    parsedData={parsedData}
+                    params={params}
+                    mapData={['BMR']}
+                  >
+                    <Typography variant="h5">kcal</Typography>
+                  </SmallBox>
+
+                  <SmallBox
+                    title={'Pomer obvodu pásu a bokov'}
+                    parsedData={parsedData}
+                    params={params}
+                    mapData={['WHR']}
+                  >
+                    <Typography variant="h5">(x-y)</Typography>
+                  </SmallBox>
+                  <SmallBox
+                    title={'Obsah minerálov v kostiach'}
+                    parsedData={parsedData}
+                    params={params}
+                    mapData={['BMC']}
+                  >
+                    <Typography variant="h5">kg</Typography>
+                  </SmallBox>
+                </div>
+
+                <BodyCompositionTable
+                  parsedData={parsedData}
+                  params={params}
+                  mapData={[
+                    'TBW (Total Body Water)',
+                    'Protein',
+                    'Minerals',
+                    'BFM (Body Fat Mass)',
+                    'Weight',
+                  ]}
+                />
+              </div>
+              <Box className="flex flex-row flex-wrap justify-between gap-4 ">
+                <SegmentalAnalysisImage
+                  title={'Segmentálna analýza svalov'}
+                  parsedData={parsedData}
+                  params={params}
+                  mapData={[
+                    'FFM of Left Arm',
+                    'FFM of Right Arm',
+                    'FFM of Trunk',
+                    'FFM of Left Leg',
+                    'FFM of Right Leg',
+                  ]}
+                />
+                <SegmentalAnalysisImage
+                  title={'Segmentálna analýza tuku'}
+                  parsedData={parsedData}
+                  params={params}
+                  mapData={[
+                    'BFM of Left Arm',
+                    'BFM of Right Arm',
+                    'BFM of Trunk',
+                    'BFM of Left Leg',
+                    'BFM of Right Leg',
+                  ]}
+                />
+              </Box>
             </Box>
-            <Box className="flex flex-col gap-2">
-              {['Height', 'Weight'].map(key => {
-                const paramKey = Object.keys(params).find(k => k.includes(key))
-                const label = paramKey ? params[paramKey] : key
-                const value = paramKey ? parsedData[0][paramKey] : 'N/A'
 
-                return (
-                  <Card key={key} className="w-52 p-4">
-                    <Typography variant="body1" className="font-bold">
-                      {label}: {value} {key === 'Height' ? 'cm' : key === 'Weight' ? 'kg' : ''}
-                    </Typography>
-                  </Card>
-                )
-              })}
-            </Box>
-
-            <Box className="flex flex-col gap-2 ">
-              <Typography variant="h6" className="mt-6 mb-4 !font-bold">
-                Analýza telesného zloženia
+            <Box className="p-6 flex flex-row gap-16 flex-wrap">
+              <Typography variant="h6" className="mt-6 mb-4 font-bold">
+                Graf telesného zloženia
               </Typography>
-              <TableContainer component={Paper} className="mb-6">
-                <Table>
-                  <TableHead className="border-b-2 border-b-blue-300">
-                    <TableRow>
-                      <TableCell>
-                        <strong>Parameter</strong>
-                      </TableCell>
-                      <TableCell>
-                        <strong>Hodnota</strong>
-                      </TableCell>
-                      <TableCell>
-                        <strong>Normálny Rozsah</strong>
-                      </TableCell>
-                      <TableCell>
-                        <strong>Jednotka</strong>
-                      </TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {bodyCompositionMetrics.map(({ key, unit, lower, upper }) => {
-                      const paramKey = Object.keys(params).find(k => k.startsWith(key))
-                      const label = paramKey ? params[paramKey] : key
-                      const value = paramKey ? parsedData[0][paramKey] : 'N/A'
-                      const lowerLimit = parsedData[0]?.[lower] || 'N/A'
-                      const upperLimit = parsedData[0]?.[upper] || 'N/A'
-
-                      return (
-                        <TableRow key={key}>
-                          <TableCell>{label}</TableCell>
-                          <TableCell>{value}</TableCell>
-                          <TableCell>
-                            {lowerLimit} - {upperLimit}
-                          </TableCell>
-                          <TableCell>{unit}</TableCell>
-                        </TableRow>
-                      )
-                    })}
-                  </TableBody>
-                </Table>
-              </TableContainer>
+              <ResponsiveContainer width="100%" height={300}>
+                <BarChart data={chartData} layout="vertical" margin={{ left: 30, right: 30 }}>
+                  <Bar
+                    dataKey="value"
+                    fill="#8884d8"
+                    minPointSize={5}
+                    background={{ fill: '#eee' }}
+                  />
+                  <CartesianGrid strokeDasharray="6 6" />
+                  <XAxis type="number" />
+                  <YAxis dataKey="name" type="category" width={150} />
+                  <Tooltip />
+                </BarChart>
+              </ResponsiveContainer>
             </Box>
-
-            <Typography variant="h6" className="mt-6 mb-4 font-bold">
-              Graf telesného zloženia
-            </Typography>
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={chartData} layout="vertical" margin={{ left: 30, right: 30 }}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis type="number" />
-                <YAxis dataKey="name" type="category" width={150} />
-                <Tooltip />
-                <Bar dataKey="value" fill="#8884d8" minPointSize={5} />
-              </BarChart>
-            </ResponsiveContainer>
-          </Box>
+          </>
         )}
 
         {parsedData.length > 0 && result.testType?.name === 'INBODY' ? (
