@@ -1,27 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
-import {
-  IconButton,
-  Box,
-  Typography,
-  Link,
-  Card,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-} from '@mui/material'
+import { IconButton, Box, Typography, Link, Paper, Divider } from '@mui/material'
 import * as XLSX from 'xlsx'
 import ParsedInbodyTest from './parsed-inbody/index'
 import { useNavigate } from 'react-router-dom'
 import params from '../../data/inbody-params.json'
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts'
 import BodyCompositionTable from './body-composition-table'
 import SegmentalAnalysisImage from './segmental-analysis'
 import SmallBox from './small-box'
+import LargeTable from './large-table'
 
 const TestDetailWindow: React.FC<{ result: any }> = ({ result }) => {
   const [parsedData, setParsedData] = useState<any[]>([])
@@ -56,49 +43,6 @@ const TestDetailWindow: React.FC<{ result: any }> = ({ result }) => {
       parseFile(result.resultData.url)
     }
   }, [result.resultData?.url])
-
-  const bodyComposition = [
-    {
-      key: '27. BFM (Body Fat Mass)',
-      label: 'Telesný tuk',
-      unit: 'kg',
-      lower: '28. Lower Limit (BFM Normal Range)',
-      upper: '29. Upper Limit (BFM Normal Range)',
-    },
-    {
-      key: '30. SLM (Soft Lean Mass)',
-      label: 'Mäkká bez-tuková hmota',
-      unit: 'kg',
-      lower: '31. Lower Limit (SLM Normal Range)',
-      upper: '32. Upper Limit (SLM Normal Range)',
-    },
-    {
-      key: '33. FFM (Fat Free Mass)',
-      label: 'Bez-tuková telesná hmota',
-      unit: 'kg',
-      lower: '34. Lower Limit (FFM Normal Range)',
-      upper: '35. Upper Limit (FFM Normal Range)',
-    },
-    {
-      key: '36. SMM (Skeletal Muscle Mass)',
-      label: 'Kostrová svalová hmota',
-      unit: 'kg',
-      lower: '37. Lower Limit (SMM Normal Range)',
-      upper: '38. Upper Limit (SMM Normal Range)',
-    },
-    {
-      key: '15. Weight',
-      label: 'Hmotnosť',
-      unit: 'kg',
-      lower: '16. Lower Limit (Weight Normal Range)',
-      upper: '17. Upper Limit (Weight Normal Range)',
-    },
-  ]
-
-  const chartData = bodyComposition.map(({ key, label }) => ({
-    name: label,
-    value: Number((parsedData[0]?.[key] || '0').replace(',', '.')), // Convert to number
-  }))
 
   return (
     <div className="flex items-center justify-center ">
@@ -154,40 +98,39 @@ const TestDetailWindow: React.FC<{ result: any }> = ({ result }) => {
               </Box>
 
               <div className="flex gap-2 justify-between w-full">
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-2 my-5">
                   <SmallBox
                     title={'Výsledok InBody'}
                     parsedData={parsedData}
                     params={params}
                     mapData={['InBody Score']}
                   >
-                    <Typography variant="h5">/ 100 bodov</Typography>
+                    <Typography variant="h6">/ 100 bodov</Typography>
                   </SmallBox>
 
                   <SmallBox
-                    title={'Bazálny metabolizmus'}
+                    title={'Bazálny metabolický pomer (BMR)'}
                     parsedData={parsedData}
                     params={params}
                     mapData={['BMR']}
                   >
-                    <Typography variant="h5">kcal</Typography>
-                  </SmallBox>
-
-                  <SmallBox
-                    title={'Pomer obvodu pásu a bokov'}
-                    parsedData={parsedData}
-                    params={params}
-                    mapData={['WHR']}
-                  >
-                    <Typography variant="h5">(x-y)</Typography>
+                    <Typography variant="h6">kcal</Typography>
                   </SmallBox>
                   <SmallBox
-                    title={'Obsah minerálov v kostiach'}
+                    title={'Index telesnej hmotnosti (BMI)'}
                     parsedData={parsedData}
                     params={params}
-                    mapData={['BMC']}
+                    mapData={['BMI']}
                   >
-                    <Typography variant="h5">kg</Typography>
+                    <Typography variant="h6">kg/m²</Typography>
+                  </SmallBox>
+                  <SmallBox
+                    title={'Percento telesného tuku'}
+                    parsedData={parsedData}
+                    params={params}
+                    mapData={['PBF']}
+                  >
+                    <Typography variant="h6">%</Typography>
                   </SmallBox>
                 </div>
 
@@ -203,7 +146,7 @@ const TestDetailWindow: React.FC<{ result: any }> = ({ result }) => {
                   ]}
                 />
               </div>
-              <Box className="flex flex-row flex-wrap justify-between gap-4 ">
+              <Box className="flex flex-row flex-wrap justify-center gap-18 w-full">
                 <SegmentalAnalysisImage
                   title={'Segmentálna analýza svalov'}
                   parsedData={parsedData}
@@ -229,30 +172,17 @@ const TestDetailWindow: React.FC<{ result: any }> = ({ result }) => {
                   ]}
                 />
               </Box>
-            </Box>
 
-            <Box className="p-6 flex flex-row gap-16 flex-wrap">
-              <Typography variant="h6" className="mt-6 mb-4 font-bold">
-                Graf telesného zloženia
-              </Typography>
-              <ResponsiveContainer width="100%" height={300}>
-                <BarChart data={chartData} layout="vertical" margin={{ left: 30, right: 30 }}>
-                  <Bar
-                    dataKey="value"
-                    fill="#8884d8"
-                    minPointSize={5}
-                    background={{ fill: '#eee' }}
-                  />
-                  <CartesianGrid strokeDasharray="6 6" />
-                  <XAxis type="number" />
-                  <YAxis dataKey="name" type="category" width={150} />
-                  <Tooltip />
-                </BarChart>
-              </ResponsiveContainer>
+              <LargeTable
+                parsedData={parsedData}
+                params={params}
+                mapData={['SLM', 'FFM', 'SMM', 'BMC', 'WHR']}
+                units={['kg', 'kg', 'kg', 'kg', '']}
+              />
             </Box>
           </>
         )}
-
+        <Divider />
         {parsedData.length > 0 && result.testType?.name === 'INBODY' ? (
           <ParsedInbodyTest parsedData={parsedData} />
         ) : (

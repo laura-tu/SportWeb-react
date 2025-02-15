@@ -36,6 +36,8 @@ const SegmentalAnalysisImage: React.FC<BodyCompositionTableProps> = ({
           backgroundBlendMode: 'multiply',
         }}
       >
+        <div className="absolute top-[50%] left-4 uppercase rotate-270">ľavá</div>
+        <div className="absolute top-[50%] right-4 uppercase rotate-90">pravá</div>
         {/* First Row: First and Second Div */}
         <div className="flex justify-between  p-8 z-30">
           {mapData.slice(0, 2).map((key, index) => {
@@ -49,10 +51,12 @@ const SegmentalAnalysisImage: React.FC<BodyCompositionTableProps> = ({
                 key={key}
                 className={`flex flex-col space-y-3 justify-center items-center bg-blue-300/30 rounded-lg p-2 ${index === 0 ? '' : 'ml-auto'}`}
               >
-                <Typography variant="h6" className="flex">
+                <Typography variant="h6" className="flex decoration-dotted underline">
                   {value} kg
                 </Typography>
-                <Typography variant="h6">{percentageValue} %</Typography>
+                <Typography variant="h6" className="flex decoration-dotted underline">
+                  {percentageValue} %
+                </Typography>
               </div>
             )
           })}
@@ -69,10 +73,14 @@ const SegmentalAnalysisImage: React.FC<BodyCompositionTableProps> = ({
             return (
               <div
                 key={key}
-                className="flex flex-col space-y-3 justify-center items-center bg-blue-300/30 rounded-lg p-2"
+                className="flex flex-col space-y-3 justify-center items-center bg-blue-300/30 rounded-lg p-2 ml-1"
               >
-                <Typography variant="h6">{value} kg</Typography>
-                <Typography variant="h6">{percentageValue} %</Typography>
+                <Typography variant="h6" className="flex decoration-dotted underline">
+                  {value} kg
+                </Typography>
+                <Typography variant="h6" className="flex decoration-dotted underline">
+                  {percentageValue} %
+                </Typography>
               </div>
             )
           })}
@@ -91,8 +99,12 @@ const SegmentalAnalysisImage: React.FC<BodyCompositionTableProps> = ({
                 key={key}
                 className={`flex flex-col space-y-3justify-center items-center bg-blue-300/30 rounded-lg p-2 ${index === 1 ? 'ml-auto' : ''}`}
               >
-                <Typography variant="h6">{value} kg</Typography>
-                <Typography variant="h6">{percentageValue} %</Typography>
+                <Typography variant="h6" className="flex decoration-dotted underline">
+                  {value} kg
+                </Typography>
+                <Typography variant="h6" className="flex decoration-dotted underline">
+                  {percentageValue} %
+                </Typography>
               </div>
             )
           })}

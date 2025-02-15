@@ -12,7 +12,7 @@ interface BoxProps {
 const SmallBox: React.FC<BoxProps> = ({ title, parsedData, params, mapData, children }) => {
   return (
     <div>
-      <Typography variant="h6" className="mt-2 font-semibold!">
+      <Typography variant="h6" className="mt-2 font-medium! text-lg! italic">
         {title}
       </Typography>
       <div className="flex">
@@ -23,7 +23,7 @@ const SmallBox: React.FC<BoxProps> = ({ title, parsedData, params, mapData, chil
           return (
             <div key={key} className="flex flex-col p-2 space-x-3! w-78">
               <div className="flex flex-row gap-4 justify-self-center mx-auto">
-                <Typography variant="h5" className="font-bold!">
+                <Typography variant="h6" className="font-bold!">
                   {value}
                 </Typography>
                 {children}
