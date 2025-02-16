@@ -9,6 +9,7 @@ import BodyCompositionTable from './body-composition-table'
 import SegmentalAnalysisImage from './segmental-analysis'
 import SmallBox from './small-box'
 import LargeTable from './large-table'
+import { mapParsedData } from '@/utils/dataUtils'
 
 const TestDetailWindow: React.FC<{ result: any }> = ({ result }) => {
   const [parsedData, setParsedData] = useState<any[]>([])
@@ -79,22 +80,18 @@ const TestDetailWindow: React.FC<{ result: any }> = ({ result }) => {
           <>
             <Box className="p-6 flex flex-row gap-16 flex-wrap">
               <Box className="flex flex-row gap-4 justify-self-center mx-auto">
-                {['Name', 'Group', 'Age', 'Test Date'].map(key => {
-                  const paramKey = Object.keys(params).find(k => k.includes(key))
-                  const label = paramKey ? params[paramKey] : key
-                  const value = paramKey ? parsedData[0][paramKey] : 'N/A'
-
-                  return (
+                {mapParsedData(['Name', 'Group', 'Age', 'Test Date'], parsedData, params).map(
+                  ({ key, label, value }) => (
                     <Paper key={key} className="flex p-4 space-x-1!" elevation={4}>
                       <Typography variant="body1" className="font-bold!">
-                        {label}:{' '}
+                        {label}:
                       </Typography>
                       <Typography variant="body1">
                         {value} {key === 'Age' ? 'rokov' : ''}
                       </Typography>
                     </Paper>
-                  )
-                })}
+                  ),
+                )}
               </Box>
 
               <div className="flex gap-2 justify-between w-full">
@@ -144,6 +141,7 @@ const TestDetailWindow: React.FC<{ result: any }> = ({ result }) => {
                     'BFM (Body Fat Mass)',
                     'Weight',
                   ]}
+                  units={['L', 'kg', 'kg', 'kg', 'kg']}
                 />
               </div>
               <Box className="flex flex-row flex-wrap justify-center gap-18 w-full">
@@ -183,11 +181,11 @@ const TestDetailWindow: React.FC<{ result: any }> = ({ result }) => {
           </>
         )}
         <Divider />
-        {parsedData.length > 0 && result.testType?.name === 'INBODY' ? (
+        {/*{parsedData.length > 0 && result.testType?.name === 'INBODY' ? (
           <ParsedInbodyTest parsedData={parsedData} />
         ) : (
           <div>nic</div>
-        )}
+        )}*/}
       </div>
     </div>
   )
