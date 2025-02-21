@@ -42,7 +42,7 @@ const DateFilter: React.FC<DateFilterProps> = ({
 
   return (
     <Box>
-      <Box className="w-full my-4 flex gap-4">
+      <Box className="w-full my-4 flex flex-row flex-wrap md:flex-nowrap gap-4">
         <DatePicker
           label="Od dátumu"
           value={startDate}

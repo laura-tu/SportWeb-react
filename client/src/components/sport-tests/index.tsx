@@ -50,28 +50,29 @@ const TestResults: React.FC<SportTestsProps> = ({ userId, onResultClick, testTyp
   })
 
   return (
-    <Box className="flex flex-col w-full p-4">
-      <Box className="w-full my-2">
+    <Box className="flex flex-col w-full p-4 relative">
+      <Box className="w-full my-2 flex flex-row flex-wrap justify-between">
         <Typography variant="h5" gutterBottom>
           Výsledky pre používateľa: {userData?.name || userId}
         </Typography>
+
+        <div className="w-[35rem]! md:w-[30rem] sm:w-full relative my-4">
+          <DateFilter
+            startDate={startDate}
+            endDate={endDate}
+            setStartDate={setStartDate}
+            setEndDate={setEndDate}
+          />
+        </div>
       </Box>
 
-      {/* Use the DateFilter component here */}
-      <DateFilter
-        startDate={startDate}
-        endDate={endDate}
-        setStartDate={setStartDate}
-        setEndDate={setEndDate}
-      />
-
       {/* Filtered Results Section */}
-      <Box className="w-full my-4">
+      <Box className="w-full ">
         {filteredResults.length > 0 ? (
           filteredResults.map((result: any, index: number) => (
             <Card
               key={index}
-              className="mb-4 bg-[#0983DB]/80! rounded-2xl! max-w-[40rem] relative"
+              className="mt-4 bg-[#0983DB]/80! rounded-2xl! max-w-[40rem] relative"
               onClick={() => onResultClick(result)}
               sx={{ cursor: 'pointer' }}
             >
