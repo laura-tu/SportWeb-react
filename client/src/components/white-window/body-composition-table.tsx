@@ -9,7 +9,6 @@ import {
   Paper,
   Typography,
 } from '@mui/material'
-import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts'
 import { mapParsedData, mapChartData, findLimitKey } from '@/utils/dataUtils'
 import BodyCompositionPieChart from './body-composition-piechart'
 

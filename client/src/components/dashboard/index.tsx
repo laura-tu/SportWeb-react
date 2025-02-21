@@ -18,6 +18,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import TestDetailWindow from '../white-window'
 import { CustomThemeSwitcher, demoTheme } from './theme-switcher'
+import SpiroergometryDetail from '../pnoe-detail'
 
 const queryClient = new QueryClient()
 
@@ -62,9 +63,16 @@ export default function DashboardLayoutAccount(props: DemoProps) {
       console.error('Chýba ID testu!')
       return
     }
+
     setSelectedTestResult(result)
-    setShowWhiteDashboard(true)
-    navigate(`/dashboard/test_results/inbody_results/${result.id}`)
+
+    if (result.testType?.name === 'INBODY') {
+      setShowWhiteDashboard(true)
+      navigate(`/dashboard/test_results/inbody_results/${result.id}`)
+    } else if (result.testType?.name === 'Pnoe') {
+      setShowWhiteDashboard(true)
+      navigate(`/dashboard/test_results/spiroergometry/${result.id}`)
+    }
   }
 
   const hasSportCoachRole = session?.user.roles?.includes('sportCoach')
@@ -217,6 +225,11 @@ export default function DashboardLayoutAccount(props: DemoProps) {
             <Route
               path="test_results/inbody_results/:resultId"
               element={<TestDetailWindow result={selectedTestResult} />}
+            />
+
+            <Route
+              path="test_results/spiroergometry/:resultId"
+              element={<SpiroergometryDetail result={selectedTestResult} />}
             />
 
             <Route path="*" element={<DemoPageContent userId={session.user.id} />} />

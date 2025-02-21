@@ -30,7 +30,7 @@ const TestDetailWindow: React.FC<{ result: any }> = ({ result }) => {
         const worksheet = workbook.Sheets[firstSheetName]
         const jsonData = XLSX.utils.sheet_to_json(worksheet)
         setParsedData(jsonData)
-        setShowDetails(false)
+        setShowDetails(false) //JUST for now
       }
       reader.readAsArrayBuffer(blob)
     } catch (error) {
