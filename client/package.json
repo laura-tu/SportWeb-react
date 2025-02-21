@@ -22,6 +22,7 @@
     "date-fns": "2.29.3",
     "express": "^4.21.0",
     "lodash": "^4.17.21",
+    "mui-image": "^1.0.7",
     "postcss": "^8.5.1",
     "postcss-loader": "^8.1.1",
     "qs": "^6.14.0",

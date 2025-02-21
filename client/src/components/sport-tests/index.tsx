@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Box, Typography, Card, CardContent, Link } from '@mui/material'
+import Image from 'mui-image'
 import LoadingOverlay from '../loading/loading-overlay'
 import useFetchAthlete from '../settings/hooks/useFetchAthlete'
 import useFetchTestResults from './hooks/useFetchTestResults'
@@ -70,16 +71,16 @@ const TestResults: React.FC<SportTestsProps> = ({ userId, onResultClick, testTyp
           filteredResults.map((result: any, index: number) => (
             <Card
               key={index}
-              className="mb-4"
+              className="mb-4 bg-[#0983DB]/80! rounded-2xl! max-w-[40rem] relative"
               onClick={() => onResultClick(result)}
               sx={{ cursor: 'pointer' }}
             >
               <CardContent>
-                <Typography variant="h6">
-                  Dátum: {new Date(result.date).toLocaleDateString()}
+                <Typography variant="h6">{result.testType?.name} meranie</Typography>
+                <Typography variant="body1" className="pt-4">
+                  {new Date(result.date).toLocaleDateString()}{' '}
                 </Typography>
-                <Typography>Typ testu: {result.testType?.name}</Typography>
-                {result.resultData?.url && (
+                {/*{result.resultData?.url && (
                   <Typography>
                     Súbor:
                     <Link href={result.resultData.url} target="_blank">
@@ -87,7 +88,12 @@ const TestResults: React.FC<SportTestsProps> = ({ userId, onResultClick, testTyp
                     </Link>
                   </Typography>
                 )}
-                <Typography>Poznámky: {result.notes || ''}</Typography>
+                <Typography>Poznámky: {result.notes || ''}</Typography>*/}
+                <Image
+                  src={'/icon.png'}
+                  alt="icon"
+                  className="w-16! h-14! absolute! right-4 bottom-6"
+                />
               </CardContent>
             </Card>
           ))

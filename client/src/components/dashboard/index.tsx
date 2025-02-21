@@ -64,7 +64,7 @@ export default function DashboardLayoutAccount(props: DemoProps) {
     }
     setSelectedTestResult(result)
     setShowWhiteDashboard(true)
-    navigate(`/dashboard/test_results/${result.id}`)
+    navigate(`/dashboard/test_results/inbody_results/${result.id}`)
   }
 
   const hasSportCoachRole = session?.user.roles?.includes('sportCoach')
@@ -215,7 +215,7 @@ export default function DashboardLayoutAccount(props: DemoProps) {
               }
             />
             <Route
-              path="test_results/:resultId"
+              path="test_results/inbody_results/:resultId"
               element={<TestDetailWindow result={selectedTestResult} />}
             />
 
