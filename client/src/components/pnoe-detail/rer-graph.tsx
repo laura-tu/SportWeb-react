@@ -13,7 +13,7 @@ import {
 const RERGraph: React.FC<{ data: any[] }> = ({ data }) => {
   return (
     <ResponsiveContainer width="100%" height={300}>
-      <LineChart data={data} margin={{ top: 20, right: 30, left: 40, bottom: 20 }}>
+      <LineChart data={data} margin={{ top: 20, right: 30, left: 50, bottom: 20 }}>
         <Legend verticalAlign="top" height={36} />
         <CartesianGrid strokeDasharray="3 3" />
 
@@ -43,7 +43,7 @@ const RERGraph: React.FC<{ data: any[] }> = ({ data }) => {
         <Line
           type="monotone"
           dataKey="RER"
-          stroke="#FF8042"
+          stroke="#3cb371"
           strokeWidth={2}
           dot={false}
           name="RER"

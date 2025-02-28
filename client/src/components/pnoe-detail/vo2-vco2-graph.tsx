@@ -45,7 +45,7 @@ const VO2VCO2Graph: React.FC<{ data: any[] }> = ({ data }) => {
         <Line
           type="monotone"
           dataKey="VO2"
-          stroke="#FF5733"
+          stroke="#e60026"
           strokeWidth={2}
           dot={false}
           name="VO2 (ml/min)"

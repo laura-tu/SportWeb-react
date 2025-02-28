@@ -23,9 +23,16 @@ const HRGraph: React.FC<{ data: any[] }> = ({ data }) => {
           tickFormatter={tick => (typeof tick === 'number' ? tick.toFixed(0) : tick)}
         />
 
-        <YAxis label={{ value: 'HR (bpm)', angle: -90, position: 'insideLeft' }} />
+        <YAxis
+          label={{
+            value: 'HR (bpm)',
+            angle: -90,
+            position: 'insideLeft',
+            style: { textAnchor: 'middle' },
+          }}
+        />
         <Tooltip />
-        <Line type="monotone" dataKey="HR" stroke="#8884d8" strokeWidth={2} dot={false} />
+        <Line type="monotone" dataKey="HR" stroke="#b22222" strokeWidth={2} dot={false} />
       </LineChart>
     </ResponsiveContainer>
   )
