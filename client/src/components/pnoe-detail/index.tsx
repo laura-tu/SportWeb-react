@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import { useParams } from 'react-router-dom'
-import { IconButton, Box, Typography, Link, Paper, Divider } from '@mui/material'
+import { IconButton, Box, Typography, Link } from '@mui/material'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import { useNavigate } from 'react-router-dom'
 import * as XLSX from 'xlsx'
@@ -9,8 +9,14 @@ import pnoe from '../../data/pnoe-params.json'
 import HRGraph from './hr-graph'
 import VO2VCO2Graph from './vo2-vco2-graph'
 import RERGraph from './rer-graph'
+import FATCarbsGraph from './fat-carbs-graph'
+import TableBox from './table-box'
+import { calculateVSlopeThreshold, convertToVO2ANPPerKg } from './helpers/calculateV2SlopeThreshold'
+import WattsGraph from './watts-graph'
 
 const SpiroergometryDetail: React.FC<{ result: any }> = ({ result }) => {
+  const bodyWeightKg = 60 //for now
+
   const { resultId } = useParams()
 
   const [parsedData, setParsedData] = useState<any[]>([])
@@ -39,34 +45,119 @@ const SpiroergometryDetail: React.FC<{ result: any }> = ({ result }) => {
     }
   }
 
-  // Automatically parse file when resultData.url is available
   useEffect(() => {
     if (result.resultData?.url) {
       parseFile(result.resultData.url)
     }
-  }, [result.resultData?.url])
+  }, [result.resultData?.url, parsedData.length])
 
-  const hrData = parsedData
-    .map(row => ({
-      time: row['T(sec)'] ? Number(row['T(sec)']) : null,
-      HR: row['HR(bpm)'] ? Number(row['HR(bpm)']) : null,
-    }))
-    .filter(row => row.time !== null && row.HR !== null)
+  const parsedDataMapped = useMemo(() => {
+    return parsedData.map(row => {
+      const mappedRow: any = {}
+      Object.keys(pnoe).forEach(key => {
+        if (row[key] !== undefined) {
+          mappedRow[pnoe[key] || key] = isNaN(row[key]) ? row[key] : Number(row[key])
+        }
+      })
+      return mappedRow
+    })
+  }, [parsedData])
 
-  const vo2Vco2Data = parsedData
-    .map(row => ({
-      time: row['T(sec)'] ? Number(row['T(sec)']) : null,
-      VO2: row['VO2(ml/min)'] ? Number(row['VO2(ml/min)']) : null,
-      VCO2: row['VCO2(ml/min)'] ? Number(row['VCO2(ml/min)']) : null,
-    }))
-    .filter(row => row.time !== null && row.VO2 !== null && row.VCO2 !== null)
+  const extractedData = useMemo(() => {
+    const hrData = []
+    const vo2Vco2Data = []
+    const rerData = []
+    const fatCarbsData = []
+    const energyData = []
+    const wattsData = []
+    const speedData = []
 
-  const rerData = parsedData
-    .map(row => ({
-      time: row['T(sec)'] ? Number(row['T(sec)']) : null,
-      RER: row['RER'] ? Number(row['RER']) : null, // Ensure you're mapping the correct field for RER
-    }))
-    .filter(row => row.time !== null && row.RER !== null)
+    parsedDataMapped.forEach(row => {
+      if (row[pnoe['T(sec)']] !== null) {
+        hrData.push({ time: row[pnoe['T(sec)']], 'HR(bpm)': row[pnoe['HR(bpm)']] || null })
+        vo2Vco2Data.push({
+          time: row[pnoe['T(sec)']],
+          'VO2(ml/min)': row[pnoe['VO2(ml/min)']] || null,
+          'VCO2(ml/min)': row[pnoe['VCO2(ml/min)']] || null,
+        })
+        rerData.push({ time: row[pnoe['T(sec)']], RER: row[pnoe['RER']] || null })
+        fatCarbsData.push({
+          time: row[pnoe['T(sec)']],
+          'FAT(kcal)': row[pnoe['FAT(kcal)']] || null,
+          'CARBS(kcal)': row[pnoe['CARBS(kcal)']] || null,
+        })
+        energyData.push({
+          time: row[pnoe['T(sec)']],
+          'EE(kcal/day)': row[pnoe['EE(kcal/day)']] || null,
+          'EE(kcal/min)': row[pnoe['EE(kcal/min)']] || null,
+        })
+        wattsData.push({ time: row[pnoe['T(sec)']], Watts: row[pnoe['Watts']] || null })
+        speedData.push({ time: row[pnoe['T(sec)']], Speed: row[pnoe['Speed']] || null })
+      }
+    })
+
+    return { hrData, vo2Vco2Data, rerData, fatCarbsData, energyData, wattsData, speedData }
+  }, [parsedDataMapped])
+
+  //___________________________________________________________________________________________
+
+  const { maxHR, averageHR } = useMemo(() => {
+    if (extractedData?.hrData.length === 0) return { maxHR: null, averageHR: null }
+    const hrValues = extractedData.hrData.map(row => row['HR(bpm)'])
+    return {
+      maxHR: Math.max(...hrValues),
+      averageHR: hrValues.reduce((sum, hr) => sum + hr, 0) / hrValues.length,
+    }
+  }, [extractedData.hrData])
+  //___________________________________________________________________________________________
+
+  const { maxVO2, meanVO2, maxVCO2, meanVCO2, vo2ANP } = useMemo(() => {
+    if (extractedData?.vo2Vco2Data.length === 0) {
+      return { maxVO2: null, meanVO2: null, maxVCO2: null, meanVCO2: null, vo2ANP: null }
+    }
+
+    const vo2Values = extractedData.vo2Vco2Data.map(row => row['VO2(ml/min)'])
+    const vco2Values = extractedData.vo2Vco2Data.map(row => row['VCO2(ml/min)'])
+
+    return {
+      maxVO2: Math.max(...vo2Values),
+      meanVO2: vo2Values.reduce((sum, v) => sum + v, 0) / vo2Values.length,
+      maxVCO2: Math.max(...vco2Values),
+      meanVCO2: vco2Values.reduce((sum, v) => sum + v, 0) / vco2Values.length,
+      vo2ANP: calculateVSlopeThreshold(extractedData.vo2Vco2Data, Math.max(...vo2Values)),
+    }
+  }, [extractedData.vo2Vco2Data])
+
+  //__________________________________________________________________________________________
+
+  const maxRER =
+    extractedData?.rerData.length > 0
+      ? Math.max(...extractedData.rerData.map(row => row['RER']))
+      : null
+  //__________________________________________________________________________________________
+
+  const totalFat = extractedData.fatCarbsData.reduce((sum, row) => sum + row['FAT(kcal)'], 0)
+  const totalCarbs = extractedData.fatCarbsData.reduce((sum, row) => sum + row['CARBS(kcal)'], 0)
+  //__________________________________________________________________________________________
+  const maxWatts =
+    extractedData?.wattsData.length > 0
+      ? Math.max(...extractedData.wattsData.map(row => row['Watts']))
+      : null
+  const avgWatts =
+    extractedData?.wattsData.length > 0
+      ? extractedData.wattsData.reduce((sum, row) => sum + row['Watts'], 0) /
+        extractedData?.wattsData.length
+      : null
+  //__________________________________________________________________________________________
+  const maxSpeed =
+    extractedData?.speedData.length > 0
+      ? Math.max(...extractedData.speedData.map(row => row['Speed']))
+      : null
+  const avgSpeed =
+    extractedData?.speedData.length > 0
+      ? extractedData.speedData.reduce((sum, row) => sum + row['Speed'], 0) /
+        extractedData?.speedData.length
+      : null
 
   if (!result) {
     return (
@@ -105,9 +196,89 @@ const SpiroergometryDetail: React.FC<{ result: any }> = ({ result }) => {
         )}
         {parsedData.length > 0 && (
           <>
-            <VO2VCO2Graph data={vo2Vco2Data} />
-            <HRGraph data={hrData} />
-            <RERGraph data={rerData} />
+            <Box className="pl-6 my-4 flex flex-wrap gap-4">
+              <TableBox
+                title="Parameter"
+                data={[
+                  { label: 'Max HR', value: maxHR ? `${maxHR} bpm` : 'N/A' },
+                  { label: 'Average HR', value: averageHR ? `${averageHR.toFixed(0)} bpm` : 'N/A' },
+                  { label: 'Max RER', value: maxRER },
+                ]}
+              />
+
+              <TableBox
+                title="Parameter"
+                data={[
+                  {
+                    label: 'Max VO2',
+                    value: maxVO2
+                      ? `${convertToVO2ANPPerKg(maxVO2, bodyWeightKg).toFixed(2)} ml/kg/min`
+                      : 'N/A',
+                  },
+                  /*{ label: 'Max VCO2', value: maxVCO2 ? `${maxVCO2} ml/min` : 'N/A' },}*/
+                  {
+                    label: 'VO2 ANP',
+                    value: vo2ANP
+                      ? `${convertToVO2ANPPerKg(vo2ANP, bodyWeightKg).toFixed(2)} ml/kg/min`
+                      : 'N/A',
+                  },
+                  {
+                    label: 'Mean VO2',
+                    value: meanVO2
+                      ? `${convertToVO2ANPPerKg(meanVO2, bodyWeightKg).toFixed(2)} ml/kg/min`
+                      : 'N/A',
+                  },
+                  /*{{ label: 'Mean VCO2', value: meanVCO2 ? `${meanVCO2.toFixed(2)} ml/min` : 'N/A' },}*/
+                ]}
+              />
+              <TableBox
+                title="Parameter"
+                data={[
+                  { label: 'Max VCO2', value: maxVCO2 ? `${maxVCO2} ml/min` : 'N/A' },
+                  /*{{
+                    label: 'VO2 ANP',
+                    value: vo2ANP
+                      ? `${convertToVO2ANPPerKg(vo2ANP, bodyWeightKg).toFixed(2)} ml/kg/min`
+                      : 'N/A',
+                  },}*/
+
+                  { label: 'Mean VCO2', value: meanVCO2 ? `${meanVCO2.toFixed(2)} ml/min` : 'N/A' },
+                ]}
+              />
+
+              <TableBox
+                title="Parameter"
+                data={[
+                  { label: 'Max Watts', value: maxWatts ? `${maxWatts} W` : 'N/A' },
+                  { label: 'Average Watts', value: avgWatts ? `${avgWatts.toFixed(2)} W` : 'N/A' },
+                  { label: 'Max Speed', value: maxSpeed ? `${maxSpeed} km/h` : 'N/A' },
+                  {
+                    label: 'Average Speed',
+                    value: avgSpeed ? `${avgSpeed.toFixed(2)} km/h` : 'N/A',
+                  },
+                ]}
+              />
+
+              <TableBox
+                title="Parameter"
+                data={[
+                  { label: 'Total FAT', value: totalFat ? `${totalFat.toFixed(2)} kcal` : 'N/A' },
+                  {
+                    label: 'Total CARBS',
+                    value: totalCarbs ? `${totalCarbs.toFixed(2)} kcal` : 'N/A',
+                  },
+                  {
+                    label: 'Total Energy',
+                    value: totalCarbs ? `${(totalCarbs + totalFat).toFixed(2)} kcal` : 'N/A',
+                  },
+                ]}
+              />
+            </Box>
+            <VO2VCO2Graph data={extractedData.vo2Vco2Data} />
+            <HRGraph data={extractedData.hrData} />
+            <RERGraph data={extractedData.rerData} />
+            <FATCarbsGraph data={extractedData.fatCarbsData} />
+            <WattsGraph data={extractedData.wattsData} />
           </>
         )}
 

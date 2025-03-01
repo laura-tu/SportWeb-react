@@ -10,7 +10,7 @@ import {
   Legend,
 } from 'recharts'
 
-const VO2VCO2Graph: React.FC<{ data: any[] }> = ({ data }) => {
+const FATCarbsGraph: React.FC<{ data: any[] }> = ({ data }) => {
   return (
     <ResponsiveContainer width="100%" height={300}>
       <LineChart data={data} margin={{ top: 20, right: 30, left: 50, bottom: 20 }}>
@@ -19,8 +19,7 @@ const VO2VCO2Graph: React.FC<{ data: any[] }> = ({ data }) => {
 
         <XAxis
           dataKey="time"
-          label={{ value: 'Time (sec)', position: 'insideBottom', offset: -15 }}
-          domain={['auto', 'auto']}
+          label={{ value: 'Time (sec)', position: 'insideBottom', offset: -10 }}
           tickFormatter={tick => (typeof tick === 'number' ? tick.toFixed(0) : tick)}
         />
 
@@ -28,37 +27,36 @@ const VO2VCO2Graph: React.FC<{ data: any[] }> = ({ data }) => {
           width={80}
           stroke="black"
           label={{
-            value: 'VO2 & VCO2 (ml/min)',
+            value: 'Energy (kcal)',
             angle: -90,
             position: 'insideLeft',
             style: { textAnchor: 'middle' },
           }}
-          domain={[0, 'dataMax + 500']}
+          domain={[0, 'dataMax + 1']}
           tickFormatter={tick => (typeof tick === 'number' ? tick.toFixed(0) : tick)}
         />
-
         <Tooltip />
 
         <Line
           type="monotone"
-          dataKey="VO2(ml/min)"
-          stroke="#e60026"
+          dataKey="FAT(kcal)"
+          stroke="#ff7f0e"
           strokeWidth={2}
           dot={false}
-          name="VO2 (ml/min)"
+          name="FAT (kcal)"
         />
 
         <Line
           type="monotone"
-          dataKey="VCO2(ml/min)"
-          stroke="#33A8FF"
+          dataKey="CARBS(kcal)"
+          stroke="#2ca02c"
           strokeWidth={2}
           dot={false}
-          name="VCO2 (ml/min)"
+          name="CARBS (kcal)"
         />
       </LineChart>
     </ResponsiveContainer>
   )
 }
 
-export default VO2VCO2Graph
+export default FATCarbsGraph
