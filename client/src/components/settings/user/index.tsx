@@ -35,7 +35,7 @@ const SettingsUser = ({ userId }: { userId: string }) => {
   // Load user data into formData
   useEffect(() => {
     if (userData) {
-      console.log('Fetched User Data:', userData)
+      //console.log('Fetched User Data:', userData)
       const initialData: UserFormData = {
         name: userData.name || '',
         email: userData.email || '',
@@ -171,83 +171,82 @@ const SettingsUser = ({ userId }: { userId: string }) => {
   if (userError) {
     return (
       <Typography color="error" sx={{ mt: 3 }}>
-        'Nepodarilo sa načítať údaje'
+        Nepodarilo sa načítať údaje
       </Typography>
     )
   }
 
   return (
-    <Box
-      sx={{
-        py: 4,
-        px: 3,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'flex-start',
-        textAlign: 'left',
-        width: '100%',
-        marginLeft: 3,
-      }}
-    >
+    <div className="flex flex-col  w-full ">
       <Typography variant="h5" sx={{ mb: 2 }}>
-        Informácie o používateľovi
+        Používateľ
       </Typography>
 
-      <TextField
-        label="Meno"
-        variant="outlined"
-        fullWidth
-        margin="normal"
-        value={formData.name}
-        onChange={e => handleInputChange('name', e.target.value)}
-      />
+      <div className="flex flex-col md:flex-row w-auto gap-3">
+        <TextField
+          label="Meno"
+          variant="outlined"
+          fullWidth
+          margin="normal"
+          value={formData.name}
+          onChange={e => handleInputChange('name', e.target.value)}
+        />
 
-      <TextField
-        label="Email"
-        variant="outlined"
-        fullWidth
-        margin="normal"
-        value={formData.email}
-        onChange={e => handleInputChange('email', e.target.value)}
-      />
+        <TextField
+          label="Email"
+          variant="outlined"
+          fullWidth
+          margin="normal"
+          value={formData.email}
+          onChange={e => handleInputChange('email', e.target.value)}
+          slotProps={{
+            input: {
+              readOnly: true,
+            },
+          }}
+          sx={{
+            backgroundColor: 'rgba(0, 0, 0, 0.04)',
+          }}
+        />
+      </div>
 
-      <Box sx={{ mt: 2, borderTop: '1px solid #ccc', pt: 2, width: '100%' }}>
+      <div className="flex flex-col w-full mt-2 border-t-2 border-gray-300 pt-2">
         <Typography variant="body2" color="textSecondary">
           Zmeniť heslo
         </Typography>
-        <TextField
-          label="Heslo"
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          type="password"
-          disabled
-          value={formData.changedPassword}
-          onChange={e => handleInputChange('changedPassword', e.target.value)}
-        />
-        <TextField
-          label="Potvrdenie hesla"
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          type="password"
-          disabled
-          value={formData.changedPasswordConfirm}
-          onChange={e => handleInputChange('changedPasswordConfirm', e.target.value)}
-        />
-      </Box>
-
+        <div className="flex flex-col md:flex-row w-full gap-4">
+          <TextField
+            label="Heslo"
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            type="password"
+            disabled
+            value={formData.changedPassword}
+            onChange={e => handleInputChange('changedPassword', e.target.value)}
+          />
+          <TextField
+            label="Potvrdenie hesla"
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            type="password"
+            disabled
+            value={formData.changedPasswordConfirm}
+            onChange={e => handleInputChange('changedPasswordConfirm', e.target.value)}
+          />
+        </div>
+      </div>
       <Button
         variant="contained"
         color="primary"
-        sx={{ mt: 2 }}
+        sx={{ mt: 2, width: 'fit-content' }}
         onClick={handleSaveChanges}
         // disabled={mutation.isPending}
         //disabled
       >
         {mutation.isPending ? 'Ukladám...' : 'Uložiť zmeny'}
       </Button>
-
       <SuccessModal
         open={successModalOpen}
         onClose={() => setSuccessModalOpen(false)}
@@ -259,7 +258,7 @@ const SettingsUser = ({ userId }: { userId: string }) => {
         onClose={() => setErrorModalOpen(false)}
         text="aktualizácií údajov"
       />
-    </Box>
+    </div>
   )
 }
 

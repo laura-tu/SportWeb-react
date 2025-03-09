@@ -147,62 +147,67 @@ const AthleteProfile = ({ userId }: { userId: string }) => {
     )
 
   return (
-    <Box className="flex flex-col md:flex-row w-full  p-4 ">
-      <Box className="flex" sx={{ width: { xs: '75%', sm: '65%', md: 350, lg: 380 } }}>
-        <SettingsUser userId={userId} />
-      </Box>
-      <Box
-        className="flex flex-col h-[85vh] border-0 md:border-l "
-        sx={{
-          py: 4,
-          px: 3,
-          marginLeft: 3,
-        }}
-      >
-        <Box sx={{ textAlign: 'left', width: { xs: '75%', sm: '65%', md: 300, lg: 380 } }}>
-          <Typography variant="h5">Informácie o športovcovi:</Typography>
-
-          <Box sx={{ mt: 2 }}>
-            <BirthDateField
-              value={formData.birth_date}
-              onChange={value => handleInputChange('birth_date', value)}
-            />
-
-            <GenderField value={formData.gender} />
-
-            <SportField
-              value={formData.sport}
-              onChange={value => handleInputChange('sport', value)}
-            />
-
-            <ClubField value={formData.club} onChange={value => handleInputChange('club', value)} />
-
-            {athlete?.id && coach && <CoachField coach={coach} />}
-          </Box>
-          <Button
-            variant="contained"
-            color="primary"
-            sx={{ mt: 3 }}
-            onClick={handleSaveChanges}
-            disabled={mutation.isPending}
-          >
-            {mutation.isPending ? 'Ukladám...' : 'Uložiť zmeny'}
-          </Button>
+    <div className="box-border w-[60vw]">
+      <div className="flex flex-col w-full py-2 px-2 mx-3 md:py-4 md:px-4 md:mx-0 lg:py-8 lg:px-8 lg:mx-3">
+        <Box
+          className="flex flex-wrap"
+          sx={{ width: { xs: '80%', sm: '60%', md: 'auto', lg: 700 } }}
+        >
+          <SettingsUser userId={userId} />
         </Box>
 
-        <SuccessModal
-          open={successModalOpen}
-          onClose={() => setSuccessModalOpen(false)}
-          text="Údaje boli úspešne aktualizované!"
-        />
+        <Box className="flex h-[85vh] mt-10">
+          <Box sx={{ textAlign: 'left', width: { xs: '75%', sm: '65%', md: 300, lg: 700 } }}>
+            <Typography variant="h5">Športovec</Typography>
 
-        <ErrorModal
-          open={errorModalOpen}
-          onClose={() => setErrorModalOpen(false)}
-          text="aktualizácií údajov"
-        />
-      </Box>
-    </Box>
+            <Box sx={{ mt: 2 }}>
+              <div className="flex flex-col md:flex-row gap-4">
+                <BirthDateField
+                  value={formData.birth_date}
+                  onChange={value => handleInputChange('birth_date', value)}
+                />
+
+                <GenderField value={formData.gender} />
+              </div>
+              <div className="flex flex-col md:flex-row gap-4">
+                <SportField
+                  value={formData.sport}
+                  onChange={value => handleInputChange('sport', value)}
+                />
+
+                <ClubField
+                  value={formData.club}
+                  onChange={value => handleInputChange('club', value)}
+                />
+
+                {athlete?.id && coach && <CoachField coach={coach} />}
+              </div>
+            </Box>
+            <Button
+              variant="contained"
+              color="primary"
+              sx={{ mt: 3 }}
+              onClick={handleSaveChanges}
+              disabled={mutation.isPending}
+            >
+              {mutation.isPending ? 'Ukladám...' : 'Uložiť zmeny'}
+            </Button>
+          </Box>
+
+          <SuccessModal
+            open={successModalOpen}
+            onClose={() => setSuccessModalOpen(false)}
+            text="Údaje boli úspešne aktualizované!"
+          />
+
+          <ErrorModal
+            open={errorModalOpen}
+            onClose={() => setErrorModalOpen(false)}
+            text="aktualizácií údajov"
+          />
+        </Box>
+      </div>
+    </div>
   )
 }
 

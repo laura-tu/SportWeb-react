@@ -35,8 +35,8 @@ export const demoTheme = createTheme({
           paper: '#1D201E', //menu
         },
         text: {
-          primary: '#90caf9', // White text for dark mode
-          secondary: '#bbbbbb', // Lighter text for contrast
+          primary: '#fffffe',
+          secondary: '#ffffff', // white
         },
       },
     },
