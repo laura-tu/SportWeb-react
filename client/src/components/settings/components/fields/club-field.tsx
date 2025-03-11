@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { FormControl, Select, InputLabel, MenuItem } from '@mui/material'
-import { fetchSportClubs } from '../../../services/sport-clubs'
-import { Club } from '../../../utils/interfaces'
+import { fetchSportClubs } from '../../../../services/sport-clubs'
+import { Club } from '../../../../utils/interfaces'
 
 interface ClubFieldProps {
   value: string

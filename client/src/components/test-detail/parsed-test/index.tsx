@@ -10,11 +10,11 @@ import {
   Paper,
 } from '@mui/material'
 
-const ParsedInbodyTest: React.FC<{ parsedData: any[] }> = ({ parsedData }) => {
+const ParsedTest: React.FC<{ parsedData: any[] }> = ({ parsedData }) => {
   return (
     <div className="my-8 max-h-[50vh]">
       <Typography variant="h6" className="pt-4">
-        Výsledky testu InBody:
+        Výsledky testu:
       </Typography>
 
       <TableContainer component={Paper}>
@@ -41,4 +41,4 @@ const ParsedInbodyTest: React.FC<{ parsedData: any[] }> = ({ parsedData }) => {
   )
 }
 
-export default ParsedInbodyTest
+export default ParsedTest

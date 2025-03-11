@@ -7,16 +7,16 @@ import { DashboardLayout } from '@toolpad/core/DashboardLayout'
 import { Account } from '@toolpad/core/Account'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useAuthSession } from './hooks/useAuthSession'
-import SettingsForm from '../settings/index'
+import SettingsForm from '../settings/settings-layout'
 import CoachAthletesManager from '../coach-athletes-manager/index'
 import LoginForm from '../login-form/index'
 import DemoPageContent from './demo-page-content'
 import { NAVIGATION } from './navigation-config'
 import LoadingOverlay from '../loading/loading-overlay'
-import TestResults from '../sport-tests/index'
+import TestResultsList from '../tests-list/index'
 import { LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
-import TestDetailWindow from '../white-window'
+import TestDetailWindow from '../test-detail'
 import { CustomThemeSwitcher, demoTheme } from './theme-switcher'
 import SpiroergometryDetail from '../pnoe-detail'
 
@@ -179,7 +179,7 @@ export default function DashboardLayoutAccount(props: DemoProps) {
                         Výsledky testov z Inbody merania
                       </Typography>
                       <LocalizationProvider dateAdapter={AdapterDateFns}>
-                        <TestResults
+                        <TestResultsList
                           userId={session.user.id}
                           onResultClick={handleResultClick}
                           testType={'INBODY'}
@@ -207,7 +207,7 @@ export default function DashboardLayoutAccount(props: DemoProps) {
                         Výsledky testov zo spiroergometrie
                       </Typography>
                       <LocalizationProvider dateAdapter={AdapterDateFns}>
-                        <TestResults
+                        <TestResultsList
                           userId={session.user.id}
                           onResultClick={handleResultClick}
                           testType={'Pnoe'}

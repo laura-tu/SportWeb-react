@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import { IconButton, Box, Typography, Link, Paper, Divider } from '@mui/material'
 import * as XLSX from 'xlsx'
-//import ParsedInbodyTest from './parsed-inbody/index'
+//import ParsedTest from './parsed-inbody/index'
 import { useNavigate } from 'react-router-dom'
 import params from '../../data/inbody-params.json'
-import BodyCompositionTable from './body-composition-table'
-import SegmentalAnalysisImage from './segmental-analysis'
-import SmallBox from './small-box'
-import LargeTable from './large-table'
+import BodyCompositionTable from './components/body-composition-table'
+import SegmentalAnalysisImage from './components/segmental-analysis'
+import SmallBox from './components/small-box'
+import LargeTable from './components/large-table'
 import { mapParsedData } from '@/utils/dataUtils'
 
 const TestDetailWindow: React.FC<{ result: any }> = ({ result }) => {
@@ -182,7 +182,7 @@ const TestDetailWindow: React.FC<{ result: any }> = ({ result }) => {
         )}
         <Divider />
         {/*{parsedData.length > 0 && result.testType?.name === 'INBODY' ? (
-          <ParsedInbodyTest parsedData={parsedData} />
+          <ParsedTest parsedData={parsedData} />
         ) : (
           <div>nic</div>
         )}*/}

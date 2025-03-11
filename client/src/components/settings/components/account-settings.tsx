@@ -14,7 +14,7 @@ interface FormData {
   changedPasswordConfirm: string
 }
 
-const Settings = ({ userId }) => {
+const AccountSettings = ({ userId }) => {
   const queryClient = useQueryClient()
   const originalDataRef = useRef<FormData | null>(null)
   const { validate } = useFormValidation()
@@ -267,4 +267,4 @@ const Settings = ({ userId }) => {
   )
 }
 
-export default Settings
+export default AccountSettings

@@ -13,7 +13,7 @@ interface SportTestsProps {
   testType: string
 }
 
-const TestResults: React.FC<SportTestsProps> = ({ userId, onResultClick, testType }) => {
+const TestResultsList: React.FC<SportTestsProps> = ({ userId, onResultClick, testType }) => {
   const [startDate, setStartDate] = useState<Date | null>(null)
   const [endDate, setEndDate] = useState<Date | null>(null)
 
@@ -108,4 +108,4 @@ const TestResults: React.FC<SportTestsProps> = ({ userId, onResultClick, testTyp
   )
 }
 
-export default TestResults
+export default TestResultsList

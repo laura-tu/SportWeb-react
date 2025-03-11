@@ -4,15 +4,15 @@ import { IconButton, Box, Typography, Link } from '@mui/material'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import { useNavigate } from 'react-router-dom'
 import * as XLSX from 'xlsx'
-import ParsedInbodyTest from '../white-window/parsed-inbody'
+import ParsedTest from '../test-detail/parsed-test'
 import pnoe from '../../data/pnoe-params.json'
-import HRGraph from './hr-graph'
-import VO2VCO2Graph from './vo2-vco2-graph'
-import RERGraph from './rer-graph'
-import FATCarbsGraph from './fat-carbs-graph'
-import TableBox from './table-box'
+import HRGraph from './components/hr-graph'
+import VO2VCO2Graph from './components/vo2-vco2-graph'
+import RERGraph from './components/rer-graph'
+import FATCarbsGraph from './components/fat-carbs-graph'
+import TableBox from './components/table-box'
 import { calculateVSlopeThreshold, convertToVO2ANPPerKg } from './helpers/calculateV2SlopeThreshold'
-import WattsGraph from './watts-graph'
+import WattsGraph from './components/watts-graph'
 
 const SpiroergometryDetail: React.FC<{ result: any }> = ({ result }) => {
   const bodyWeightKg = 60 //for now
@@ -283,7 +283,7 @@ const SpiroergometryDetail: React.FC<{ result: any }> = ({ result }) => {
         )}
 
         {parsedData.length > 0 && result.testType?.name === 'Pnoe' ? (
-          <ParsedInbodyTest parsedData={parsedData} />
+          <ParsedTest parsedData={parsedData} />
         ) : (
           <div>nic</div>
         )}
