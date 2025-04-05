@@ -7,7 +7,7 @@ import { DashboardLayout } from '@toolpad/core/DashboardLayout'
 import { Account } from '@toolpad/core/Account'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useAuthSession } from './hooks/useAuthSession'
-import SettingsForm from '../settings/settings-layout'
+import SettingsLayout from '../settings/settings-layout'
 import CoachAthletesManager from '../coach-athletes-manager/index'
 import LoginForm from '../login-form/index'
 import DemoPageContent from './demo-page-content'
@@ -28,7 +28,7 @@ interface DemoProps {
 
 export default function DashboardLayoutAccount(props: DemoProps) {
   const { window } = props
-  const [currentForm, setCurrentForm] = useState<'athlete' | 'coach' | null>(null)
+  const [currentForm, setCurrentForm] = useState<'athlete' | 'coach' | 'password' | null>(null)
   const [showWhiteDashboard, setShowWhiteDashboard] = useState(false)
   const [selectedTestResult, setSelectedTestResult] = useState(null)
 
@@ -144,7 +144,7 @@ export default function DashboardLayoutAccount(props: DemoProps) {
                       Profil
                     </Typography>
                   </Box>
-                  <SettingsForm
+                  <SettingsLayout
                     session={session}
                     currentForm={currentForm}
                     setCurrentForm={setCurrentForm}

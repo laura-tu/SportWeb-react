@@ -1,9 +1,7 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Typography } from '@mui/material'
 
-const SidebarNavigation = ({ children }) => {
-  const [currentForm, setCurrentForm] = useState('athlete')
-
+const SidebarNavigation = ({ children, setCurrentForm }) => {
   return (
     <div className="mx-6 flex h-[80vh] border-[1px]">
       <div className="flex flex-col gap-4 bg-blue-400 w-[15rem] max-h-fit-content pt-6 border-r-[1px]">

@@ -219,7 +219,7 @@ const AccountSettings = ({ userId }) => {
 
                   <div className="flex flex-col md:flex-row gap-4 ">
                     <TextField
-                      label="Heslo"
+                      label="Hesloo"
                       variant="outlined"
                       fullWidth
                       margin="normal"
@@ -228,7 +228,7 @@ const AccountSettings = ({ userId }) => {
                       onChange={e => handleInputChange('changedPassword', e.target.value)}
                     />
                     <TextField
-                      label="Potvrdenie hesla"
+                      label="Potvrdenie heslaa"
                       variant="outlined"
                       fullWidth
                       margin="normal"

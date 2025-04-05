@@ -34,7 +34,7 @@ const SettingsLayout: React.FC<SettingsFormProps> = ({ session, currentForm, set
   }
 
   if (userRoles.includes('user') || userRoles.includes('sportCoach')) {
-    return <SidebarNavigation> {renderContent()}</SidebarNavigation>
+    return <SidebarNavigation setCurrentForm={setCurrentForm}>{renderContent()}</SidebarNavigation>
   }
 
   return null
