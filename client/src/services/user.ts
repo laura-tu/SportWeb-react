@@ -1,49 +1,47 @@
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 
+const BASE_URL = 'http://localhost:3000/api'
+const URL = `${BASE_URL}/users`
+
 export const registerUser = async (userData: {
   name: string
   roles: string[]
   email: string
   password: string
 }) => {
-  const response = await axios.post('http://localhost:3000/api/users', userData)
+  const response = await axios.post(URL, userData)
   return response.data
 }
 
 export const loginUser = async (user: { email: string; password: string }) => {
-  const response = await axios.post('http://localhost:3000/api/users/login', user)
+  const response = await axios.post(`${URL}/login`, user)
   return response.data
 }
 
 export const fetchUserData = async () => {
   const token = localStorage.getItem('token')
-  if (!token) {
-    throw new Error('Token sa nenšiel')
-  }
+  if (!token) throw new Error('Token sa nenšiel')
 
   try {
-    const response = await axios.get('http://localhost:3000/api/users', {
+    const response = await axios.get(URL, {
       headers: { Authorization: `Bearer ${token}` },
     })
-    // Return the first user in the docs array
     return response.data.docs[0]
-  } catch (error) {
+  } catch {
     throw new Error('Načítanie údajov o používateľovi zlyhalo')
   }
 }
 
 export const fetchUser = async (userId: string) => {
   const token = localStorage.getItem('token')
-  if (!token) {
-    throw new Error('Token sa nenašiel')
-  }
+  if (!token) throw new Error('Token sa nenašiel')
 
   try {
-    const response = await axios.get(`http://localhost:3000/api/users/${userId}`, {
+    const response = await axios.get(`${URL}/${userId}`, {
       headers: { Authorization: `Bearer ${token}` },
     })
-    return response.data // Adjust according to your API's response structure
+    return response.data
   } catch (error) {
     throw new Error(error.response?.data?.message || 'Načítanie údajov o používateľovi zlyhalo')
   }
@@ -69,7 +67,28 @@ export const useAuth = () => {
 
 export const updateUserData = async (userId: string, updateData: Record<string, any>) => {
   try {
-    const response = await axios.patch(`http://localhost:3000/api/users/${userId}`, updateData, {
+    const response = await axios.patch(`${URL}/${userId}`, updateData, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    })
+    return response.data
+  } catch (error) {
+    throw new Error(error.response?.data?.message || 'Nepodarilo sa načítať údaje o používateľovi')
+  }
+}
+
+export interface UserPasswordData {
+  password: string
+}
+
+/*export const updatePassword = async (userId: string, data: UserPasswordData): Promise<any> => {
+  return ajax<any>('PUT', constructUrlWithParams(`${URL}/${userId}`, {}), data)
+}*/ //CORS issue
+
+export const updateUserPassword = async (userId: string, data: UserPasswordData) => {
+  try {
+    const response = await axios.patch(`${URL}/${userId}`, data, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
       },

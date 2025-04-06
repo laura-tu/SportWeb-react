@@ -1,17 +1,10 @@
 import { z } from 'zod'
 
 export const useFormValidation = () => {
-  const schema = z
-    .object({
-      name: z.string().min(1, 'Meno je povinné'),
-      email: z.string().email('Nesprávny formát emailu'),
-      changedPassword: z.string().min(8, 'Heslo musí mať minimálne 8 znakov').optional(),
-      changedPasswordConfirm: z.string().optional(),
-    })
-    .refine(data => data.changedPassword === data.changedPasswordConfirm, {
-      message: 'Heslá sa nezhodujú',
-      path: ['changedPasswordConfirm'], // Specify the error path
-    })
+  const schema = z.object({
+    name: z.string().min(1, 'Meno je povinné'),
+    email: z.string().email('Nesprávny formát emailu'),
+  })
 
   const validate = (data: any) => {
     try {
