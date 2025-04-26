@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import HomeView from './components/homeview/index'
 import DashboardLayoutAccount from './components/dashboard'
 import 'tailwindcss'
