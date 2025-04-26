@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
+import Box from '@/components//box'
 
 interface HeaderProps {
   onShowRegistration: () => void
@@ -16,11 +17,11 @@ const Header: React.FC<HeaderProps> = ({ onShowRegistration, onShowLogin }) => {
   return (
     <header className="bg-gray-900 text-white transition-all duration-300 shadow-lg">
       <nav className="flex justify-between items-center p-4">
-        <div className="flex items-center">
+        <Box direction="row" className="items-center">
           <img src="/logo_black_50.jpg" alt="black logo" className="mr-3" />
           <h1 className="text-xl">Sport Web</h1>
-        </div>
-        <div className="flex items-center relative">
+        </Box>
+        <Box direction="row" className="items-center relative">
           {/* Authentication Buttons */}
           <div className="hidden md:flex">
             <button
@@ -38,11 +39,11 @@ const Header: React.FC<HeaderProps> = ({ onShowRegistration, onShowLogin }) => {
           </div>
 
           {/* Mobile Nav Icon */}
-          <div className="flex md:hidden cursor-pointer" onClick={toggleMobileNav}>
+          <Box direction="row" className=" md:hidden cursor-pointer" onClick={toggleMobileNav}>
             <i
               className={`far fa-bars text-2xl transition-transform duration-300 ${mobileNav ? 'transform rotate-180' : ''}`}
             ></i>
-          </div>
+          </Box>
 
           {/* Mobile Navigation */}
           {mobileNav && (
@@ -69,7 +70,7 @@ const Header: React.FC<HeaderProps> = ({ onShowRegistration, onShowLogin }) => {
               </li>
             </ul>
           )}
-        </div>
+        </Box>
       </nav>
     </header>
   )

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Modal, Box, IconButton } from '@mui/material'
+import { Modal, IconButton } from '@mui/material'
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined'
 
 interface ErrorModalProps {
@@ -17,6 +17,8 @@ const ErrorModal: React.FC<ErrorModalProps> = ({
   open,
   errorModalMessage,
 }) => {
+  if (!open) return null
+
   return (
     <Modal
       open={open}
@@ -24,15 +26,9 @@ const ErrorModal: React.FC<ErrorModalProps> = ({
       aria-labelledby="error-modal-title"
       aria-describedby="error-modal-description"
     >
-      <Box
+      <div
         className="bg-red-500 text-white p-6 rounded-lg shadow-lg max-w-md w-full mx-auto mt-20 relative"
-        sx={{
-          bgcolor: 'red.main',
-          color: 'white',
-          p: 4,
-          borderRadius: 2,
-          boxShadow: 3,
-        }}
+        onClick={e => e.stopPropagation()} // Prevent closing when clicking inside the modal
       >
         <IconButton
           onClick={onClose}
@@ -63,7 +59,7 @@ const ErrorModal: React.FC<ErrorModalProps> = ({
           <p id="error-modal-description">Vyskytol sa problém pri {text}.</p>
         )}
         <p>Prosím, skúste to znova.</p>
-      </Box>
+      </div>
     </Modal>
   )
 }

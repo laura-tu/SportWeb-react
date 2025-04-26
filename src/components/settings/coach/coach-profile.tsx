@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Box, Typography } from '@mui/material'
+import { Typography } from '@mui/material'
 import { Button } from '@/components/ui/button'
 import { fetchCoachByUserId, CoachIdResponse, updateCoachData } from '../../../services/coach'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
@@ -9,6 +9,7 @@ import ErrorModal from '../../error-modal/index'
 import SettingsUser from '../user/index'
 import SportSelect from '@/components/select-popover/sport-select'
 import ClubSelect from '@/components/select-popover/club-select'
+import Box from '@/components/box'
 
 interface CoachFormData {
   sport: string[]
@@ -98,28 +99,26 @@ const CoachProfile: React.FC<{ userId: string }> = ({ userId }) => {
   }
 
   return (
-    <Box className="flex flex-col w-full h-screen p-4 ">
-      <Box className="flex" sx={{ width: { xs: '75%', sm: '65%', md: 350, lg: 380 } }}>
+    <Box direction="col" className="flex w-full h-screen p-4">
+      {/* User Settings Section */}
+      <Box direction="row" className="flex" style={{ width: '75%' }}>
         <SettingsUser userId={userId} />
       </Box>
+
+      {/* Coach Information Section */}
       <Box
-        className="flex flex-col justify-center items-start"
-        sx={{
-          py: 4,
-          px: 3,
-          mt: 4,
-          backgroundColor: '#f5f5f5', // Light background for the section
-          borderRadius: 2,
-          boxShadow: 2,
+        direction="col"
+        className="flex flex-col justify-center items-start py-4 px-3 mt-4 bg-gray-100 rounded-lg shadow-md"
+        style={{
           width: '50%',
-          height: 'auto', // Automatically adjust height
+          height: 'auto',
         }}
       >
         <Typography variant="h5" sx={{ textAlign: 'left', width: '100%', fontWeight: 600 }}>
           Informácie o trénerovi:
         </Typography>
 
-        <Box sx={{ mt: 3, width: '100%' }} className="flex flex-col gap-3">
+        <Box direction="col" className="mt-3 w-full gap-3">
           <SportSelect
             selectedSports={formData.sport}
             onChange={value => handleInputChange('sport', value)}

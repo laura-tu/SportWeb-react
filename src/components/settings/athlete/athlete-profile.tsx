@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useForm, Controller, FormProvider } from 'react-hook-form'
-import { Box, Typography } from '@mui/material'
+import { Typography } from '@mui/material'
 import { useQueryClient, useMutation } from '@tanstack/react-query'
 import useFetchAthlete from '../hooks/useFetchAthlete'
 import useFetchCoach from '../hooks/useFetchCoach'
@@ -15,6 +15,7 @@ import { Button } from '@/components/ui/button'
 import SportSelect from '@/components/select-popover/sport-select'
 import ClubSelect from '@/components/select-popover/club-select'
 import LoadingSpinner from '@/components/loading/loading-spinner'
+import Box from '@/components/box'
 
 interface AthleteFormData {
   birth_date: string
@@ -128,21 +129,22 @@ const AthleteProfile = ({ userId }: { userId: string }) => {
 
   return (
     <FormProvider {...methods}>
-      <div className="box-border w-[60vw]">
-        <div className="flex flex-col w-full py-2 px-2 mx-3 md:py-4 md:px-4 md:mx-0 lg:py-8 lg:px-8 lg:mx-3">
-          <Box
-            className="flex flex-wrap"
-            sx={{ width: { xs: '80%', sm: '60%', md: 'auto', lg: 700 } }}
-          >
+      <Box className="box-border w-[60vw]" direction="col">
+        <Box
+          direction="col"
+          className="w-full py-2 px-2 mx-3 md:py-4 md:px-4 md:mx-0 lg:py-8 lg:px-8 lg:mx-3"
+        >
+          <Box className="w-[80%] sm:w-[60%] md:w-auto lg:w-[700px]">
             <SettingsUser userId={userId} />
           </Box>
 
-          <Box className="flex h-[85vh] mt-10">
-            <Box sx={{ textAlign: 'left', width: { xs: '75%', sm: '65%', md: 300, lg: 700 } }}>
+          <Box direction="col" className="h-[85vh] mt-10">
+            <Box direction="col" className="text-left w-[75%] sm:w-[65%] md:w-[300px] lg:w-[700px]">
               <Typography variant="h5">Športovec</Typography>
 
-              <Box sx={{ mt: 2 }}>
-                <div className="flex flex-col md:flex-row gap-4">
+              <Box direction="col" className="mt-2 gap-6">
+                {/* Birth Date and Gender */}
+                <Box direction="row" className="gap-4">
                   <Controller
                     name="birth_date"
                     control={control}
@@ -196,8 +198,10 @@ const AthleteProfile = ({ userId }: { userId: string }) => {
                       </div>
                     )}
                   />
-                </div>
-                <div className="flex flex-col md:flex-row gap-4">
+                </Box>
+
+                {/* Sport, Club and Coach */}
+                <Box direction="row" className="gap-4">
                   <Controller
                     name="sport"
                     control={control}
@@ -236,7 +240,7 @@ const AthleteProfile = ({ userId }: { userId: string }) => {
                       </FormControl>
                     </div>
                   )}
-                </div>
+                </Box>
               </Box>
               <Button
                 color="primary"
@@ -259,8 +263,8 @@ const AthleteProfile = ({ userId }: { userId: string }) => {
               text="aktualizácií údajov"
             />
           </Box>
-        </div>
-      </div>
+        </Box>
+      </Box>
     </FormProvider>
   )
 }

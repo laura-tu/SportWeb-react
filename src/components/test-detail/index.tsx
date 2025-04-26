@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
-import { IconButton, Box, Typography, Link, Paper, Divider } from '@mui/material'
+import { IconButton, Typography, Link, Paper, Divider } from '@mui/material'
+import Box from '@/components/box'
 import * as XLSX from 'xlsx'
 //import ParsedTest from './parsed-inbody/index'
 import { useNavigate } from 'react-router-dom'
@@ -46,20 +47,20 @@ const TestDetailWindow: React.FC<{ result: any }> = ({ result }) => {
   }, [result.resultData?.url])
 
   return (
-    <div className="flex items-center justify-center ">
+    <Box direction="col" className="items-center justify-center ">
       <div className="relative bg-blue-100/20 p-8 rounded shadow-md w-full max-w-[75vw] max-h-[86vh] my-8 overflow-auto">
-        <Box className="absolute top-4 left-4">
+        <div className="absolute top-4 left-4">
           <IconButton onClick={() => navigate(-1)} color="primary" aria-label="go back">
             <ArrowBackIcon />
           </IconButton>
-        </Box>
+        </div>
 
         <Typography variant="h6" gutterBottom className="pt-4 pl-6 !font-bold">
           Detail výsledku športového testu
         </Typography>
 
         {showDetails && (
-          <Box className="pl-6">
+          <div className="pl-6">
             <Typography variant="body1">
               Dátum: {new Date(result?.date).toLocaleDateString()}
             </Typography>
@@ -73,13 +74,13 @@ const TestDetailWindow: React.FC<{ result: any }> = ({ result }) => {
                 </Link>
               </Typography>
             )}
-          </Box>
+          </div>
         )}
 
         {parsedData.length > 0 && (
           <>
-            <Box className="p-6 flex flex-row gap-16 flex-wrap">
-              <Box className="flex flex-row gap-4 justify-self-center mx-auto">
+            <Box direction="row" className="p-6 gap-16 flex-wrap">
+              <Box direction="row" className=" gap-4 justify-self-center mx-auto">
                 {mapParsedData(['Name', 'Group', 'Age', 'Test Date'], parsedData, params).map(
                   ({ key, label, value }) => (
                     <Paper key={key} className="flex p-4 space-x-1!" elevation={4}>
@@ -94,8 +95,8 @@ const TestDetailWindow: React.FC<{ result: any }> = ({ result }) => {
                 )}
               </Box>
 
-              <div className="flex gap-2 justify-between w-full">
-                <div className="flex flex-col gap-2 my-5">
+              <Box direction="col" className="gap-2 justify-between w-full">
+                <Box direction="col" className=" gap-2 my-5">
                   <SmallBox
                     title={'Výsledok InBody'}
                     parsedData={parsedData}
@@ -129,7 +130,7 @@ const TestDetailWindow: React.FC<{ result: any }> = ({ result }) => {
                   >
                     <Typography variant="h6">%</Typography>
                   </SmallBox>
-                </div>
+                </Box>
 
                 <BodyCompositionTable
                   parsedData={parsedData}
@@ -143,8 +144,8 @@ const TestDetailWindow: React.FC<{ result: any }> = ({ result }) => {
                   ]}
                   units={['L', 'kg', 'kg', 'kg', 'kg']}
                 />
-              </div>
-              <Box className="flex flex-row flex-wrap justify-center gap-18 w-full">
+              </Box>
+              <Box direction="row" className=" flex-wrap justify-center gap-18 w-full">
                 <SegmentalAnalysisImage
                   title={'Segmentálna analýza svalov'}
                   parsedData={parsedData}
@@ -187,7 +188,7 @@ const TestDetailWindow: React.FC<{ result: any }> = ({ result }) => {
           <div>nic</div>
         )}*/}
       </div>
-    </div>
+    </Box>
   )
 }
 

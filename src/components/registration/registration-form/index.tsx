@@ -12,7 +12,7 @@ import AlternateEmailOutlinedIcon from '@mui/icons-material/AlternateEmailOutlin
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined'
 import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined'
 import { Button } from '@mui/material'
-import { Box } from '@mui/material'
+import Box from '@/components/box'
 import { registerUser } from '../../../services/user'
 import { UserRole } from '../../homeview/index'
 
@@ -103,14 +103,14 @@ const RegistrationForm: React.FC<{
   }
 
   return (
-    <div className="fixed inset-0 bg-black/70 flex justify-center items-center z-50">
-      <Box className="bg-white p-6 rounded-lg shadow-lg border border-black max-w-lg w-full">
-        <div className="headerX flex justify-between items-center mb-8">
+    <Box direction="col" className="fixed inset-0 bg-black/70 justify-center items-center z-50">
+      <div className="bg-white p-6 rounded-lg shadow-lg border border-black max-w-lg w-full">
+        <Box direction="col" className="headerX justify-between items-center mb-8">
           <h1 className="text-2xl font-bold text-black text-bold ">Vytvoriť účet</h1>
           <button className="text-red-600 text-2xl hover:cursor-pointer" onClick={onClose}>
             <CloseOutlinedIcon />
           </button>
-        </div>
+        </Box>
 
         <form onSubmit={registerUserHandler}>
           <div className="form-row my-4 text-black">
@@ -247,7 +247,7 @@ const RegistrationForm: React.FC<{
             <div className="text-red-600 text-sm mt-2">Prosím, vyplňte všetky povinné polia.</div>
           )}
         </form>
-      </Box>
+      </div>
 
       {errorModalVisible && (
         <ErrorModal
@@ -257,7 +257,7 @@ const RegistrationForm: React.FC<{
           open={errorModalVisible}
         />
       )}
-    </div>
+    </Box>
   )
 }
 

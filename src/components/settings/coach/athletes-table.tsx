@@ -1,6 +1,5 @@
 import React from 'react'
 import {
-  Box,
   Typography,
   Table,
   TableBody,
@@ -13,6 +12,7 @@ import {
 import { useQuery } from '@tanstack/react-query'
 import { getCoachData } from '../../../services/coach'
 import LoadingSpinner from '@/components/loading/loading-spinner'
+import Box from '@/components/box'
 
 export interface CoachProps {
   coachId: string
@@ -30,7 +30,7 @@ const AthletesTable: React.FC<CoachProps> = ({ coachId }) => {
 
   if (error) {
     return (
-      <Box sx={{ textAlign: 'center', mt: 4 }}>
+      <Box direction="col" className="text-center mt-4">
         <Typography variant="body1" color="error">
           Nepodarilo sa načítať dáta trénera.
         </Typography>
@@ -42,14 +42,13 @@ const AthletesTable: React.FC<CoachProps> = ({ coachId }) => {
 
   if (!coach) {
     return (
-      <Box sx={{ textAlign: 'center', mt: 4 }}>
+      <Box direction="col" className="text-center mt-4">
         <Typography variant="body1" color="text.secondary">
           Nepodarilo sa nájsť trénera s týmto ID.
         </Typography>
       </Box>
     )
   }
-
   const athletes = coach.athletes || []
 
   return (

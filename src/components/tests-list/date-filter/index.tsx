@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
-import { Box, Button, Typography } from '@mui/material'
+import { Button, Typography } from '@mui/material'
 import { startOfDay, endOfDay, isAfter, isBefore } from 'date-fns'
+import Box from '@/components/box'
 
 interface DateFilterProps {
   startDate: Date | null
@@ -41,8 +42,8 @@ const DateFilter: React.FC<DateFilterProps> = ({
   }
 
   return (
-    <Box>
-      <Box className="w-full my-4 flex flex-row flex-wrap md:flex-nowrap gap-4">
+    <div>
+      <Box direction="row" className="w-full my-4 flex-wrap md:flex-nowrap gap-4">
         <DatePicker
           label="Od dátumu"
           value={startDate}
@@ -67,10 +68,10 @@ const DateFilter: React.FC<DateFilterProps> = ({
         </Button>
       </Box>
 
-      <Box className="w-full my-4 flex gap-4">
+      <Box direction="col" className="w-full my-4 gap-4">
         {dateError && <Typography color="error">{dateError}</Typography>}
       </Box>
-    </Box>
+    </div>
   )
 }
 

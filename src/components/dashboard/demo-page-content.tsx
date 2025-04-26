@@ -1,5 +1,5 @@
 import React from 'react'
-import Box from '@mui/material/Box'
+import Box from '@/components/box'
 import Typography from '@mui/material/Typography'
 import useFetchUserById from '../../utils/api/useFetchUserById'
 import LoadingSpinner from '../loading/loading-spinner'
@@ -24,8 +24,8 @@ const DemoPageContent: React.FC<DemoPageProps> = ({ userId }) => {
   }
 
   return (
-    <Box className=" m-5">
-      <Box className="flex flex-row p-2">
+    <div className="m-5">
+      <Box direction="row" className="p-2">
         <Typography
           sx={{ color: theme => (theme.palette.mode === 'dark' ? 'white' : 'black') }}
           className="font-bold  text-3xl!"
@@ -34,46 +34,31 @@ const DemoPageContent: React.FC<DemoPageProps> = ({ userId }) => {
         </Typography>
       </Box>
 
-      <Box className="flex flex-row gap-2 m-2">
-        <Box
-          sx={{ borderColor: theme => (theme.palette.mode === 'dark' ? 'white' : 'black') }}
-          className="border-2  h-[25rem] flex-2"
-        >
+      <Box direction="row" className="gap-2 m-2">
+        <Box direction="col" className="border-2 h-[25rem] flex-2">
           1
         </Box>
 
-        <Box className="flex-1 flex flex-col h-[25rem] gap-2">
-          <Box
-            sx={{ borderColor: theme => (theme.palette.mode === 'dark' ? 'white' : 'black') }}
-            className="border-2 flex-1 flex justify-center items-center"
-          >
+        <Box direction="col" className="flex-1 h-[25rem] gap-2">
+          <Box direction="col" className="border-2 flex-1 flex justify-center items-center">
             2
           </Box>
 
-          <Box
-            sx={{ borderColor: theme => (theme.palette.mode === 'dark' ? 'white' : 'black') }}
-            className="border-2 flex-1 flex justify-center items-center"
-          >
+          <Box direction="col" className="border-2 flex-1  justify-center items-center">
             3
           </Box>
         </Box>
       </Box>
 
-      <Box className="flex flex-row gap-2 m-2">
-        <Box
-          sx={{ borderColor: theme => (theme.palette.mode === 'dark' ? 'white' : 'black') }}
-          className="border-2 h-[23rem] flex-1"
-        >
+      <Box direction="row" className="gap-2 m-2">
+        <Box direction="col" className="border-2 h-[23rem] flex-1">
           4
         </Box>
-        <Box
-          sx={{ borderColor: theme => (theme.palette.mode === 'dark' ? 'white' : 'black') }}
-          className="border-2  h-[23rem] flex-1"
-        >
+        <Box direction="col" className="border-2 h-[23rem] flex-1">
           5
         </Box>
       </Box>
-    </Box>
+    </div>
   )
 }
 

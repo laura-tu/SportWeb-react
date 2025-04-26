@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Select, MenuItem, InputLabel, FormControl, Button, Box } from '@mui/material'
+import { Select, MenuItem, InputLabel, FormControl, Button } from '@mui/material'
 import { useForm, Controller } from 'react-hook-form'
 import ErrorModal from '../../error-modal/index'
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined'
@@ -7,6 +7,7 @@ import { fetchSports } from '../../../services/sports'
 import { fetchSportClubs } from '../../../services/sport-clubs'
 import { registerCoach } from '../../../services/coach'
 import SuccessModal from '../../success-modal/index'
+import Box from '@/components/box'
 
 export interface CoachFormData {
   sport: string[]
@@ -52,17 +53,17 @@ const CoachRegistration = ({ userId, onClose }) => {
   }
 
   return (
-    <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
-      <Box className="bg-white p-6 rounded-lg w-full max-w-lg shadow-lg border border-black relative">
-        <div className="headerX flex justify-between items-center mb-8">
+    <Box direction="col" className="fixed inset-0 bg-black/70 items-center justify-center z-50">
+      <div className="bg-white p-6 rounded-lg w-full max-w-lg shadow-lg border border-black relative">
+        <Box direction="col" className="headerX justify-between items-center mb-8">
           <h1 className="text-2xl font-bold text-black text-bold ">Informácie o trénerovi</h1>
           <button className="text-red-600 text-2xl  hover:cursor-pointer" onClick={onClose}>
             <CloseOutlinedIcon />
           </button>
-        </div>
+        </Box>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          <div className="flex flex-col gap-2">
+          <Box direction="col" className="gap-2">
             <InputLabel id="sport-id">Venujem sa športu (športom):</InputLabel>
             <FormControl fullWidth>
               <Controller
@@ -92,9 +93,9 @@ const CoachRegistration = ({ userId, onClose }) => {
                 )}
               />
             </FormControl>
-          </div>
+          </Box>
 
-          <div className="flex flex-col gap-2">
+          <Box direction="col" className="gap-2">
             <InputLabel id="club-id">Názov klubu:</InputLabel>
             <FormControl fullWidth>
               <Controller
@@ -116,7 +117,7 @@ const CoachRegistration = ({ userId, onClose }) => {
                 )}
               />
             </FormControl>
-          </div>
+          </Box>
           <div className="mt-8">
             <Button
               type="submit"
@@ -129,7 +130,7 @@ const CoachRegistration = ({ userId, onClose }) => {
             </Button>
           </div>
         </form>
-      </Box>
+      </div>
 
       <SuccessModal
         open={successModalVisible}
@@ -143,7 +144,7 @@ const CoachRegistration = ({ userId, onClose }) => {
         label="Chyba!"
         open={errorModal}
       />
-    </div>
+    </Box>
   )
 }
 

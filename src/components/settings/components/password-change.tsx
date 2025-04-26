@@ -9,6 +9,7 @@ import { useUpdatePasswordForm } from '../hooks/usePasswordMutation'
 import ErrorModal from '@/components/error-modal'
 import SuccessModal from '@/components/success-modal'
 import LoadingSpinner from '@/components/loading/loading-spinner'
+import Box from '@/components/box'
 
 interface PasswordChangeProps {
   userId: string
@@ -37,7 +38,7 @@ const PasswordChange: React.FC<PasswordChangeProps> = ({ userId }) => {
   return (
     <FormProvider {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col space-y-4 py-4">
-        <div className="flex flex-col md:flex-row gap-4">
+        <Box direction="row" className="gap-4">
           <FormControl>
             <FormField
               control={form.control}
@@ -65,7 +66,7 @@ const PasswordChange: React.FC<PasswordChangeProps> = ({ userId }) => {
               )}
             />
           </FormControl>
-        </div>
+        </Box>
 
         <Button type="submit" disabled={isPending} className="w-[10.5rem]">
           {isPending ? <LoadingSpinner small /> : 'Aktualizovať heslo'}

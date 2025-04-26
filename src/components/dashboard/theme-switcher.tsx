@@ -1,6 +1,5 @@
 import React from 'react'
 import { createTheme, useColorScheme } from '@mui/material/styles'
-import Box from '@mui/material/Box'
 import IconButton from '@mui/material/IconButton'
 import Popover from '@mui/material/Popover'
 import Radio from '@mui/material/Radio'
@@ -92,7 +91,7 @@ export function CustomThemeSwitcher() {
         }}
         disableAutoFocus
       >
-        <Box sx={{ p: 2 }}>
+        <div className="p-2">
           <FormControl>
             <FormLabel id="custom-theme-switcher-label">Theme</FormLabel>
             <RadioGroup
@@ -106,7 +105,7 @@ export function CustomThemeSwitcher() {
               <FormControlLabel value="dark" control={<Radio />} label="Dark" />
             </RadioGroup>
           </FormControl>
-        </Box>
+        </div>
       </Popover>
     </React.Fragment>
   )

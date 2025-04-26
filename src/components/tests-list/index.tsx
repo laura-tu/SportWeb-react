@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
-import { Box, Typography, Card, CardContent, Link } from '@mui/material'
+import { Typography, Card, CardContent } from '@mui/material'
 import Image from 'mui-image'
 import LoadingSpinner from '../loading/loading-spinner'
 import useFetchAthlete from '../settings/hooks/useFetchAthlete'
 import useFetchTestResults from './hooks/useFetchTestResults'
 import DateFilter from './date-filter/index'
 import useFetchUserById from '../../utils/api/useFetchUserById'
+import Box from '@/components/box'
 
 interface SportTestsProps {
   userId: string
@@ -50,8 +51,8 @@ const TestResultsList: React.FC<SportTestsProps> = ({ userId, onResultClick, tes
   })
 
   return (
-    <Box className="flex flex-col w-full p-4 relative">
-      <Box className="w-full my-2 flex flex-row flex-wrap justify-between">
+    <Box direction="col" className="w-full p-4 relative">
+      <Box direction="row" className="w-full my-2 flex-wrap justify-between">
         <Typography variant="h5" gutterBottom>
           Výsledky pre používateľa: {userData?.name || userId}
         </Typography>
@@ -67,7 +68,7 @@ const TestResultsList: React.FC<SportTestsProps> = ({ userId, onResultClick, tes
       </Box>
 
       {/* Filtered Results Section */}
-      <Box className="w-full ">
+      <div className="w-full ">
         {filteredResults.length > 0 ? (
           filteredResults.map((result: any, index: number) => (
             <Card
@@ -103,7 +104,7 @@ const TestResultsList: React.FC<SportTestsProps> = ({ userId, onResultClick, tes
             Žiadne výsledky na zobrazenie.
           </Typography>
         )}
-      </Box>
+      </div>
     </Box>
   )
 }

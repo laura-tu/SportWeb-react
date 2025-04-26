@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useMemo } from 'react'
 import { useParams } from 'react-router-dom'
-import { IconButton, Box, Typography, Link } from '@mui/material'
+import { IconButton, Typography, Link } from '@mui/material'
+import Box from '@/components/box'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import { useNavigate } from 'react-router-dom'
 import * as XLSX from 'xlsx'
@@ -168,17 +169,17 @@ const SpiroergometryDetail: React.FC<{ result: any }> = ({ result }) => {
   return (
     <div className="flex items-center justify-center ">
       <div className="relative bg-blue-100/20 p-8 rounded shadow-md w-full max-w-[75vw] max-h-[86vh] my-8 overflow-auto">
-        <Box className="absolute top-4 left-4">
+        <div className="absolute top-4 left-4">
           <IconButton onClick={() => navigate(-1)} color="primary" aria-label="go back">
             <ArrowBackIcon />
           </IconButton>
-        </Box>
+        </div>
 
         <Typography variant="h6" gutterBottom className="pt-4 pl-6 !font-bold">
           Detail výsledku športového testu
         </Typography>
         {showDetails && (
-          <Box className="pl-6">
+          <div className="pl-6">
             <Typography variant="body1">
               Dátum: {new Date(result?.date).toLocaleDateString()}
             </Typography>
@@ -192,11 +193,11 @@ const SpiroergometryDetail: React.FC<{ result: any }> = ({ result }) => {
                 </Link>
               </Typography>
             )}
-          </Box>
+          </div>
         )}
         {parsedData.length > 0 && (
           <>
-            <Box className="pl-6 my-4 flex flex-wrap gap-4">
+            <Box direction="col" className="pl-6 my-4 flex-wrap gap-4">
               <TableBox
                 title="Parameter"
                 data={[

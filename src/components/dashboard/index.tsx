@@ -1,6 +1,5 @@
 import React, { useState, useMemo } from 'react'
 import { Routes, Route, useNavigate } from 'react-router-dom'
-import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import { AppProvider } from '@toolpad/core/AppProvider'
 import { DashboardLayout } from '@toolpad/core/DashboardLayout'
@@ -8,7 +7,6 @@ import { Account } from '@toolpad/core/Account'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useAuthSession } from './hooks/useAuthSession'
 import SettingsLayout from '../settings/settings-layout'
-import CoachAthletesManager from '../coach-athletes-manager/index'
 import LoginForm from '../login-form/index'
 import DemoPageContent from './demo-page-content'
 import { NAVIGATION } from './navigation-config'
@@ -78,9 +76,7 @@ export default function DashboardLayoutAccount(props: DemoProps) {
   const hasSportCoachRole = session?.user.roles?.includes('sportCoach')
 
   if (loading) {
-    return (
-        <LoadingSpinner />
-    )
+    return <LoadingSpinner />
   }
 
   // Handle error state
@@ -135,11 +131,11 @@ export default function DashboardLayoutAccount(props: DemoProps) {
               path="settings"
               element={
                 <div>
-                  <Box sx={{ pt: 3, px: 3, ml: 3 }}>
+                  <div className="pt-3 px-3 ml-3">
                     <Typography variant="h4" gutterBottom>
                       Profil
                     </Typography>
-                  </Box>
+                  </div>
                   <SettingsLayout
                     session={session}
                     currentForm={currentForm}
@@ -148,21 +144,7 @@ export default function DashboardLayoutAccount(props: DemoProps) {
                 </div>
               }
             />
-            {hasSportCoachRole && (
-              <Route
-                path="athletes"
-                element={
-                  <div>
-                    <Box sx={{ pt: 3, ml: 3 }}>
-                      <Typography variant="h4" gutterBottom>
-                        Športovci
-                      </Typography>
-                    </Box>
-                    <CoachAthletesManager userId={session.user.id} />
-                  </div>
-                }
-              />
-            )}
+
             <Route
               path="test_results/inbody_results"
               element={
@@ -170,7 +152,7 @@ export default function DashboardLayoutAccount(props: DemoProps) {
                   <DemoPageContent userId={session.user.id} />
                 ) : session?.user ? (
                   <div>
-                    <Box sx={{ pt: 3, ml: 3 }}>
+                    <div className="pt-3 ml-3">
                       <Typography variant="h4" gutterBottom>
                         Výsledky testov z Inbody merania
                       </Typography>
@@ -181,7 +163,7 @@ export default function DashboardLayoutAccount(props: DemoProps) {
                           testType={'INBODY'}
                         />
                       </LocalizationProvider>
-                    </Box>
+                    </div>
                   </div>
                 ) : (
                   <Typography variant="h5" color="error">
@@ -198,7 +180,7 @@ export default function DashboardLayoutAccount(props: DemoProps) {
                   <DemoPageContent userId={session.user.id} />
                 ) : session?.user ? (
                   <div>
-                    <Box sx={{ pt: 3, ml: 3 }}>
+                    <div className="pt-3 ml-3">
                       <Typography variant="h4" gutterBottom>
                         Výsledky testov zo spiroergometrie
                       </Typography>
@@ -209,7 +191,7 @@ export default function DashboardLayoutAccount(props: DemoProps) {
                           testType={'Pnoe'}
                         />
                       </LocalizationProvider>
-                    </Box>
+                    </div>
                   </div>
                 ) : (
                   <Typography variant="h5" color="error">

@@ -1,6 +1,5 @@
 import React from 'react'
 import {
-  Box,
   Table,
   TableBody,
   TableCell,
@@ -8,7 +7,6 @@ import {
   TableHead,
   TableRow,
   Paper,
-  Typography,
 } from '@mui/material'
 
 interface TableBoxProps {
@@ -18,7 +16,7 @@ interface TableBoxProps {
 
 const TableBox: React.FC<TableBoxProps> = ({ title, data }) => {
   return (
-    <Box className="pl-6">
+    <div className="pl-6">
       <TableContainer component={Paper} className="flex max-w-96 flex-1">
         <Table>
           <TableHead>
@@ -41,7 +39,7 @@ const TableBox: React.FC<TableBoxProps> = ({ title, data }) => {
           </TableBody>
         </Table>
       </TableContainer>
-    </Box>
+    </div>
   )
 }
 

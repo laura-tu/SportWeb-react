@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { Box, TextField, List, ListItem, Button, Typography } from '@mui/material'
+import { TextField, List, ListItem, Button, Typography } from '@mui/material'
 import { updateCoachData, getCoachData } from '../../../services/coach'
 import { searchAthletesByName } from '../../../services/athlete'
 import LoadingSpinner from '@/components/loading/loading-spinner'
+import Box from '@/components/box'
 
 interface SearchAthleteProps {
   coachId: string
@@ -61,8 +62,8 @@ const SearchAthlete: React.FC<SearchAthleteProps> = ({ coachId }) => {
   }
 
   return (
-    <Box sx={{ pt: 2, width: { xs: '75%', sm: '65%', md: 600 } }}>
-      <Box sx={{ display: 'flex', gap: 2 }}>
+    <Box className="pt-2 w-full sm:w-[65%] md:w-[600px]">
+      <Box className="flex gap-2">
         <TextField
           label="napr. Janko Hraško"
           value={searchQuery}
@@ -77,7 +78,7 @@ const SearchAthlete: React.FC<SearchAthleteProps> = ({ coachId }) => {
           sx={{ borderRadius: 2 }}
           disabled={isFetchingAthletes || patchCoachMutation.isPending}
         >
-          {isFetchingAthletes ? 'Načítavam...' : 'Vyhľadať'}
+          {isFetchingAthletes ? <LoadingSpinner small /> : 'Vyhľadať'}
         </Button>
       </Box>
 

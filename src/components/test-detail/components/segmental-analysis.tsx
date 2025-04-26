@@ -1,6 +1,7 @@
 import React from 'react'
-import { Paper, Typography, Box } from '@mui/material'
+import { Paper, Typography } from '@mui/material'
 import { mapParsedData } from '@/utils/dataUtils'
+import Box from '@/components/box'
 
 interface BodyCompositionTableProps {
   title: string
@@ -24,7 +25,7 @@ const SegmentalAnalysisImage: React.FC<BodyCompositionTableProps> = ({
   const mappedData = mapParsedData(mapData, parsedData, params)
 
   return (
-    <Box className="flex flex-col gap-2 w-[28rem] ">
+    <Box direction="col" className=" gap-2 w-[28rem] ">
       <Typography variant="h6" className="mt-6 mb-4 !font-bold">
         {title}
       </Typography>
