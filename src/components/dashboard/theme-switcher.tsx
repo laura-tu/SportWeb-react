@@ -14,6 +14,34 @@ export const demoTheme = createTheme({
   cssVariables: {
     colorSchemeSelector: 'data-toolpad-color-scheme',
   },
+  typography: {
+    fontFamily: 'Roboto, sans-serif',
+    fontSize: 14,
+    /*h1: {
+      fontSize: '2rem',
+      fontWeight: 500,
+    },
+    h2: {
+      fontSize: '1.5rem',
+      fontWeight: 500,
+    },
+    h3: {
+      fontSize: '1.25rem',
+      fontWeight: 500,
+    },
+    h4: {
+      fontSize: '1.125rem',
+      fontWeight: 500,
+    },
+    h5: {
+      fontSize: '1rem',
+      fontWeight: 500,
+    },
+    h6: {
+      fontSize: '0.875rem',
+      fontWeight: 500,
+    },*/
+  },
   colorSchemes: {
     light: {
       palette: {
@@ -96,7 +124,7 @@ export function CustomThemeSwitcher() {
             <FormLabel id="custom-theme-switcher-label">Theme</FormLabel>
             <RadioGroup
               aria-labelledby="custom-theme-switcher-label"
-              defaultValue="system"
+              defaultValue="light"
               name="custom-theme-switcher"
               onChange={handleThemeChange}
             >

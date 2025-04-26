@@ -27,7 +27,7 @@ interface DemoProps {
 export default function DashboardLayoutAccount(props: DemoProps) {
   const { window } = props
   const [currentForm, setCurrentForm] = useState<'athlete' | 'coach' | 'password' | null>(null)
-  const [showWhiteDashboard, setShowWhiteDashboard] = useState(false)
+  //const [showWhiteDashboard, setShowWhiteDashboard] = useState(false)
   const [selectedTestResult, setSelectedTestResult] = useState(null)
 
   const { session, loading, error, authentication } = useAuthSession()
@@ -65,10 +65,10 @@ export default function DashboardLayoutAccount(props: DemoProps) {
     setSelectedTestResult(result)
 
     if (result.testType?.name === 'INBODY') {
-      setShowWhiteDashboard(true)
+     // setShowWhiteDashboard(true)
       navigate(`/dashboard/test_results/inbody_results/${result.id}`)
     } else if (result.testType?.name === 'Pnoe') {
-      setShowWhiteDashboard(true)
+      //setShowWhiteDashboard(true)
       navigate(`/dashboard/test_results/spiroergometry/${result.id}`)
     }
   }
