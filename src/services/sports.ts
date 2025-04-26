@@ -1,6 +1,14 @@
-import axios from 'axios'
+import { ajax, ApiGetList } from '../utils/api'
+import { Sport } from '../utils/interfaces'
+import { constructUrlWithParams } from '../utils/api'
 
-export const fetchSports = async () => {
-  const response = await axios.get('http://localhost:3000/api/c_sport')
-  return response.data.docs
+const URL = 'api/c_sport'
+
+export const fetchSports = async (): Promise<ApiGetList<Sport>> => {
+  const params = {
+    limit: 0, // no limit in PayloadCMS, adjust as needed
+  }
+
+  const url = constructUrlWithParams(URL, params)
+  return ajax<ApiGetList<Sport>>('GET', url)
 }
