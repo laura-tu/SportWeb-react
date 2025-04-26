@@ -1,12 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { Box, Typography, FormControl } from '@mui/material'
-
-import { Popover, PopoverTrigger, PopoverContent } from '../../ui/popover'
-import { Command, CommandGroup, CommandItem } from '../../ui/command'
-import { Button as SButton } from '@/components/ui/button'
-import { Check } from 'lucide-react'
-import { cn } from '@/lib/utils'
-
+import { Box, Typography } from '@mui/material'
+import { Button } from '@/components/ui/button'
 import { fetchCoachByUserId, CoachIdResponse, updateCoachData } from '../../../services/coach'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { fetchSports } from '../../../services/sports'
@@ -16,6 +10,8 @@ import LoadingOverlay from '../../loading/loading-overlay'
 import SuccessModal from '../../success-modal/index'
 import ErrorModal from '../../error-modal/index'
 import SettingsUser from '../user/index'
+import SportSelect from '@/components/select-popover/sport-select'
+import ClubSelect from '@/components/select-popover/club-select'
 
 interface CoachFormData {
   sport: string[]
@@ -138,90 +134,21 @@ const CoachProfile: React.FC<{ userId: string }> = ({ userId }) => {
         </Typography>
 
         <Box sx={{ mt: 3, width: '100%' }} className="flex flex-col gap-3">
-          <FormControl fullWidth margin="normal">
-            <Popover>
-              <PopoverTrigger asChild>
-                <SButton variant="outline" role="combobox" className="w-full justify-between">
-                  {formData.sport.length > 0
-                    ? sportsOptions
-                        .filter(sport => formData.sport.includes(sport.id))
-                        .map(sport => sport.name)
-                        .join(' , ')
-                    : 'Vyber športy'}
-                </SButton>
-              </PopoverTrigger>
+          <SportSelect
+            selectedSports={formData.sport}
+            options={sportsOptions}
+            onChange={value => handleInputChange('sport', value)}
+          />
 
-              <PopoverContent className="relative left-0 mt-2 w-48 p-0 max-h-60 overflow-y-auto">
-                <Command>
-                  <CommandGroup>
-                    {sportsOptions.map(sport => (
-                      <CommandItem
-                        key={sport.id}
-                        onSelect={() => {
-                          const alreadySelected = formData.sport.includes(sport.id)
-                          const newSelection = alreadySelected
-                            ? formData.sport.filter(id => id !== sport.id)
-                            : [...formData.sport, sport.id]
-                          handleInputChange('sport', newSelection)
-                        }}
-                      >
-                        <div className="flex items-center">
-                          <Check
-                            className={cn(
-                              'mr-2 h-4 w-4',
-                              formData.sport.includes(sport.id) ? 'opacity-100' : 'opacity-0',
-                            )}
-                          />
-                          {sport.name}
-                        </div>
-                      </CommandItem>
-                    ))}
-                  </CommandGroup>
-                </Command>
-              </PopoverContent>
-            </Popover>
-          </FormControl>
+          <ClubSelect
+            selectedClub={formData.sport_club}
+            options={clubOptions}
+            onChange={value => handleInputChange('sport_club', value)}
+          />
 
-          <FormControl fullWidth margin="normal">
-            <Popover>
-              <PopoverTrigger asChild>
-                <SButton variant="outline" role="combobox" className="w-full justify-between">
-                  {formData.sport_club
-                    ? (clubOptions.find(club => club.id === formData.sport_club)?.name ??
-                      'Vyber klub')
-                    : 'Vyber klub'}
-                </SButton>
-              </PopoverTrigger>
-              <PopoverContent className="w-full p-0">
-                <Command>
-                  <CommandGroup>
-                    {clubOptions.map(club => (
-                      <CommandItem
-                        key={club.id}
-                        onSelect={() => {
-                          handleInputChange('sport_club', club.id)
-                        }}
-                      >
-                        <div className="flex items-center">
-                          <Check
-                            className={cn(
-                              'mr-2 h-4 w-4',
-                              formData.sport_club === club.id ? 'opacity-100' : 'opacity-0',
-                            )}
-                          />
-                          {club.name}
-                        </div>
-                      </CommandItem>
-                    ))}
-                  </CommandGroup>
-                </Command>
-              </PopoverContent>
-            </Popover>
-          </FormControl>
-
-          <SButton onClick={handleSaveChanges} disabled={mutation.isPending} className="w-fit mt-4">
+          <Button onClick={handleSaveChanges} disabled={mutation.isPending} className="w-fit mt-4">
             {mutation.isPending ? 'Ukladám...' : 'Uložiť zmeny'}
-          </SButton>
+          </Button>
         </Box>
       </Box>
 
