@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button'
 import { useUpdatePasswordForm } from '../hooks/usePasswordMutation'
 import ErrorModal from '@/components/error-modal'
 import SuccessModal from '@/components/success-modal'
-import { Box, CircularProgress } from '@mui/material'
+import LoadingSpinner from '@/components/loading/loading-spinner'
 
 interface PasswordChangeProps {
   userId: string
@@ -68,14 +68,7 @@ const PasswordChange: React.FC<PasswordChangeProps> = ({ userId }) => {
         </div>
 
         <Button type="submit" disabled={isPending} className="w-[10.5rem]">
-          {isPending ? (
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <CircularProgress size={20} sx={{ mr: 1 }} />
-              Ukladám...
-            </Box>
-          ) : (
-            'Aktualizovať heslo'
-          )}
+          {isPending ? <LoadingSpinner small /> : 'Aktualizovať heslo'}
         </Button>
 
         <ErrorModal

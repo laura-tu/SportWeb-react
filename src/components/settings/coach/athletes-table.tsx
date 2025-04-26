@@ -9,10 +9,10 @@ import {
   TableHead,
   TableRow,
   Paper,
-  CircularProgress,
 } from '@mui/material'
 import { useQuery } from '@tanstack/react-query'
 import { getCoachData } from '../../../services/coach'
+import LoadingSpinner from '@/components/loading/loading-spinner'
 
 export interface CoachProps {
   coachId: string
@@ -25,14 +25,7 @@ const AthletesTable: React.FC<CoachProps> = ({ coachId }) => {
   })
 
   if (isLoading) {
-    return (
-      <Box sx={{ textAlign: 'center', mt: 4 }}>
-        <CircularProgress />
-        <Typography variant="body1" mt={2}>
-          Načítavam dáta trénera...
-        </Typography>
-      </Box>
-    )
+    return <LoadingSpinner />
   }
 
   if (error) {

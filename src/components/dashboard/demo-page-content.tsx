@@ -2,7 +2,7 @@ import React from 'react'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import useFetchUserById from '../../utils/api/useFetchUserById'
-import LoadingOverlay from '../loading/loading-overlay'
+import LoadingSpinner from '../loading/loading-spinner'
 
 interface DemoPageProps {
   userId: string
@@ -12,7 +12,7 @@ const DemoPageContent: React.FC<DemoPageProps> = ({ userId }) => {
   const { data: userData, isLoading, error } = useFetchUserById(userId)
 
   if (isLoading) {
-    return <LoadingOverlay />
+    return <LoadingSpinner />
   }
 
   if (error) {

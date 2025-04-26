@@ -28,7 +28,7 @@ const CoachRegistration = ({ userId, onClose }) => {
   useEffect(() => {
     const loadSports = async () => {
       const sports = await fetchSports()
-      setSportsOptions(sports)
+      setSportsOptions(sports?.docs || [])
     }
 
     const loadSportClubs = async () => {

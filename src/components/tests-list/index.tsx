@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Box, Typography, Card, CardContent, Link } from '@mui/material'
 import Image from 'mui-image'
-import LoadingOverlay from '../loading/loading-overlay'
+import LoadingSpinner from '../loading/loading-spinner'
 import useFetchAthlete from '../settings/hooks/useFetchAthlete'
 import useFetchTestResults from './hooks/useFetchTestResults'
 import DateFilter from './date-filter/index'
@@ -26,7 +26,7 @@ const TestResultsList: React.FC<SportTestsProps> = ({ userId, onResultClick, tes
   const { data: userData, isLoading, error } = useFetchUserById(userId)
 
   if (isLoading || isFetchingTestResults || isFetchingAthleteId) {
-    return <LoadingOverlay />
+    return <LoadingSpinner />
   }
 
   if (error || testResultsError || athleteError) {

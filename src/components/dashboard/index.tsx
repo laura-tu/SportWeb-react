@@ -12,7 +12,7 @@ import CoachAthletesManager from '../coach-athletes-manager/index'
 import LoginForm from '../login-form/index'
 import DemoPageContent from './demo-page-content'
 import { NAVIGATION } from './navigation-config'
-import LoadingOverlay from '../loading/loading-overlay'
+import LoadingSpinner from '../loading/loading-spinner'
 import TestResultsList from '../tests-list/index'
 import { LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
@@ -77,13 +77,9 @@ export default function DashboardLayoutAccount(props: DemoProps) {
 
   const hasSportCoachRole = session?.user.roles?.includes('sportCoach')
 
-  // Handle loading state
   if (loading) {
     return (
-      <Typography variant="h5" sx={{ textAlign: 'center', marginTop: 4 }}>
-        Načítavam...
-        <LoadingOverlay />
-      </Typography>
+        <LoadingSpinner />
     )
   }
 

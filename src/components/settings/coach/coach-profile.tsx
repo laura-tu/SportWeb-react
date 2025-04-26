@@ -3,7 +3,7 @@ import { Box, Typography } from '@mui/material'
 import { Button } from '@/components/ui/button'
 import { fetchCoachByUserId, CoachIdResponse, updateCoachData } from '../../../services/coach'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import LoadingOverlay from '../../loading/loading-overlay'
+import LoadingSpinner from '../../loading/loading-spinner'
 import SuccessModal from '../../success-modal/index'
 import ErrorModal from '../../error-modal/index'
 import SettingsUser from '../user/index'
@@ -84,7 +84,7 @@ const CoachProfile: React.FC<{ userId: string }> = ({ userId }) => {
   }
 
   if (isFetchingCoachId) {
-    return <LoadingOverlay />
+    return <LoadingSpinner />
   }
 
   if (coachIdError) {
@@ -130,8 +130,8 @@ const CoachProfile: React.FC<{ userId: string }> = ({ userId }) => {
             onChange={value => handleInputChange('sport_club', value)}
           />
 
-          <Button onClick={handleSaveChanges} disabled={mutation.isPending} className="w-fit mt-4">
-            {mutation.isPending ? 'Ukladám...' : 'Uložiť zmeny'}
+          <Button onClick={handleSaveChanges} disabled={mutation.isPending} className="w-full mt-4">
+            {mutation.isPending ? <LoadingSpinner small /> : 'Uložiť zmeny'}
           </Button>
         </Box>
       </Box>

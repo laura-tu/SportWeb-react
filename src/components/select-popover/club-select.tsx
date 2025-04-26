@@ -7,6 +7,7 @@ import { cn } from '@/lib/utils'
 import { FormControl } from '@mui/material'
 import { Club } from '@/utils/interfaces'
 import { fetchSportClubs } from '@/services/sport-clubs'
+import LoadingSpinner from '../loading/loading-spinner'
 
 interface ClubSelectProps {
   selectedClub?: string
@@ -33,7 +34,7 @@ const ClubSelect: React.FC<ClubSelectProps> = ({ selectedClub, onChange }) => {
   }, [])
 
   if (loading) {
-    return <div>Loading clubs...</div>
+    return <LoadingSpinner/>
   }
 
   return (

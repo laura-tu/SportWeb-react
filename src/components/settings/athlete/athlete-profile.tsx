@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useForm, Controller, FormProvider } from 'react-hook-form'
-import { Box, Typography, CircularProgress } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 import { useQueryClient, useMutation } from '@tanstack/react-query'
 import useFetchAthlete from '../hooks/useFetchAthlete'
 import useFetchCoach from '../hooks/useFetchCoach'
@@ -14,6 +14,7 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import SportSelect from '@/components/select-popover/sport-select'
 import ClubSelect from '@/components/select-popover/club-select'
+import LoadingSpinner from '@/components/loading/loading-spinner'
 
 interface AthleteFormData {
   birth_date: string
@@ -115,12 +116,8 @@ const AthleteProfile = ({ userId }: { userId: string }) => {
     })
   }
 
-  if (isFetchingAthleteId || isFetchingCoach)
-    return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
-        <CircularProgress />
-      </Box>
-    )
+  if (isFetchingAthleteId || isFetchingCoach) return <LoadingSpinner />
+
   if (athleteError)
     return (
       <Typography color="error" sx={{ mt: 3 }}>
@@ -246,14 +243,7 @@ const AthleteProfile = ({ userId }: { userId: string }) => {
                 onClick={handleSubmit(onSubmit)}
                 disabled={mutation.isPending}
               >
-                {mutation.isPending ? (
-                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                    <CircularProgress size={20} sx={{ mr: 1 }} />
-                    Ukladám...
-                  </Box>
-                ) : (
-                  'Uložiť zmeny'
-                )}
+                {mutation.isPending ? <LoadingSpinner small /> : 'Uložiť zmeny'}
               </Button>
             </Box>
 

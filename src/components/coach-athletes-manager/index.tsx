@@ -1,9 +1,10 @@
 import React from 'react'
 import { useQuery } from '@tanstack/react-query'
-import { Typography, Box, CircularProgress } from '@mui/material'
+import { Typography, Box } from '@mui/material'
 import AthletesTable from '../settings/coach/athletes-table'
 import SearchAthlete from '../settings/coach/search-athlete'
 import { fetchCoachByUserId } from '../../services/coach'
+import LoadingSpinner from '../loading/loading-spinner'
 
 interface CoachAthletesManagerProps {
   userId: string
@@ -20,11 +21,7 @@ const CoachAthletesManager: React.FC<CoachAthletesManagerProps> = ({ userId }) =
   })
 
   if (isLoading) {
-    return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
-        <CircularProgress />
-      </Box>
-    )
+    return <LoadingSpinner />
   }
 
   if (error) {

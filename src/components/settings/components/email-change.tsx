@@ -5,12 +5,13 @@ import { useForm, FormProvider } from 'react-hook-form'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { CircularProgress, Typography, Box } from '@mui/material'
+import { Typography, Box } from '@mui/material'
 import ErrorModal from '@/components/error-modal'
 import SuccessModal from '@/components/success-modal'
 import useFetchUser from '../hooks/useFetchUser'
 import { updateUserData } from '@/services/user'
 import { useQueryClient, useMutation } from '@tanstack/react-query'
+import LoadingSpinner from '@/components/loading/loading-spinner'
 
 interface EmailChangeProps {
   userId: string
@@ -57,11 +58,7 @@ const EmailChange: React.FC<EmailChangeProps> = ({ userId }) => {
   }
 
   if (isFetchingUser) {
-    return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
-        <CircularProgress />
-      </Box>
-    )
+    return <LoadingSpinner />
   }
 
   if (userError) {
@@ -90,14 +87,7 @@ const EmailChange: React.FC<EmailChangeProps> = ({ userId }) => {
         </FormControl>
 
         <Button type="submit" disabled={mutation.isPending} className="w-[10.5rem]">
-          {mutation.isPending ? (
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <CircularProgress size={20} sx={{ mr: 1 }} />
-              Ukladám...
-            </Box>
-          ) : (
-            'Aktualizovať email'
-          )}
+          {mutation.isPending ? <LoadingSpinner small /> : 'Aktualizovať email'}
         </Button>
 
         <ErrorModal

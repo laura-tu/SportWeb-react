@@ -7,6 +7,7 @@ import { cn } from '@/lib/utils'
 import { FormControl } from '@mui/material'
 import { Sport } from '@/utils/interfaces'
 import { fetchSports } from '@/services/sports'
+import LoadingSpinner from '../loading/loading-spinner'
 
 interface SportSelectProps {
   selectedSports: string[]
@@ -32,7 +33,7 @@ const SportSelect: React.FC<SportSelectProps> = ({ selectedSports, onChange }) =
     loadSports()
   }, [])
 
-  if (loading) return <div>Loading...</div>
+  if (loading) return <LoadingSpinner/>
 
   return (
     <FormControl fullWidth margin="normal">

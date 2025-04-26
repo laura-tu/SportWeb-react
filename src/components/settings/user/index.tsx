@@ -5,12 +5,13 @@ import { useForm, FormProvider } from 'react-hook-form'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { Box, Typography, CircularProgress } from '@mui/material'
+import { Typography } from '@mui/material'
 import ErrorModal from '@/components/error-modal'
 import SuccessModal from '@/components/success-modal'
 import { useQueryClient, useMutation } from '@tanstack/react-query'
 import useFetchUser from '../hooks/useFetchUser'
 import { updateUserData } from '@/services/user'
+import LoadingSpinner from '@/components/loading/loading-spinner'
 
 interface FormData {
   name: string
@@ -65,11 +66,7 @@ const SettingsUser = ({ userId }: { userId: string }) => {
   }
 
   if (isFetchingUser) {
-    return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
-        <CircularProgress />
-      </Box>
-    )
+    return <LoadingSpinner />
   }
 
   if (userError) {
@@ -122,14 +119,7 @@ const SettingsUser = ({ userId }: { userId: string }) => {
         </div>
 
         <Button type="submit" disabled={mutation.isPending} className="w-[10.5rem]">
-          {mutation.isPending ? (
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <CircularProgress size={20} sx={{ mr: 1 }} />
-              Ukladám...
-            </Box>
-          ) : (
-            'Uložiť zmeny'
-          )}
+          {mutation.isPending ? <LoadingSpinner small /> : 'Uložiť zmeny'}
         </Button>
 
         <SuccessModal

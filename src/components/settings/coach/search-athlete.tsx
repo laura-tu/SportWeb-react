@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { Box, TextField, List, ListItem, Button, Typography, CircularProgress } from '@mui/material'
+import { Box, TextField, List, ListItem, Button, Typography } from '@mui/material'
 import { updateCoachData, getCoachData } from '../../../services/coach'
 import { searchAthletesByName } from '../../../services/athlete'
+import LoadingSpinner from '@/components/loading/loading-spinner'
 
 interface SearchAthleteProps {
   coachId: string
@@ -80,11 +81,7 @@ const SearchAthlete: React.FC<SearchAthleteProps> = ({ coachId }) => {
         </Button>
       </Box>
 
-      {isFetchingAthletes && (
-        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
-          <CircularProgress />
-        </Box>
-      )}
+      {isFetchingAthletes && <LoadingSpinner />}
 
       {searchError && (
         <Typography color="error" sx={{ mt: 2 }}>
