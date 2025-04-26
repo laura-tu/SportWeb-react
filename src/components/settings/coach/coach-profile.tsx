@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import { Box, Typography, Button, FormControl, InputLabel, MenuItem, Select } from '@mui/material'
+import { Box, Typography, FormControl } from '@mui/material'
+
+import { Popover, PopoverTrigger, PopoverContent } from '../../ui/popover'
+import { Command, CommandGroup, CommandItem } from '../../ui/command'
+import { Button as SButton } from '@/components/ui/button'
+import { Check } from 'lucide-react'
+import { cn } from '@/lib/utils'
+
 import { fetchCoachByUserId, CoachIdResponse, updateCoachData } from '../../../services/coach'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { fetchSports } from '../../../services/sports'
@@ -51,7 +58,7 @@ const CoachProfile: React.FC<{ userId: string }> = ({ userId }) => {
   useEffect(() => {
     const loadOptions = async () => {
       const [sports, clubs] = await Promise.all([fetchSports(), fetchSportClubs()])
-      setSportsOptions(sports)
+      setSportsOptions(sports?.docs)
       setClubOptions(clubs)
     }
     loadOptions()
@@ -70,10 +77,10 @@ const CoachProfile: React.FC<{ userId: string }> = ({ userId }) => {
     },
   })
 
-  const handleInputChange = (field: string, value: string | string[]) => {
+  const handleInputChange = (field: keyof CoachFormData, value: string | string[]) => {
     setFormData(prevState => ({
       ...prevState,
-      [field]: Array.isArray(value) ? value : [value],
+      [field]: field === 'sport' ? (Array.isArray(value) ? value : [value]) : value,
     }))
   }
 
@@ -109,70 +116,113 @@ const CoachProfile: React.FC<{ userId: string }> = ({ userId }) => {
   }
 
   return (
-    <Box className="flex flex-col md:flex-row w-full h-screen p-4 ">
+    <Box className="flex flex-col w-full h-screen p-4 ">
       <Box className="flex" sx={{ width: { xs: '75%', sm: '65%', md: 350, lg: 380 } }}>
         <SettingsUser userId={userId} />
       </Box>
       <Box
-        className="flex flex-col height-[85vh] border-0 md:border-l"
+        className="flex flex-col justify-center items-start"
         sx={{
           py: 4,
           px: 3,
-          marginLeft: 3,
+          mt: 4,
+          backgroundColor: '#f5f5f5', // Light background for the section
+          borderRadius: 2,
+          boxShadow: 2,
+          width: '50%',
+          height: 'auto', // Automatically adjust height
         }}
       >
-        <Box sx={{ textAlign: 'left', width: { xs: '75%', sm: '65%', md: 300, lg: 380 } }}></Box>
-        <Typography variant="h5" sx={{ textAlign: 'left', width: '100%' }}>
+        <Typography variant="h5" sx={{ textAlign: 'left', width: '100%', fontWeight: 600 }}>
           Informácie o trénerovi:
         </Typography>
 
-        <Box sx={{ mt: 2, width: '100%' }}>
+        <Box sx={{ mt: 3, width: '100%' }} className="flex flex-col gap-3">
           <FormControl fullWidth margin="normal">
-            <InputLabel>Šport</InputLabel>
-            <Select
-              label="Šport"
-              multiple
-              value={formData.sport}
-              onChange={e => handleInputChange('sport', e.target.value)}
-            >
-              {sportsOptions.map(sport => (
-                <MenuItem key={sport.id} value={sport.id}>
-                  {sport.name}
-                </MenuItem>
-              ))}
-            </Select>
+            <Popover>
+              <PopoverTrigger asChild>
+                <SButton variant="outline" role="combobox" className="w-full justify-between">
+                  {formData.sport.length > 0
+                    ? sportsOptions
+                        .filter(sport => formData.sport.includes(sport.id))
+                        .map(sport => sport.name)
+                        .join(' , ')
+                    : 'Vyber športy'}
+                </SButton>
+              </PopoverTrigger>
+
+              <PopoverContent className="relative left-0 mt-2 w-48 p-0 max-h-60 overflow-y-auto">
+                <Command>
+                  <CommandGroup>
+                    {sportsOptions.map(sport => (
+                      <CommandItem
+                        key={sport.id}
+                        onSelect={() => {
+                          const alreadySelected = formData.sport.includes(sport.id)
+                          const newSelection = alreadySelected
+                            ? formData.sport.filter(id => id !== sport.id)
+                            : [...formData.sport, sport.id]
+                          handleInputChange('sport', newSelection)
+                        }}
+                      >
+                        <div className="flex items-center">
+                          <Check
+                            className={cn(
+                              'mr-2 h-4 w-4',
+                              formData.sport.includes(sport.id) ? 'opacity-100' : 'opacity-0',
+                            )}
+                          />
+                          {sport.name}
+                        </div>
+                      </CommandItem>
+                    ))}
+                  </CommandGroup>
+                </Command>
+              </PopoverContent>
+            </Popover>
           </FormControl>
 
           <FormControl fullWidth margin="normal">
-            <InputLabel>Športový klub</InputLabel>
-            <Select
-              label="Športový klub"
-              value={formData.sport_club}
-              onChange={e => handleInputChange('sport_club', e.target.value)}
-            >
-              {clubOptions.map(club => (
-                <MenuItem key={club.id} value={club.id}>
-                  {club.name}
-                </MenuItem>
-              ))}
-            </Select>
+            <Popover>
+              <PopoverTrigger asChild>
+                <SButton variant="outline" role="combobox" className="w-full justify-between">
+                  {formData.sport_club
+                    ? (clubOptions.find(club => club.id === formData.sport_club)?.name ??
+                      'Vyber klub')
+                    : 'Vyber klub'}
+                </SButton>
+              </PopoverTrigger>
+              <PopoverContent className="w-full p-0">
+                <Command>
+                  <CommandGroup>
+                    {clubOptions.map(club => (
+                      <CommandItem
+                        key={club.id}
+                        onSelect={() => {
+                          handleInputChange('sport_club', club.id)
+                        }}
+                      >
+                        <div className="flex items-center">
+                          <Check
+                            className={cn(
+                              'mr-2 h-4 w-4',
+                              formData.sport_club === club.id ? 'opacity-100' : 'opacity-0',
+                            )}
+                          />
+                          {club.name}
+                        </div>
+                      </CommandItem>
+                    ))}
+                  </CommandGroup>
+                </Command>
+              </PopoverContent>
+            </Popover>
           </FormControl>
+
+          <SButton onClick={handleSaveChanges} disabled={mutation.isPending} className="w-fit mt-4">
+            {mutation.isPending ? 'Ukladám...' : 'Uložiť zmeny'}
+          </SButton>
         </Box>
-        <Button
-          variant="contained"
-          color="primary"
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            margin: '0 auto',
-            mt: 3,
-          }}
-          onClick={handleSaveChanges}
-          disabled={mutation.isPending}
-        >
-          {mutation.isPending ? 'Ukladám...' : 'Uložiť zmeny'}
-        </Button>
       </Box>
 
       <SuccessModal
