@@ -1,38 +1,60 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Popover, PopoverTrigger, PopoverContent } from '../ui/popover'
 import { Command, CommandGroup, CommandItem } from '../ui/command'
-import { Button as SButton } from '@/components/ui/button'
+import { Button } from '@/components/ui/button'
 import { Check } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { FormControl } from '@mui/material'
 import { Club } from '@/utils/interfaces'
+import { fetchSportClubs } from '@/services/sport-clubs'
 
 interface ClubSelectProps {
   selectedClub?: string
-  options: Club[]
   onChange: (selected: string) => void
 }
 
-const ClubSelect: React.FC<ClubSelectProps> = ({ selectedClub, options, onChange }) => {
+const ClubSelect: React.FC<ClubSelectProps> = ({ selectedClub, onChange }) => {
+  const [clubOptions, setClubOptions] = useState<Club[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const loadClubs = async () => {
+      try {
+        const clubs = await fetchSportClubs()
+        setClubOptions(clubs)
+      } catch (error) {
+        console.error('Error fetching clubs:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    loadClubs()
+  }, [])
+
+  if (loading) {
+    return <div>Loading clubs...</div>
+  }
+
   return (
     <FormControl fullWidth margin="normal">
       <Popover>
         <PopoverTrigger asChild>
-          <SButton variant="outline" role="combobox" className="w-full justify-between">
+          <Button variant="outline" role="combobox" className="w-full justify-between">
             {selectedClub
-              ? (options.find(club => club.id === selectedClub)?.name ?? 'Vyber klub')
+              ? (clubOptions.find(club => club.id === selectedClub)?.name ?? 'Vyber klub')
               : 'Vyber klub'}
-          </SButton>
+          </Button>
         </PopoverTrigger>
 
         <PopoverContent className="w-full p-0">
           <Command>
             <CommandGroup>
-              {options.map(club => (
+              {clubOptions.map(club => (
                 <CommandItem
                   key={club.id}
                   onSelect={() => {
-                    onChange(club.id)
+                    onChange(club.id) // When a club is selected, pass its ID to `onChange`
                   }}
                 >
                   <div className="flex items-center">

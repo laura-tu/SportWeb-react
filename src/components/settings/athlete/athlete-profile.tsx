@@ -1,11 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useForm, Controller, FormProvider } from 'react-hook-form'
-import { Box, Typography, Button, CircularProgress } from '@mui/material'
+import { Box, Typography, CircularProgress } from '@mui/material'
 import { useQueryClient, useMutation } from '@tanstack/react-query'
 import useFetchAthlete from '../hooks/useFetchAthlete'
 import useFetchCoach from '../hooks/useFetchCoach'
-import SportField from '../components/fields/sport-field'
-import ClubField from '../components/fields/club-field'
 import SuccessModal from '../../success-modal/index'
 import ErrorModal from '../../error-modal/index'
 import { formatDateForInput } from '../../../utils/formatDate'
@@ -13,6 +11,9 @@ import { updateAthleteData } from '../../../services/athlete'
 import SettingsUser from '../user/index'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
+import SportSelect from '@/components/select-popover/sport-select'
+import ClubSelect from '@/components/select-popover/club-select'
 
 interface AthleteFormData {
   birth_date: string
@@ -204,14 +205,15 @@ const AthleteProfile = ({ userId }: { userId: string }) => {
                     name="sport"
                     control={control}
                     render={({ field }) => (
-                      <SportField value={field.value} onChange={field.onChange} control={control}/>
+                      <SportSelect selectedSports={field.value} onChange={field.onChange} />
                     )}
                   />
+
                   <Controller
                     name="club"
                     control={control}
                     render={({ field }) => (
-                      <ClubField value={field.value} onChange={field.onChange} />
+                      <ClubSelect selectedClub={field.value} onChange={field.onChange} />
                     )}
                   />
                   {athlete?.id && coach && (
@@ -240,9 +242,7 @@ const AthleteProfile = ({ userId }: { userId: string }) => {
                 </div>
               </Box>
               <Button
-                variant="contained"
                 color="primary"
-                sx={{ mt: 3 }}
                 onClick={handleSubmit(onSubmit)}
                 disabled={mutation.isPending}
               >

@@ -3,9 +3,6 @@ import { Box, Typography } from '@mui/material'
 import { Button } from '@/components/ui/button'
 import { fetchCoachByUserId, CoachIdResponse, updateCoachData } from '../../../services/coach'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { fetchSports } from '../../../services/sports'
-import { fetchSportClubs } from '../../../services/sport-clubs'
-import { Sport, Club } from '../../../utils/interfaces'
 import LoadingOverlay from '../../loading/loading-overlay'
 import SuccessModal from '../../success-modal/index'
 import ErrorModal from '../../error-modal/index'
@@ -22,8 +19,6 @@ const CoachProfile: React.FC<{ userId: string }> = ({ userId }) => {
   const queryClient = useQueryClient()
   const [successModalOpen, setSuccessModalOpen] = useState(false)
   const [errorModalOpen, setErrorModalOpen] = useState(false)
-  const [sportsOptions, setSportsOptions] = useState<Sport[]>([])
-  const [clubOptions, setClubOptions] = useState<Club[]>([])
   const [formData, setFormData] = useState<CoachFormData>({
     sport: [],
     sport_club: '',
@@ -50,15 +45,6 @@ const CoachProfile: React.FC<{ userId: string }> = ({ userId }) => {
       setFormData(initialData)
     }
   }, [coach])
-
-  useEffect(() => {
-    const loadOptions = async () => {
-      const [sports, clubs] = await Promise.all([fetchSports(), fetchSportClubs()])
-      setSportsOptions(sports?.docs)
-      setClubOptions(clubs)
-    }
-    loadOptions()
-  }, [])
 
   const mutation = useMutation({
     mutationKey: ['update_coach_data'],
@@ -136,13 +122,11 @@ const CoachProfile: React.FC<{ userId: string }> = ({ userId }) => {
         <Box sx={{ mt: 3, width: '100%' }} className="flex flex-col gap-3">
           <SportSelect
             selectedSports={formData.sport}
-            options={sportsOptions}
             onChange={value => handleInputChange('sport', value)}
           />
 
           <ClubSelect
             selectedClub={formData.sport_club}
-            options={clubOptions}
             onChange={value => handleInputChange('sport_club', value)}
           />
 
