@@ -1,18 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react'
+import { useForm, Controller, FormProvider } from 'react-hook-form'
 import { Box, Typography, Button, CircularProgress } from '@mui/material'
 import { useQueryClient, useMutation } from '@tanstack/react-query'
 import useFetchAthlete from '../hooks/useFetchAthlete'
 import useFetchCoach from '../hooks/useFetchCoach'
-import BirthDateField from '../components/fields/birthdate-field'
-import GenderField from '../components/fields/gender-field'
 import SportField from '../components/fields/sport-field'
 import ClubField from '../components/fields/club-field'
-import CoachField from '../components/fields/coach-field'
 import SuccessModal from '../../success-modal/index'
 import ErrorModal from '../../error-modal/index'
 import { formatDateForInput } from '../../../utils/formatDate'
 import { updateAthleteData } from '../../../services/athlete'
 import SettingsUser from '../user/index'
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
 
 interface AthleteFormData {
   birth_date: string
@@ -29,18 +29,22 @@ const AthleteProfile = ({ userId }: { userId: string }) => {
   const [successModalOpen, setSuccessModalOpen] = useState(false)
   const [errorModalOpen, setErrorModalOpen] = useState(false)
 
-  const [formData, setFormData] = useState<AthleteFormData>({
-    birth_date: '',
-    gender: '',
-    sport: [],
-    club: '',
-    coach: '',
+  const methods = useForm<AthleteFormData>({
+    defaultValues: {
+      birth_date: '',
+      gender: '',
+      sport: [],
+      club: '',
+      coach: '',
+    },
   })
+
+  const { control, handleSubmit, setValue, watch } = methods
 
   const { athlete, isFetchingAthleteId, athleteError } = useFetchAthlete(userId)
   const { coach, isFetchingCoach } = useFetchCoach(athlete?.id)
 
-  // Load athlete and coach data into formData
+  // Load athlete and coach data into form
   useEffect(() => {
     if (athlete) {
       const initialData = {
@@ -51,10 +55,14 @@ const AthleteProfile = ({ userId }: { userId: string }) => {
         coach: coach?.name || '',
       }
 
-      setFormData(initialData)
+      // Set default values into the form
+      Object.keys(initialData).forEach(key => {
+        setValue(key as keyof AthleteFormData, initialData[key as keyof AthleteFormData])
+      })
+
       originalDataRef.current = initialData
     }
-  }, [athlete, coach])
+  }, [athlete, coach, setValue])
 
   const mutation = useMutation({
     mutationKey: ['update_athlete_data'],
@@ -83,42 +91,16 @@ const AthleteProfile = ({ userId }: { userId: string }) => {
       return modifiedData // Return an empty object if no original data
     }
 
-    for (const key in formData) {
-      if (formData[key] !== originalDataRef.current[key]) {
-        modifiedData[key] = formData[key]
+    for (const key in watch()) {
+      if (watch()[key] !== originalDataRef.current[key]) {
+        modifiedData[key] = watch()[key]
       }
     }
 
     return modifiedData
   }
 
-  const handleInputChange = (field: string, value: string | string[]) => {
-    if (field === 'birth_date') {
-      const isValidDate = !isNaN(new Date(value as string).getTime())
-
-      if (isValidDate) {
-        setFormData(prevState => ({
-          ...prevState,
-          [field]: new Date(value as string).toISOString().split('T')[0], // Format as YYYY-MM-DD
-        }))
-      } else {
-        console.error('Nesprávny formát dátumu:', value)
-      }
-    } else {
-      // Handle the case for 'sport' where value is an array of strings
-      setFormData(prevState => ({
-        ...prevState,
-        [field]: value,
-      }))
-    }
-  }
-
-  const handleSaveChanges = () => {
-    if (!athlete) {
-      //alert('No athlete data available to update.')
-      return
-    }
-
+  const onSubmit = () => {
     const modifiedData = getModifiedData()
 
     if (Object.keys(modifiedData).length === 0) {
@@ -127,8 +109,8 @@ const AthleteProfile = ({ userId }: { userId: string }) => {
     }
 
     mutation.mutate({
-      athleteId: athlete.id,
-      updateData: modifiedData, // Send only modified fields
+      athleteId: athlete?.id,
+      updateData: modifiedData,
     })
   }
 
@@ -147,67 +129,149 @@ const AthleteProfile = ({ userId }: { userId: string }) => {
     )
 
   return (
-    <div className="box-border w-[60vw]">
-      <div className="flex flex-col w-full py-2 px-2 mx-3 md:py-4 md:px-4 md:mx-0 lg:py-8 lg:px-8 lg:mx-3">
-        <Box
-          className="flex flex-wrap"
-          sx={{ width: { xs: '80%', sm: '60%', md: 'auto', lg: 700 } }}
-        >
-          <SettingsUser userId={userId} />
-        </Box>
-
-        <Box className="flex h-[85vh] mt-10">
-          <Box sx={{ textAlign: 'left', width: { xs: '75%', sm: '65%', md: 300, lg: 700 } }}>
-            <Typography variant="h5">Športovec</Typography>
-
-            <Box sx={{ mt: 2 }}>
-              <div className="flex flex-col md:flex-row gap-4">
-                <BirthDateField
-                  value={formData.birth_date}
-                  onChange={value => handleInputChange('birth_date', value)}
-                />
-
-                <GenderField value={formData.gender} />
-              </div>
-              <div className="flex flex-col md:flex-row gap-4">
-                <SportField
-                  value={formData.sport}
-                  onChange={value => handleInputChange('sport', value)}
-                />
-
-                <ClubField
-                  value={formData.club}
-                  onChange={value => handleInputChange('club', value)}
-                />
-
-                {athlete?.id && coach && <CoachField coach={coach} />}
-              </div>
-            </Box>
-            <Button
-              variant="contained"
-              color="primary"
-              sx={{ mt: 3 }}
-              onClick={handleSaveChanges}
-              disabled={mutation.isPending}
-            >
-              {mutation.isPending ? 'Ukladám...' : 'Uložiť zmeny'}
-            </Button>
+    <FormProvider {...methods}>
+      <div className="box-border w-[60vw]">
+        <div className="flex flex-col w-full py-2 px-2 mx-3 md:py-4 md:px-4 md:mx-0 lg:py-8 lg:px-8 lg:mx-3">
+          <Box
+            className="flex flex-wrap"
+            sx={{ width: { xs: '80%', sm: '60%', md: 'auto', lg: 700 } }}
+          >
+            <SettingsUser userId={userId} />
           </Box>
 
-          <SuccessModal
-            open={successModalOpen}
-            onClose={() => setSuccessModalOpen(false)}
-            text="Údaje boli úspešne aktualizované!"
-          />
+          <Box className="flex h-[85vh] mt-10">
+            <Box sx={{ textAlign: 'left', width: { xs: '75%', sm: '65%', md: 300, lg: 700 } }}>
+              <Typography variant="h5">Športovec</Typography>
 
-          <ErrorModal
-            open={errorModalOpen}
-            onClose={() => setErrorModalOpen(false)}
-            text="aktualizácií údajov"
-          />
-        </Box>
+              <Box sx={{ mt: 2 }}>
+                <div className="flex flex-col md:flex-row gap-4">
+                  <Controller
+                    name="birth_date"
+                    control={control}
+                    render={({ field }) => (
+                      <FormControl>
+                        <FormField
+                          control={methods.control}
+                          name="birth_date"
+                          render={({ field }) => (
+                            <FormItem className="w-[20rem]">
+                              <FormLabel>Pohlavie</FormLabel>
+                              <Input
+                                id="birth_date"
+                                type="date"
+                                value={field.value}
+                                onChange={e => field.onChange(e.target.value)}
+                                readOnly
+                                className="bg-gray-100 text-gray-700 border border-gray-300 rounded-md w-full px-4 py-2 focus:ring-2 focus:ring-blue-500"
+                              />
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </FormControl>
+                    )}
+                  />
+                  <Controller
+                    name="gender"
+                    control={control}
+                    render={({ field }) => (
+                      <div className="space-y-2">
+                        <FormControl>
+                          <FormField
+                            control={methods.control}
+                            name="gender"
+                            render={({ field }) => (
+                              <FormItem className="w-[20rem]">
+                                <FormLabel>Pohlavie</FormLabel>
+                                <Input
+                                  id="gender"
+                                  type="text"
+                                  value={field.value === 'zena' ? 'žena' : 'muž'}
+                                  readOnly
+                                  className="bg-gray-100 text-gray-700 border border-gray-300 rounded-md w-full px-4 py-2 focus:ring-2 focus:ring-blue-500"
+                                />
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </FormControl>
+                      </div>
+                    )}
+                  />
+                </div>
+                <div className="flex flex-col md:flex-row gap-4">
+                  <Controller
+                    name="sport"
+                    control={control}
+                    render={({ field }) => (
+                      <SportField value={field.value} onChange={field.onChange} control={control}/>
+                    )}
+                  />
+                  <Controller
+                    name="club"
+                    control={control}
+                    render={({ field }) => (
+                      <ClubField value={field.value} onChange={field.onChange} />
+                    )}
+                  />
+                  {athlete?.id && coach && (
+                    <div className="space-y-2">
+                      <FormControl>
+                        <FormField
+                          control={methods.control}
+                          name="coach"
+                          render={({ field }) => (
+                            <FormItem className="w-[20rem]">
+                              <FormLabel>Tréner</FormLabel>
+                              <Input
+                                id="coach"
+                                type="text"
+                                value={coach?.name || '-'}
+                                readOnly
+                                className="bg-gray-100 text-gray-700 border border-gray-300 rounded-md w-full px-4 py-2 focus:ring-2 focus:ring-blue-500"
+                              />
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </FormControl>
+                    </div>
+                  )}
+                </div>
+              </Box>
+              <Button
+                variant="contained"
+                color="primary"
+                sx={{ mt: 3 }}
+                onClick={handleSubmit(onSubmit)}
+                disabled={mutation.isPending}
+              >
+                {mutation.isPending ? (
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <CircularProgress size={20} sx={{ mr: 1 }} />
+                    Ukladám...
+                  </Box>
+                ) : (
+                  'Uložiť zmeny'
+                )}
+              </Button>
+            </Box>
+
+            <SuccessModal
+              open={successModalOpen}
+              onClose={() => setSuccessModalOpen(false)}
+              text="Údaje boli úspešne aktualizované!"
+            />
+
+            <ErrorModal
+              open={errorModalOpen}
+              onClose={() => setErrorModalOpen(false)}
+              text="aktualizácií údajov"
+            />
+          </Box>
+        </div>
       </div>
-    </div>
+    </FormProvider>
   )
 }
 
