@@ -67,11 +67,11 @@ export default function DashboardLayoutAccount(props: DemoProps) {
     setSelectedTestResult(result)
 
     if (result.testType?.name === 'INBODY') {
-      // setShowWhiteDashboard(true)
       navigate(`/dashboard/test_results/inbody_results/${result.id}`)
+
     } else if (result.testType?.name === 'Pnoe') {
-      //setShowWhiteDashboard(true)
       navigate(`/dashboard/test_results/spiroergometry/${result.id}`)
+      
     }
   }
 

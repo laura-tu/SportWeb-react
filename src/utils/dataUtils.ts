@@ -36,7 +36,8 @@ export const mapChartData = (
       const paramKey = findParamKey(params, key)
       const label = paramKey ? params[paramKey] : key
       const rawValue = paramKey ? parsedData[0]?.[paramKey] : '0'
-      const value = parseFloat(rawValue.replace(',', '.')) || 0
+      const value =
+        rawValue && typeof rawValue === 'string' ? parseFloat(rawValue.replace(',', '.')) : 0
 
       return label !== 'Váha' ? { name: label, value, color: COLORS[index % COLORS.length] } : null
     })

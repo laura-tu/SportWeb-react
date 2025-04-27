@@ -15,7 +15,7 @@ const SmallBox: React.FC<BoxProps> = ({ title, parsedData, params, mapData, chil
       <Typography variant="h6" className="mt-2 font-medium! text-lg! italic">
         {title}
       </Typography>
-      <div className="flex">
+      <div>
         {mapData.map(key => {
           const paramKey = Object.keys(params).find(k => k.includes(key))
           const value = paramKey ? parsedData[0][paramKey] : 'N/A'

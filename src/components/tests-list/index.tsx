@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { Typography, Card, CardContent } from '@mui/material'
-import Image from 'mui-image'
 import LoadingSpinner from '../loading/loading-spinner'
 import useFetchAthlete from '../settings/hooks/useFetchAthlete'
 import useFetchTestResults from './hooks/useFetchTestResults'
@@ -91,7 +90,7 @@ const TestResultsList: React.FC<SportTestsProps> = ({ userId, onResultClick, tes
                   </Typography>
                 )}
                 <Typography>Poznámky: {result.notes || ''}</Typography>*/}
-                <Image
+                <img
                   src={'/icon.png'}
                   alt="icon"
                   className="w-16! h-14! absolute! right-4 bottom-6"
