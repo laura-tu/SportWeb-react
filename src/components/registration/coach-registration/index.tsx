@@ -140,8 +140,7 @@ const CoachRegistration = ({ userId, onClose }) => {
 
       <ErrorModal
         onClose={() => setErrorModal(false)}
-        text="registrácii"
-        label="Chyba!"
+        text="Niečo sa pokazilo počas registrácie. Skúste to znova neskôr!"
         open={errorModal}
       />
     </Box>

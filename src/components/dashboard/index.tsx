@@ -17,6 +17,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import TestDetailWindow from '../test-detail'
 import { CustomThemeSwitcher, demoTheme } from './theme-switcher'
 import SpiroergometryDetail from '../pnoe-detail'
+import { Toaster } from 'sonner'
 
 const queryClient = new QueryClient()
 
@@ -65,7 +66,7 @@ export default function DashboardLayoutAccount(props: DemoProps) {
     setSelectedTestResult(result)
 
     if (result.testType?.name === 'INBODY') {
-     // setShowWhiteDashboard(true)
+      // setShowWhiteDashboard(true)
       navigate(`/dashboard/test_results/inbody_results/${result.id}`)
     } else if (result.testType?.name === 'Pnoe') {
       //setShowWhiteDashboard(true)
@@ -112,6 +113,7 @@ export default function DashboardLayoutAccount(props: DemoProps) {
           title: 'SportWeb',
         }}
       >
+        <Toaster />
         <DashboardLayout
           slots={{
             toolbarAccount: () => (

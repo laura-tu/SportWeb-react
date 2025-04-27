@@ -122,8 +122,7 @@ const AthleteProfile = ({ userId }: { userId: string }) => {
   if (athleteError)
     return (
       <Typography color="error" sx={{ mt: 3 }}>
-        {athleteError.message}
-        Nepodarilo sa načítať údaje trénera. Skúste to znova neskôr.
+        {athleteError.message} Nepodarilo sa načítať údaje trénera. Skúste to znova neskôr.
       </Typography>
     )
 
@@ -260,7 +259,7 @@ const AthleteProfile = ({ userId }: { userId: string }) => {
             <ErrorModal
               open={errorModalOpen}
               onClose={() => setErrorModalOpen(false)}
-              text="aktualizácií údajov"
+              text="Aktualizácia údajov sa nepodarila. Skúste to znova neskôr."
             />
           </Box>
         </Box>

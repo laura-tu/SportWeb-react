@@ -252,8 +252,7 @@ const RegistrationForm: React.FC<{
       {errorModalVisible && (
         <ErrorModal
           onClose={() => setErrorModalVisible(false)}
-          text={'registrovaní používateľa'}
-          errorModalMessage={errorModalMessage}
+          text={'Niečo sa pokazilo pri registrácii používateľa. Skúste to znova neskôr!'}
           open={errorModalVisible}
         />
       )}

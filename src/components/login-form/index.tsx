@@ -10,6 +10,7 @@ import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined'
 import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined'
 import Button from '@mui/material/Button'
 import { loginUser } from '../../services/user'
+import { showErrorToast } from '../ui/sonner'
 
 interface User {
   email: string
@@ -22,7 +23,6 @@ interface LoginFormProps {
 
 const LoginForm: React.FC<LoginFormProps> = ({ onClose }) => {
   const [user, setUser] = useState<User>({ email: '', password: '' })
-  const [showErrorLoginModal, setShowErrorLoginModal] = useState(false)
   const [passwordVisible, setPasswordVisible] = useState(false)
   const navigate = useNavigate()
 
@@ -33,34 +33,34 @@ const LoginForm: React.FC<LoginFormProps> = ({ onClose }) => {
 
   const loginAthlete = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-
+  
     try {
       const data = await loginUser(user)
-
+  
       if (data.token) {
         localStorage.setItem('token', data.token)
-
+  
         axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`
         onClose()
-
+  
         navigate('/dashboard')
         window.location.reload()
       } else {
         console.error('Prihlasovanie zlyhalo')
-        setShowErrorLoginModal(true)
+        showErrorToast() 
       }
     } catch (error) {
       console.log('Chyba počas prihlasovania:', error)
-
-      // Check if the error response exists and show appropriate message
+  
       if (axios.isAxiosError(error) && error.response) {
-        setShowErrorLoginModal(true)
+        showErrorToast(error.response.data.message || 'Niečo sa pokazilo. Skúste to znova neskôr!')
         console.error('Chyba:', error.response.data)
       } else {
-        setShowErrorLoginModal(true)
+        showErrorToast('Niečo sa pokazilo. Skúste to znova neskôr!')
       }
     }
   }
+
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/70 z-50">
@@ -111,14 +111,6 @@ const LoginForm: React.FC<LoginFormProps> = ({ onClose }) => {
         </form>
       </div>
 
-      {showErrorLoginModal && (
-        <ErrorModal
-          open={showErrorLoginModal}
-          onClose={() => setShowErrorLoginModal(false)}
-          label={'Prihlasovanie zlyhalo'}
-          text={'prihlasovaní'}
-        />
-      )}
     </div>
   )
 }

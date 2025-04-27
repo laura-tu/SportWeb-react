@@ -5,6 +5,7 @@ import RegistrationForm from '../registration/registration-form/index'
 import AthleteRegistration from '../registration/athlete-registration/index'
 import CoachRegistration from '../registration/coach-registration/index'
 import LoginForm from '../login-form/index'
+import { Toaster } from 'sonner'
 
 export enum UserRole {
   USER = 'user',
@@ -60,6 +61,7 @@ const HomeView = () => {
       {showAthleteReg && <AthleteRegistration onClose={closeAthleteReg} userId={userId} />}
       {showCoachReg && <CoachRegistration onClose={closeCoachReg} userId={userId} />}
       {showLogin && !isDashboardRoute && <LoginForm onClose={closeLogin} />}
+      <Toaster />
     </div>
   )
 }

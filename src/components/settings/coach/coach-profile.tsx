@@ -144,7 +144,7 @@ const CoachProfile: React.FC<{ userId: string }> = ({ userId }) => {
       <ErrorModal
         open={errorModalOpen}
         onClose={() => setErrorModalOpen(false)}
-        text="aktualizácia údajov zlyhala."
+        text="Aktualizácia údajov sa nepodarila. Skúste to znova neskôr."
       />
     </Box>
   )

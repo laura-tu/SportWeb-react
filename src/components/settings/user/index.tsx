@@ -131,7 +131,7 @@ const SettingsUser = ({ userId }: { userId: string }) => {
         <ErrorModal
           open={errorModalOpen}
           onClose={() => setErrorModalOpen(false)}
-          text="Nepodarilo sa aktualizovať údaje."
+          text="Aktualizácia údajov sa nepodarila. Skúste to znova neskôr."
         />
       </form>
     </FormProvider>
