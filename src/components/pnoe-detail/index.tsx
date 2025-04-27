@@ -167,7 +167,7 @@ const SpiroergometryDetail: React.FC<{ result: any }> = ({ result }) => {
   }
 
   return (
-    <div className="flex items-center justify-center ">
+    <div className="flex  items-center justify-center ">
       <div className="relative bg-blue-100/20 p-8 rounded shadow-md w-full max-w-[75vw] max-h-[86vh] my-8 overflow-auto">
         <div className="absolute top-4 left-4">
           <IconButton onClick={() => navigate(-1)} color="primary" aria-label="go back">
@@ -197,7 +197,7 @@ const SpiroergometryDetail: React.FC<{ result: any }> = ({ result }) => {
         )}
         {parsedData.length > 0 && (
           <>
-            <Box direction="col" className="pl-6 my-4 flex-wrap gap-4">
+            <Box direction="row" className="pl-6 my-4 flex-wrap gap-4">
               <TableBox
                 title="Parameter"
                 data={[
