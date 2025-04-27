@@ -73,7 +73,7 @@ const AthleteRegistration = ({ userId, onClose }) => {
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <InputLabel>Dátum narodenia:</InputLabel>
-          <Box direction="col" className="gap-2">
+          <Box direction="row" className="gap-2">
             <FormControl fullWidth className="flex">
               <InputLabel>Deň</InputLabel>
               <Controller

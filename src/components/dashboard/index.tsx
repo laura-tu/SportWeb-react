@@ -18,6 +18,7 @@ import TestDetailWindow from '../test-detail'
 import { CustomThemeSwitcher, demoTheme } from './theme-switcher'
 import SpiroergometryDetail from '../pnoe-detail'
 import { Toaster } from 'sonner'
+import Heading from '../heading'
 
 const queryClient = new QueryClient()
 
@@ -28,7 +29,7 @@ interface DemoProps {
 export default function DashboardLayoutAccount(props: DemoProps) {
   const { window } = props
   const [currentForm, setCurrentForm] = useState<'athlete' | 'coach' | 'password' | null>(null)
-  //const [showWhiteDashboard, setShowWhiteDashboard] = useState(false)
+
   const [selectedTestResult, setSelectedTestResult] = useState(null)
 
   const { session, loading, error, authentication } = useAuthSession()
@@ -134,9 +135,7 @@ export default function DashboardLayoutAccount(props: DemoProps) {
               element={
                 <div>
                   <div className="pt-3 px-3 ml-3">
-                    <Typography variant="h4" gutterBottom>
-                      Profil
-                    </Typography>
+                    <Heading level={4} text="Profil" />
                   </div>
                   <SettingsLayout
                     session={session}
@@ -155,9 +154,7 @@ export default function DashboardLayoutAccount(props: DemoProps) {
                 ) : session?.user ? (
                   <div>
                     <div className="pt-3 ml-3">
-                      <Typography variant="h4" gutterBottom>
-                        Výsledky testov z Inbody merania
-                      </Typography>
+                      <Heading level={4} text="Výsledky testov z Inbody merania" />
                       <LocalizationProvider dateAdapter={AdapterDateFns}>
                         <TestResultsList
                           userId={session.user.id}
@@ -183,9 +180,9 @@ export default function DashboardLayoutAccount(props: DemoProps) {
                 ) : session?.user ? (
                   <div>
                     <div className="pt-3 ml-3">
-                      <Typography variant="h4" gutterBottom>
-                        Výsledky testov zo spiroergometrie
-                      </Typography>
+                      <Heading level={4} text="
+                        Výsledky testov zo spiroergometrie"/>
+                      
                       <LocalizationProvider dateAdapter={AdapterDateFns}>
                         <TestResultsList
                           userId={session.user.id}

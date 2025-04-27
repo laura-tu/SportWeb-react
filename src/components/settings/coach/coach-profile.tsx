@@ -108,7 +108,7 @@ const CoachProfile: React.FC<{ userId: string }> = ({ userId }) => {
       {/* Coach Information Section */}
       <Box
         direction="col"
-        className="flex flex-col justify-center items-start py-4 px-3 mt-4 bg-gray-100 rounded-lg shadow-md"
+        className="flex flex-col justify-center items-start py-4 px-3 mt-4 "
         style={{
           width: '50%',
           height: 'auto',
