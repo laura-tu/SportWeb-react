@@ -14,7 +14,9 @@ export function getTestTypeName(testType: string | CSportTest): string {
 
 export function DashboardRoutes({ session }) {
   const navigate = useNavigate()
-  const [currentForm, setCurrentForm] = useState<'athlete' | 'coach' | 'password' | null>(null)
+  const [currentForm, setCurrentForm] = useState<'athlete' | 'coach' | 'password' | null>(
+    session?.user?.roles.includes('user') ? 'athlete' : 'coach',
+  )
   const [selectedTestResult, setSelectedTestResult] = useState<TestResult | null>(null)
 
   const handleResultClick = (result: TestResult) => {
