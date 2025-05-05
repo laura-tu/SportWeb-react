@@ -1,21 +1,13 @@
 import React from 'react'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { DemoProps } from '.'
 import { useAuthSession } from './hooks/useAuthSession'
 import LoadingSpinner from '../loading/loading-spinner'
 import { ErrorMessage } from '../error-message'
 import { UnauthenticatedScreen } from '../unauthenticated-screen'
 import { AppWithLayout } from './app-with-layout'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 const queryClient = new QueryClient()
-
-export enum TestType {
-  Inbody = 'INBODY',
-  Pnoe = 'PNOE',
-}
-
-export interface DemoProps {
-  window?: () => Window
-}
 
 export default function DashboardLayoutAccount(props: DemoProps) {
   const { window } = props
