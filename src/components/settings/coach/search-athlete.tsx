@@ -31,7 +31,7 @@ const SearchAthlete: React.FC<SearchAthleteProps> = ({ coachId }) => {
     mutationFn: ({ updatedAthletes }: { updatedAthletes: string[] }) =>
       updateCoachData(coachId, { athletes: updatedAthletes }),
     onSuccess: () => {
-      console.log('Zoznam športovcov bol úspešne aktualizovaný.')
+     // console.log('Zoznam športovcov bol úspešne aktualizovaný.')
       queryClient.invalidateQueries({ queryKey: ['coach', coachId] })
     },
     onError: (error: any) => {

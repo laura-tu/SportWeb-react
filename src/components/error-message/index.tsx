@@ -1,8 +1,9 @@
 import React from 'react'
-import { Typography } from '@mui/material'
 
-export const ErrorMessage = ({ message }) => (
-  <Typography variant="h5" sx={{ textAlign: 'center', marginTop: 4, color: 'red' }}>
-    {message}
-  </Typography>
+interface ErrorMessageProps {
+  message: string
+}
+
+export const ErrorMessage: React.FC<ErrorMessageProps> = ({ message }) => (
+  <p className="text-center mt-4 text-red-600 text-lg font-medium">{message}</p>
 )

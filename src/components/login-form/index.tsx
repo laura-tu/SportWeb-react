@@ -50,7 +50,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onClose }) => {
         showErrorToast() 
       }
     } catch (error) {
-      console.log('Chyba počas prihlasovania:', error)
+      //console.log('Chyba počas prihlasovania:', error)
   
       if (axios.isAxiosError(error) && error.response) {
         showErrorToast(error.response.data.message || 'Niečo sa pokazilo. Skúste to znova neskôr!')
