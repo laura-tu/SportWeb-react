@@ -2,11 +2,11 @@ import React from 'react'
 import { Typography, Divider } from '@mui/material'
 import Box from '@/components/box'
 
-const SidebarNavigation = ({ children, setCurrentForm }) => {
+const SidebarNavigation = ({ children, setCurrentForm,userRole }) => {
   return (
     <div className="mx-10 h-[80vh]  ">
       <Box direction="row" className="gap-4 items-center">
-        <button className="py-4" onClick={() => setCurrentForm('athlete')}>
+        <button className="py-4" onClick={() =>  setCurrentForm(userRole === 'coach' ? 'coach' : 'athlete')}>
           <Typography variant="button" className="text-xl! text-black/60 hover:text-black">
             Môj profil
           </Typography>

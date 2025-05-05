@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { FormLabel } from '@/components/ui/form'
 import { Button } from '@/components/ui/button'
 import { fetchCoachByUserId, CoachIdResponse, updateCoachData } from '../../../services/coach'
@@ -27,13 +27,6 @@ const CoachProfile: React.FC<{ userId: string }> = ({ userId }) => {
     sport_club: '',
   })
 
-  const methods = useForm<CoachFormData>({
-    defaultValues: {
-      sport: [],
-      sport_club: '',
-    },
-  })
-
   const {
     data: coachData,
     isLoading: isFetchingCoachId,
@@ -41,11 +34,20 @@ const CoachProfile: React.FC<{ userId: string }> = ({ userId }) => {
   } = useQuery<CoachIdResponse>({
     queryKey: ['coachId', userId],
     queryFn: () => fetchCoachByUserId(userId),
-    refetchOnMount: true, // ensures fresh data every time it's shown
-    refetchOnWindowFocus: true, // optional
   })
 
   const coach = coachData?.docs[0]
+
+  const methods = useForm<CoachFormData>({
+    defaultValues: useMemo(() => {
+      if (!coach) return { sport: [], sport_club: '' }
+      return {
+        sport: coach.sport.map(s => s.id),
+        sport_club:
+          typeof coach.sport_club === 'string' ? coach.sport_club : coach.sport_club?.id || '',
+      }
+    }, [coach]),
+  })
 
   useEffect(() => {
     if (coach) {
@@ -95,8 +97,19 @@ const CoachProfile: React.FC<{ userId: string }> = ({ userId }) => {
     })
   }
 
-  if (isFetchingCoachId) {
-    return <LoadingSpinner />
+  if (isFetchingCoachId && !coachData) {
+    return (
+      <Box className="w-full h-screen flex justify-center items-center">
+        <LoadingSpinner />
+      </Box>
+    )
+  }
+  {
+    isFetchingCoachId && (
+      <div className="absolute top-4 right-4 z-10">
+        <LoadingSpinner small />
+      </div>
+    )
   }
 
   if (coachIdError) {

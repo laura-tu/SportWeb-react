@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { Popover, PopoverTrigger, PopoverContent } from '../ui/popover'
 import { Command, CommandGroup, CommandItem } from '../ui/command'
 import { Button } from '@/components/ui/button'
@@ -8,6 +8,8 @@ import { FormControl } from '@mui/material'
 import { Sport } from '@/utils/interfaces'
 import { fetchSports } from '@/services/sports'
 import LoadingSpinner from '../loading/loading-spinner'
+import { useQuery } from '@tanstack/react-query'
+import { ErrorMessage } from '../error-message'
 
 interface SportSelectProps {
   selectedSports: string[]
@@ -17,25 +19,28 @@ interface SportSelectProps {
 const WIDTH = 'w-[23rem]'
 
 const SportSelect: React.FC<SportSelectProps> = ({ selectedSports, onChange }) => {
-  const [sportsOptions, setSportsOptions] = useState<Sport[]>([])
-  const [loading, setLoading] = useState(true)
+  const { data, isLoading, error } = useQuery<{ docs: Sport[] }>({
+    queryKey: ['sports'],
+    queryFn: fetchSports,
+    refetchOnWindowFocus: false, // nemusí sa znova fetchnúť pri focusnutí okna
+  })
+  const sportsOptions = data?.docs || []
 
-  useEffect(() => {
-    const loadSports = async () => {
-      try {
-        const sportsData = await fetchSports()
-        setSportsOptions(sportsData?.docs || [])
-      } catch (error) {
-        console.error('Error fetching sports:', error)
-      } finally {
-        setLoading(false)
-      }
-    }
+  if (isLoading) {
+    return (
+      <div className="h-[3.25rem] flex items-center justify-center border rounded-md bg-white shadow-sm">
+        <LoadingSpinner small />
+      </div>
+    )
+  }
 
-    loadSports()
-  }, [])
-
-  if (loading) return <LoadingSpinner />
+  if (error) {
+    return (
+      <div className="h-[3.25rem] flex items-center justify-center">
+        <ErrorMessage message="Nepodarilo sa načítať športy" />
+      </div>
+    )
+  }
 
   return (
     <FormControl className="flex relative">

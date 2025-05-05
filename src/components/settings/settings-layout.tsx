@@ -11,33 +11,27 @@ interface SettingsFormProps {
 }
 
 const SettingsLayout: React.FC<SettingsFormProps> = ({ session, currentForm, setCurrentForm }) => {
-  const userRoles = session?.user?.roles || []
-
-  useEffect(() => {
-    if (userRoles.includes('user') && !userRoles.includes('sportCoach') && !currentForm) {
-      setCurrentForm('athlete')
-    }
-    if (!userRoles.includes('user') && userRoles.includes('sportCoach') && !currentForm) {
-      setCurrentForm('coach')
-    }
-  }, [userRoles, currentForm, setCurrentForm])
+  const userRoles = session.user.roles || []
+  const isCoach = userRoles.includes('sportCoach')
 
   const renderContent = () => {
-    if (currentForm === 'athlete') {
-      return <AthleteProfile userId={session.user.id} key={currentForm} />
-    } else if (currentForm === 'password') {
-      return <AccountSettings userId={session.user.id} />
-    } else if (currentForm === 'coach') {
-      return <CoachProfile userId={session.user.id} key={currentForm} />
+    switch (currentForm) {
+      case 'athlete':
+        return <AthleteProfile userId={session.user.id} />
+      case 'coach':
+        return <CoachProfile userId={session.user.id} />
+      case 'password':
+        return <AccountSettings userId={session.user.id} />
+      default:
+        return null
     }
-    return null
   }
 
-  if (userRoles.includes('user') || userRoles.includes('sportCoach')) {
-    return <SidebarNavigation setCurrentForm={setCurrentForm}>{renderContent()}</SidebarNavigation>
-  }
-
-  return null
+  return (
+    <SidebarNavigation setCurrentForm={setCurrentForm} userRole={isCoach ? 'coach' : 'athlete'}>
+      {renderContent()}
+    </SidebarNavigation>
+  )
 }
 
 export default SettingsLayout

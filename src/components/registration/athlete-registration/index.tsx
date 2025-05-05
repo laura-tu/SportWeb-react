@@ -9,6 +9,8 @@ import { registerAthlete } from '../../../services/athlete'
 import SuccessModal from '../../success-modal/index'
 import { Club, Sport } from '../../../utils/interfaces'
 import Box from '@/components/box'
+import { useQuery } from '@tanstack/react-query'
+import LoadingSpinner from '@/components/loading/loading-spinner'
 
 export interface AthleteFormData {
   day: number | null
@@ -24,23 +26,26 @@ export interface AthleteFormData {
 const AthleteRegistration = ({ userId, onClose }) => {
   const [successModalVisible, setSuccessModalVisible] = useState(false)
   const [errorModal, setErrorModal] = useState(false)
-  const [sportsOptions, setSportsOptions] = useState<Sport[]>([])
-  const [clubOptions, setClubOptions] = useState<Club[]>([])
 
-  useEffect(() => {
-    const loadSports = async () => {
-      const sports = await fetchSports()
-      setSportsOptions(sports?.docs || [])
-    }
+  const {
+    data: sportsData,
+    isLoading: isLoadingSports,
+    error: sportsError,
+  } = useQuery({
+    queryKey: ['sports'],
+    queryFn: fetchSports,
+  })
 
-    const loadSportClubs = async () => {
-      const clubs = await fetchSportClubs()
-      setClubOptions(clubs)
-    }
-
-    loadSports()
-    loadSportClubs()
-  }, [])
+  const {
+    data: clubsData,
+    isLoading: isLoadingClubs,
+    error: clubsError,
+  } = useQuery({
+    queryKey: ['clubs'],
+    queryFn: fetchSportClubs,
+  })
+  const sportsOptions = sportsData?.docs || []
+  const clubOptions = clubsData || []
 
   const { control, handleSubmit, setValue } = useForm<AthleteFormData>()
 
@@ -59,6 +64,20 @@ const AthleteRegistration = ({ userId, onClose }) => {
   const handleCloseSuccessModal = () => {
     setSuccessModalVisible(false)
     onClose() // Close the entire AthleteReg component
+  }
+
+  if (isLoadingSports || isLoadingClubs) {
+    return <LoadingSpinner />
+  }
+
+  if (sportsError || clubsError) {
+    return (
+      <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
+        <div className="bg-white p-6 rounded-lg shadow-lg text-center text-red-600">
+          <p>Chyba pri načítavaní športov alebo klubov.</p>
+        </div>
+      </div>
+    )
   }
 
   return (

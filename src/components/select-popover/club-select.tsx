@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { Popover, PopoverTrigger, PopoverContent } from '../ui/popover'
 import { Command, CommandGroup, CommandItem } from '../ui/command'
 import { Button } from '@/components/ui/button'
@@ -8,6 +8,8 @@ import { FormControl } from '@mui/material'
 import { Club } from '@/utils/interfaces'
 import { fetchSportClubs } from '@/services/sport-clubs'
 import LoadingSpinner from '../loading/loading-spinner'
+import { useQuery } from '@tanstack/react-query'
+import { ErrorMessage } from '../error-message'
 
 interface ClubSelectProps {
   selectedClub?: string
@@ -17,26 +19,27 @@ interface ClubSelectProps {
 const WIDTH = 'w-[23rem]'
 
 const ClubSelect: React.FC<ClubSelectProps> = ({ selectedClub, onChange }) => {
-  const [clubOptions, setClubOptions] = useState<Club[]>([])
-  const [loading, setLoading] = useState(true)
+  const { data, isLoading, error } = useQuery<Club[]>({
+    queryKey: ['clubs'],
+    queryFn: fetchSportClubs,
+    refetchOnWindowFocus: false,
+  })
+  const clubOptions = data || []
 
-  useEffect(() => {
-    const loadClubs = async () => {
-      try {
-        const clubs = await fetchSportClubs()
-        setClubOptions(clubs)
-      } catch (error) {
-        console.error('Error fetching clubs:', error)
-      } finally {
-        setLoading(false)
-      }
-    }
+  if (isLoading) {
+    return (
+      <div className="h-[3.25rem] flex items-center justify-center border rounded-md bg-white shadow-sm">
+        <LoadingSpinner small />
+      </div>
+    )
+  }
 
-    loadClubs()
-  }, [])
-
-  if (loading) {
-    return <LoadingSpinner />
+  if (error) {
+    return (
+      <div className="h-[3.25rem] flex items-center justify-center">
+        <ErrorMessage message="Nepodarilo sa načítať športy" />
+      </div>
+    )
   }
 
   return (
