@@ -14,6 +14,8 @@ interface ClubSelectProps {
   onChange: (selected: string) => void
 }
 
+const WIDTH = 'w-[23rem]'
+
 const ClubSelect: React.FC<ClubSelectProps> = ({ selectedClub, onChange }) => {
   const [clubOptions, setClubOptions] = useState<Club[]>([])
   const [loading, setLoading] = useState(true)
@@ -34,21 +36,21 @@ const ClubSelect: React.FC<ClubSelectProps> = ({ selectedClub, onChange }) => {
   }, [])
 
   if (loading) {
-    return <LoadingSpinner/>
+    return <LoadingSpinner />
   }
 
   return (
-    <FormControl fullWidth margin="normal">
+    <FormControl className="flex relative mb-10">
       <Popover>
         <PopoverTrigger asChild>
-          <Button variant="outline" role="combobox" className="w-full justify-between">
+          <Button variant="outline" role="combobox" className={cn('h-13 justify-between', WIDTH)}>
             {selectedClub
               ? (clubOptions.find(club => club.id === selectedClub)?.name ?? 'Vyber klub')
               : 'Vyber klub'}
           </Button>
         </PopoverTrigger>
 
-        <PopoverContent className="w-full p-0">
+        <PopoverContent className={cn('w-full p-0', WIDTH)}>
           <Command>
             <CommandGroup>
               {clubOptions.map(club => (
@@ -61,7 +63,7 @@ const ClubSelect: React.FC<ClubSelectProps> = ({ selectedClub, onChange }) => {
                   <div className="flex items-center">
                     <Check
                       className={cn(
-                        'mr-2 h-4 w-4',
+                        'mr-2 h-5 w-4',
                         selectedClub === club.id ? 'opacity-100' : 'opacity-0',
                       )}
                     />

@@ -12,16 +12,18 @@ import useFetchUser from '../hooks/useFetchUser'
 import { updateUserData } from '@/services/user'
 import { useQueryClient, useMutation } from '@tanstack/react-query'
 import LoadingSpinner from '@/components/loading/loading-spinner'
+import { cn } from '@/lib/utils'
 
 interface EmailChangeProps {
   userId: string
+  width?: string
 }
 
 interface FormData {
   email: string
 }
 
-const EmailChange: React.FC<EmailChangeProps> = ({ userId }) => {
+const EmailChange: React.FC<EmailChangeProps> = ({ userId, width }) => {
   const queryClient = useQueryClient()
   const [successModalOpen, setSuccessModalOpen] = useState(false)
   const [errorModalOpen, setErrorModalOpen] = useState(false)
@@ -77,7 +79,7 @@ const EmailChange: React.FC<EmailChangeProps> = ({ userId }) => {
             control={form.control}
             name="email"
             render={({ field }) => (
-              <FormItem className="w-[20rem]">
+              <FormItem className={cn(width)}>
                 <FormLabel>Nový email</FormLabel>
                 <Input type="email" placeholder="Zadajte nový email" {...field} />
                 <FormMessage />

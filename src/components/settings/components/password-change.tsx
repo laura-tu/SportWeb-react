@@ -10,12 +10,14 @@ import ErrorModal from '@/components/error-modal'
 import SuccessModal from '@/components/success-modal'
 import LoadingSpinner from '@/components/loading/loading-spinner'
 import Box from '@/components/box'
+import { cn } from '@/lib/utils'
 
 interface PasswordChangeProps {
   userId: string
+  width?: string
 }
 
-const PasswordChange: React.FC<PasswordChangeProps> = ({ userId }) => {
+const PasswordChange: React.FC<PasswordChangeProps> = ({ userId, width }) => {
   const [successModalOpen, setSuccessModalOpen] = useState(false)
   const [errorModalOpen, setErrorModalOpen] = useState(false)
 
@@ -36,55 +38,57 @@ const PasswordChange: React.FC<PasswordChangeProps> = ({ userId }) => {
   }, [isError, isSuccess])
 
   return (
-    <FormProvider {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col space-y-4 py-4">
-        <Box direction="row" className="gap-4">
-          <FormControl>
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem className="w-[20rem]">
-                  <FormLabel>Nové heslo</FormLabel>
-                  <Input type="password" placeholder="Zadajte nové heslo" {...field} />
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </FormControl>
+    <>
+      <FormProvider {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col space-y-4 py-4">
+          <Box direction="row" className="gap-4">
+            <FormControl>
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem className={cn(width)}>
+                    <FormLabel>Nové heslo</FormLabel>
+                    <Input type="password" placeholder="Zadajte nové heslo" {...field} />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </FormControl>
 
-          <FormControl>
-            <FormField
-              control={form.control}
-              name="confirmPassword"
-              render={({ field }) => (
-                <FormItem className="w-[20rem]">
-                  <FormLabel>Potvrdenie hesla</FormLabel>
-                  <Input type="password" placeholder="Zadajte nové heslo znova" {...field} />
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </FormControl>
-        </Box>
+            <FormControl>
+              <FormField
+                control={form.control}
+                name="confirmPassword"
+                render={({ field }) => (
+                  <FormItem className={cn('pt-2', width)}>
+                    <FormLabel>Potvrdenie hesla</FormLabel>
+                    <Input type="password" placeholder="Zadajte nové heslo znova" {...field} />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </FormControl>
+          </Box>
 
-        <Button type="submit" disabled={isPending} className="w-[10.5rem]">
-          {isPending ? <LoadingSpinner small /> : 'Aktualizovať heslo'}
-        </Button>
+          <Button type="submit" disabled={isPending} className="w-[10.5rem]">
+            {isPending ? <LoadingSpinner small /> : 'Aktualizovať heslo'}
+          </Button>
+        </form>
+      </FormProvider>
 
-        <ErrorModal
-          open={errorModalOpen}
-          onClose={() => setErrorModalOpen(false)}
-          text={error?.message || 'Nepodarilo sa aktualizovať heslo.'}
-        />
+      <ErrorModal
+        open={errorModalOpen}
+        onClose={() => setErrorModalOpen(false)}
+        text={error?.message || 'Nepodarilo sa aktualizovať heslo.'}
+      />
 
-        <SuccessModal
-          open={successModalOpen}
-          onClose={() => setSuccessModalOpen(false)}
-          text="Údaje boli úspešne aktualizované!"
-        />
-      </form>
-    </FormProvider>
+      <SuccessModal
+        open={successModalOpen}
+        onClose={() => setSuccessModalOpen(false)}
+        text="Údaje boli úspešne aktualizované!"
+      />
+    </>
   )
 }
 

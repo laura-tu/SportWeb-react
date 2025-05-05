@@ -14,6 +14,8 @@ interface SportSelectProps {
   onChange: (selected: string[]) => void
 }
 
+const WIDTH = 'w-[23rem]'
+
 const SportSelect: React.FC<SportSelectProps> = ({ selectedSports, onChange }) => {
   const [sportsOptions, setSportsOptions] = useState<Sport[]>([])
   const [loading, setLoading] = useState(true)
@@ -33,20 +35,20 @@ const SportSelect: React.FC<SportSelectProps> = ({ selectedSports, onChange }) =
     loadSports()
   }, [])
 
-  if (loading) return <LoadingSpinner/>
+  if (loading) return <LoadingSpinner />
 
   return (
-    <FormControl fullWidth margin="normal">
+    <FormControl className="flex relative">
       <Popover>
         <PopoverTrigger asChild>
-          <Button variant="outline" role="combobox" className="w-full justify-between">
+          <Button variant="outline" role="combobox" className={cn(' justify-between h-13', WIDTH)}>
             {selectedSports.length > 0
               ? selectedSports.map(id => sportsOptions.find(s => s.id === id)?.name).join(', ')
               : 'Vyber šport'}
           </Button>
         </PopoverTrigger>
 
-        <PopoverContent className="relative left-0 mt-2 w-48 p-0 max-h-60 overflow-y-auto">
+        <PopoverContent className={cn('relative left-0 mt-2 p-0  overflow-y-auto', WIDTH)}>
           <Command>
             <CommandGroup>
               {sportsOptions.map(sport => (

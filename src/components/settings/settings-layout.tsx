@@ -24,11 +24,11 @@ const SettingsLayout: React.FC<SettingsFormProps> = ({ session, currentForm, set
 
   const renderContent = () => {
     if (currentForm === 'athlete') {
-      return <AthleteProfile userId={session.user.id} />
+      return <AthleteProfile userId={session.user.id} key={currentForm} />
     } else if (currentForm === 'password') {
       return <AccountSettings userId={session.user.id} />
     } else if (currentForm === 'coach') {
-      return <CoachProfile userId={session.user.id} />
+      return <CoachProfile userId={session.user.id} key={currentForm} />
     }
     return null
   }

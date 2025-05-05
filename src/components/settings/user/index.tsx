@@ -18,6 +18,8 @@ interface FormData {
   email: string
 }
 
+const WIDTH = 'w-[23rem]'
+
 const SettingsUser = ({ userId }: { userId: string }) => {
   const queryClient = useQueryClient()
   const [successModalOpen, setSuccessModalOpen] = useState(false)
@@ -79,17 +81,14 @@ const SettingsUser = ({ userId }: { userId: string }) => {
 
   return (
     <FormProvider {...form}>
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col space-y-4">
-        <Typography variant="h5" sx={{ mb: 2 }}>
-          Používateľ
-        </Typography>
-        <div className="flex flex-col md:flex-row gap-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="mt-14 space-y-4">
+        <div className="flex flex-col md:flex-row gap-4 mb-6">
           <FormControl>
             <FormField
               control={form.control}
               name="name"
               render={({ field }) => (
-                <FormItem className="w-[20rem]">
+                <FormItem className={WIDTH}>
                   <FormLabel>Meno</FormLabel>
                   <Input placeholder="Zadajte meno" {...field} />
                   <FormMessage />
@@ -103,14 +102,9 @@ const SettingsUser = ({ userId }: { userId: string }) => {
               control={form.control}
               name="email"
               render={({ field }) => (
-                <FormItem className="w-[20rem]">
+                <FormItem className={WIDTH}>
                   <FormLabel>Email</FormLabel>
-                  <Input
-                    type="email"
-                    readOnly
-                    className="bg-muted/30 cursor-not-allowed"
-                    {...field}
-                  />
+                  <Input type="email" readOnly className="cursor-not-allowed" {...field} />
                   <FormMessage />
                 </FormItem>
               )}
@@ -118,7 +112,7 @@ const SettingsUser = ({ userId }: { userId: string }) => {
           </FormControl>
         </div>
 
-        <Button type="submit" disabled={mutation.isPending} className="w-[10.5rem]">
+        <Button type="submit" disabled={mutation.isPending} className="">
           {mutation.isPending ? <LoadingSpinner small /> : 'Uložiť zmeny'}
         </Button>
 
