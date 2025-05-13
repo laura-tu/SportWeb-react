@@ -119,3 +119,24 @@
   }
 }
 
+@font-face {
+  font-family: 'Sportive';
+  src: url('/fonts/Sportive-Modern/Sportive-Regular.woff2') format('woff2'),
+       url('/fonts/Sportive/Sportive-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Salmond';
+  src: url('/fonts/Salmond/Normal/Salmond-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Salmond';
+  src: url('/fonts/Salmond/Oblique/Salmond-Oblique.ttf') format('truetype');
+  font-weight: normal;
+  font-style: oblique;
+}

@@ -15,8 +15,23 @@ export const demoTheme = createTheme({
     colorSchemeSelector: 'data-toolpad-color-scheme',
   },
   typography: {
-    fontFamily: 'Roboto, sans-serif',
+    fontFamily: 'Salmond,normal', //Roboto, sans-serif',
     fontSize: 14,
+    h3: {
+      fontFamily: 'Salmond',
+      fontWeight: 400,
+      fontStyle: 'normal',
+    },
+    h4: {
+      fontFamily: 'Salmond',
+      fontWeight: 400,
+      fontStyle: 'normal',
+    },
+    h5: {
+      fontFamily: 'Salmond',
+      fontWeight: 400,
+      fontStyle: 'normal',
+    },
     /*h1: {
       fontSize: '2rem',
       fontWeight: 500,

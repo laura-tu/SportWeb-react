@@ -28,7 +28,7 @@ const DemoPageContent: React.FC<DemoPageProps> = ({ userId }) => {
       <Box direction="row" className="p-2">
         <Typography
           sx={{ color: theme => (theme.palette.mode === 'dark' ? 'white' : 'black') }}
-          className="font-bold  text-3xl!"
+          variant="h4"
         >
           Vitaj, {userData?.name}
         </Typography>
