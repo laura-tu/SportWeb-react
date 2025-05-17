@@ -49,38 +49,37 @@ const TestResultsList: React.FC<SportTestsProps> = ({ userId, onResultClick, tes
     return true
   })
 
-  return (
-    <Box direction="col" className="w-full p-4 relative">
-      <Box direction="row" className="w-full my-2 flex-wrap justify-between">
-        <Typography variant="h5" gutterBottom>
-          Výsledky pre používateľa: {userData?.name || userId}
-        </Typography>
+  // console.log('vysledky pre pouzivatela', userData?.name || userId)
 
-        <div className="w-[35rem]! md:w-[30rem] sm:w-full relative my-4">
-          <DateFilter
-            startDate={startDate}
-            endDate={endDate}
-            setStartDate={setStartDate}
-            setEndDate={setEndDate}
-          />
-        </div>
-      </Box>
+  return (
+    <Box direction="col" className="w-full relative">
+      <div className="w-[35rem]! md:w-[30rem] sm:w-full relative my-4">
+        <DateFilter
+          startDate={startDate}
+          endDate={endDate}
+          setStartDate={setStartDate}
+          setEndDate={setEndDate}
+        />
+      </div>
 
       {/* Filtered Results Section */}
-      <div className="w-full ">
+      <div className="w-full space-y-2">
         {filteredResults.length > 0 ? (
           filteredResults.map((result: any, index: number) => (
             <Card
               key={index}
-              className="mt-4 bg-[#0983DB]/80! rounded-2xl! max-w-[40rem] relative"
+              className="group bg-[#0983DB]/50! rounded-2xl! max-w-[40rem] relative cursor-pointer hover:text-white!"
               onClick={() => onResultClick(result)}
-              sx={{ cursor: 'pointer' }}
             >
               <CardContent>
-                <Typography variant="h6">{result.testType?.name} meranie</Typography>
-                <Typography variant="body1" className="pt-4">
-                  {new Date(result.date).toLocaleDateString()}{' '}
-                </Typography>
+                <div className="flex flex-col gap-2 py-1">
+                  <Typography variant="h6" className="text-black">
+                    {result.testType?.name} meranie
+                  </Typography>
+                  <Typography variant="body1">
+                    {new Date(result.date).toLocaleDateString()}{' '}
+                  </Typography>
+                </div>
                 {/*{result.resultData?.url && (
                   <Typography>
                     Súbor:
@@ -89,12 +88,21 @@ const TestResultsList: React.FC<SportTestsProps> = ({ userId, onResultClick, tes
                     </Link>
                   </Typography>
                 )}
-                <Typography>Poznámky: {result.notes || ''}</Typography>*/}
+                <Typography>Poznámky: {result.notes || ''}</Typography>
                 <img
                   src={'/icon.png'}
                   alt="icon"
-                  className="w-16! h-14! absolute! right-4 bottom-6"
-                />
+                  
+                />*/}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="48"
+                  height="48"
+                  viewBox="0 0 256 256"
+                  className="absolute! right-4 bottom-8 fill-black group-hover:fill-white"
+                >
+                  <path d="M216,40H136V24a8,8,0,0,0-16,0V40H40A16,16,0,0,0,24,56V176a16,16,0,0,0,16,16H79.36L57.75,219a8,8,0,0,0,12.5,10l29.59-37h56.32l29.59,37a8,8,0,1,0,12.5-10l-21.61-27H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40Zm0,136H40V56H216V176ZM104,120v24a8,8,0,0,1-16,0V120a8,8,0,0,1,16,0Zm32-16v40a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm32-16v56a8,8,0,0,1-16,0V88a8,8,0,0,1,16,0Z"></path>
+                </svg>
               </CardContent>
             </Card>
           ))

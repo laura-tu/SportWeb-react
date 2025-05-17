@@ -6,8 +6,8 @@ import TestResultsList from '../tests-list'
 
 export function TestResultsWrapper({ title, testType, userId, onResultClick }) {
   return (
-    <div className="pt-3 ml-3">
-      <Heading level={4} text={title} />
+    <div className="p-10 mx-10">
+      <Heading level={4} text={title} className="py-4"/>
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <TestResultsList userId={userId} onResultClick={onResultClick} testType={testType} />
       </LocalizationProvider>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
-import { Button, Typography } from '@mui/material'
+import { Typography } from '@mui/material'
+import { Button } from '@/components/ui/button'
 import { startOfDay, endOfDay, isAfter, isBefore } from 'date-fns'
 import Box from '@/components/box'
 
@@ -57,7 +58,7 @@ const DateFilter: React.FC<DateFilterProps> = ({
           slotProps={{ textField: { fullWidth: true } }}
         />
         <Button
-          variant="contained"
+          className="flex align-bottom place-self-center px-6 py-4"
           onClick={() => {
             setStartDate(null)
             setEndDate(null)

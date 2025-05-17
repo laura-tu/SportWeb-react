@@ -21,7 +21,7 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ height = '100vh', small
       }}
     >
       <div className="absolute inset-0 bg-white opacity-80 z-50" style={{ height }} />
-      <Loader className="animate-spin text-blue-500 z-50" size={48} />
+      <Loader className="animate-spin text-blue-400 z-50" size={48} />
     </div>
   )
 }

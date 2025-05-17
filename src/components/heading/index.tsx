@@ -23,7 +23,7 @@ const Heading: React.FC<HeadingProps> = ({ level = 1, children, className = '', 
       variant={variantMap[level]}
       className={className}
       color="text.primary"
-      sx={{ mb: 2, fontWeight: 'semibold' }}
+      sx={{ fontWeight: 'semibold' }}
     >
       {children ? children : text}
     </Typography>
