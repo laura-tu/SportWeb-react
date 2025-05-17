@@ -13,25 +13,17 @@ export const registerUser = async (userData: {
   const response = await axios.post(URL, userData)
   return response.data
 }
-
+//______________________________________________________________________________
 export const loginUser = async (user: { email: string; password: string }) => {
   const response = await axios.post(`${URL}/login`, user)
   return response.data
 }
 
-export const fetchUserData = async () => {
-  const token = localStorage.getItem('token')
-  if (!token) throw new Error('Token sa nenšiel')
-
-  try {
-    const response = await axios.get(URL, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-    return response.data.docs[0]
-  } catch {
-    throw new Error('Načítanie údajov o používateľovi zlyhalo')
-  }
+export const handleLoginSuccess = (token: string) => {
+  localStorage.setItem('token', token)
+  axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
 }
+//______________________________________________________________________________
 
 export const fetchUser = async (userId: string) => {
   const token = localStorage.getItem('token')
@@ -72,7 +64,7 @@ export const updateUserData = async (userId: string, updateData: Record<string, 
         Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
     })
-    return response.data
+    return response.data.user
   } catch (error) {
     throw new Error(error.response?.data?.message || 'Nepodarilo sa načítať údaje o používateľovi')
   }

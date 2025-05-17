@@ -9,7 +9,7 @@ function hasSegment(item: NavItem): item is NavItem & { segment: string } {
 
 export function useFilteredNavigation(session: any) {
   return useMemo(() => {
-    if (!session?.user) {
+    if (!session?.user || !Array.isArray(session.user.roles)) {
       return NAVIGATION.filter(
         (item): item is NavItem & { segment: string } =>
           hasSegment(item) && !['dashboard/athletes', 'dashboard/settings'].includes(item.segment),
@@ -22,7 +22,8 @@ export function useFilteredNavigation(session: any) {
       if (hasSegment(item)) {
         return !(item.segment === 'dashboard/athletes' && !isCoach)
       }
-      return true // keep headers/dividers/groups
+      return true
     })
   }, [session])
 }
+

@@ -1,75 +1,47 @@
-import { useState, useEffect, useMemo } from 'react'
-import { fetchUserData, useAuth } from '../../../services/user'
+import { useState, useMemo } from 'react'
+import { useAuth } from '../../../services/user'
 import { Session as ToolpadSession } from '@toolpad/core/AppProvider'
 import { User } from '../../../utils/interfaces'
+import { useCurrentUser } from '@/api/hooks/useCurrentUser'
+import { useQueryClient } from '@tanstack/react-query'
 
 interface Session extends ToolpadSession {
   user: User
 }
 
 export const useAuthSession = () => {
+  const queryClient = useQueryClient()
   const { signOut, signIn } = useAuth()
-  const [session, setSession] = useState<Session | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
+  const { data: user, isLoading: loading, error } = useCurrentUser()
+  console.log('user', user)
+  const [credentials, setCredentials] = useState<{ email: string; password: string } | null>(null)
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true)
-        const user = await fetchUserData()
-        setSession({ user })
-        setError(null)
-      } catch (error) {
-        console.error(error)
-        setError('Nepodarilo sa načítať údaje o používateľovi')
-      } finally {
-        setLoading(false)
-      }
-    }
-    fetchData()
-  }, [])
-
-  let credentials: { email: string; password: string } | null = null
+  const session: Session | null = user ? { user } : null
+  console.log('session', session)
 
   const authentication = useMemo(
     () => ({
       signIn: () => {
         if (!credentials) {
           signIn() //redirected to /dashboard and loginForm
-          //console.error('No credentials provided for sign-in')
           return
         }
-
-        /*loginUser(credentials)
-          .then(data => {
-            if (data.token && data.user) {
-              localStorage.setItem('token', data.token)
-              axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`
-              setSession({ user: data.user })
-            } else {
-              console.error('Prihlásenie zlyhalo: Neplatný token alebo používateľské dáta')
-            }
-          })
-          .catch(error => {
-            console.error('Chyba počas prihlasovania:', error)
-          })*/
       },
       signOut: () => {
         signOut()
-        setSession(null)
+        queryClient.invalidateQueries({ queryKey: ['currentUser'] })
       },
     }),
-    [session],
+    [credentials],
   )
 
   return {
     session,
     authentication,
     setLoginCredentials: (email: string, password: string) => {
-      credentials = { email, password }
+      setCredentials({ email, password })
     },
     loading,
-    error,
+    error: error ? 'Nepodarilo sa načítať údaje o používateľovi' : null,
   }
 }

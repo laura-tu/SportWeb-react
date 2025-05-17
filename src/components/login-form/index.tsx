@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import axios from 'axios'
-import ErrorModal from '../error-modal/index'
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined'
 import { useNavigate } from 'react-router-dom'
 import CustomTextField from '../custom-textfield/index'
@@ -9,7 +8,7 @@ import KeyIcon from '@mui/icons-material/Key'
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined'
 import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined'
 import Button from '@mui/material/Button'
-import { loginUser } from '../../services/user'
+import { loginUser, handleLoginSuccess } from '../../services/user'
 import { showErrorToast } from '../ui/sonner'
 
 interface User {
@@ -33,25 +32,24 @@ const LoginForm: React.FC<LoginFormProps> = ({ onClose }) => {
 
   const loginAthlete = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-  
+
     try {
       const data = await loginUser(user)
-  
+
       if (data.token) {
-        localStorage.setItem('token', data.token)
-  
-        axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`
+        handleLoginSuccess(data.token)
+
         onClose()
-  
+
         navigate('/dashboard')
         window.location.reload()
       } else {
         console.error('Prihlasovanie zlyhalo')
-        showErrorToast() 
+        showErrorToast()
       }
     } catch (error) {
       //console.log('Chyba počas prihlasovania:', error)
-  
+
       if (axios.isAxiosError(error) && error.response) {
         showErrorToast(error.response.data.message || 'Niečo sa pokazilo. Skúste to znova neskôr!')
         console.error('Chyba:', error.response.data)
@@ -60,7 +58,6 @@ const LoginForm: React.FC<LoginFormProps> = ({ onClose }) => {
       }
     }
   }
-
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/70 z-50">
@@ -110,7 +107,6 @@ const LoginForm: React.FC<LoginFormProps> = ({ onClose }) => {
           </Button>
         </form>
       </div>
-
     </div>
   )
 }
