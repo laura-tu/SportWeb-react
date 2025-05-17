@@ -17,6 +17,7 @@ import ClubSelect from '@/components/select-popover/club-select'
 import LoadingSpinner from '@/components/loading/loading-spinner'
 import Box from '@/components/box'
 import { cn } from '@/lib/utils'
+import CoachSelect from './coach-select'
 
 interface AthleteFormData {
   birth_date: string
@@ -156,14 +157,14 @@ const AthleteProfile = ({ userId }: { userId: string }) => {
                         name="birth_date"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Dátum narodenia</FormLabel>
+                            <FormLabel className="text-lg">Dátum narodenia</FormLabel>
                             <Input
                               id="birth_date"
                               type="date"
                               value={field.value}
                               onChange={e => field.onChange(e.target.value)}
                               readOnly
-                              className={cn('text-gray-700 cursor-not-allowed', WIDTH)}
+                              className={cn('text-gray-700 cursor-not-allowed text-lg', WIDTH)}
                             />
                             <FormMessage />
                           </FormItem>
@@ -183,13 +184,13 @@ const AthleteProfile = ({ userId }: { userId: string }) => {
                           name="gender"
                           render={({ field }) => (
                             <FormItem className={WIDTH}>
-                              <FormLabel>Pohlavie</FormLabel>
+                              <FormLabel className="text-lg">Pohlavie</FormLabel>
                               <Input
                                 id="gender"
                                 type="text"
                                 value={field.value === 'zena' ? 'žena' : 'muž'}
                                 readOnly
-                                className=" text-gray-700 cursor-not-allowed"
+                                className=" text-gray-700 cursor-not-allowed text-lg"
                               />
                               <FormMessage />
                             </FormItem>
@@ -203,8 +204,8 @@ const AthleteProfile = ({ userId }: { userId: string }) => {
 
               {/* Sport, Club and Coach */}
               <Box direction="row" className="flex mb-6 gap-4">
-                <Box direction="col" className=" gap-2">
-                  <FormLabel>Športy:</FormLabel>
+                <Box direction="col" className="gap-2">
+                  <FormLabel className="text-lg">Športy:</FormLabel>
                   <Controller
                     name="sport"
                     control={control}
@@ -215,7 +216,7 @@ const AthleteProfile = ({ userId }: { userId: string }) => {
                 </Box>
 
                 <Box direction="col" className="flex gap-2">
-                  <FormLabel>Športový klub:</FormLabel>
+                  <FormLabel className="text-lg">Športový klub:</FormLabel>
                   <Controller
                     name="club"
                     control={control}
@@ -227,25 +228,16 @@ const AthleteProfile = ({ userId }: { userId: string }) => {
 
                 {athlete?.id && coach && (
                   <div className="space-y-2">
-                    <FormControl>
-                      <FormField
-                        control={methods.control}
+                    <Box direction="col" className="flex gap-2">
+                      <FormLabel className="text-lg">Tréner:</FormLabel>
+                      <Controller
                         name="coach"
-                        render={() => (
-                          <FormItem className={WIDTH}>
-                            <FormLabel>Tréner</FormLabel>
-                            <Input
-                              id="coach"
-                              type="text"
-                              value={coach?.name || '-'}
-                              readOnly
-                              className=" text-gray-700 "
-                            />
-                            <FormMessage />
-                          </FormItem>
+                        control={control}
+                        render={({ field }) => (
+                          <CoachSelect coachName={coach?.name || 'Žiadny tréner'} />
                         )}
                       />
-                    </FormControl>
+                    </Box>
                   </div>
                 )}
               </Box>

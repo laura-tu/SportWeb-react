@@ -46,7 +46,11 @@ const SportSelect: React.FC<SportSelectProps> = ({ selectedSports, onChange }) =
     <FormControl className="flex relative">
       <Popover>
         <PopoverTrigger asChild>
-          <Button variant="outline" role="combobox" className={cn(' justify-between h-13', WIDTH)}>
+          <Button
+            variant="outline"
+            role="combobox"
+            className={cn(' justify-between h-13 text-lg', WIDTH)}
+          >
             {selectedSports.length > 0
               ? selectedSports.map(id => sportsOptions.find(s => s.id === id)?.name).join(', ')
               : 'Vyber šport'}

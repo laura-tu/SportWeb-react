@@ -48,8 +48,13 @@ const PasswordChange: React.FC<PasswordChangeProps> = ({ userId, width }) => {
                 name="password"
                 render={({ field }) => (
                   <FormItem className={cn(width)}>
-                    <FormLabel>Nové heslo</FormLabel>
-                    <Input type="password" placeholder="Zadajte nové heslo" {...field} />
+                    <FormLabel className="text-lg">Nové heslo</FormLabel>
+                    <Input
+                      type="password"
+                      placeholder="Zadajte nové heslo"
+                      className="text-lg"
+                      {...field}
+                    />
                     <FormMessage />
                   </FormItem>
                 )}
@@ -61,9 +66,14 @@ const PasswordChange: React.FC<PasswordChangeProps> = ({ userId, width }) => {
                 control={form.control}
                 name="confirmPassword"
                 render={({ field }) => (
-                  <FormItem className={cn('pt-2', width)}>
-                    <FormLabel>Potvrdenie hesla</FormLabel>
-                    <Input type="password" placeholder="Zadajte nové heslo znova" {...field} />
+                  <FormItem className={cn(width)}>
+                    <FormLabel className="text-lg">Potvrdenie hesla</FormLabel>
+                    <Input
+                      type="password"
+                      placeholder="Zadajte nové heslo znova"
+                      className="text-lg"
+                      {...field}
+                    />
                     <FormMessage />
                   </FormItem>
                 )}

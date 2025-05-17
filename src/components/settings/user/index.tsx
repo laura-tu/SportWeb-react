@@ -89,8 +89,8 @@ const SettingsUser = ({ userId }: { userId: string }) => {
               name="name"
               render={({ field }) => (
                 <FormItem className={WIDTH}>
-                  <FormLabel>Meno</FormLabel>
-                  <Input placeholder="Zadajte meno" {...field} />
+                  <FormLabel className="text-lg">Meno</FormLabel>
+                  <Input placeholder="Zadajte meno" className="text-lg" {...field} />
                   <FormMessage />
                 </FormItem>
               )}
@@ -103,8 +103,13 @@ const SettingsUser = ({ userId }: { userId: string }) => {
               name="email"
               render={({ field }) => (
                 <FormItem className={WIDTH}>
-                  <FormLabel>Email</FormLabel>
-                  <Input type="email" readOnly className="cursor-not-allowed" {...field} />
+                  <FormLabel className="text-lg">Email</FormLabel>
+                  <Input
+                    type="email"
+                    readOnly
+                    className="cursor-not-allowed text-lg text-gray-700 bg-gray-100"
+                    {...field}
+                  />
                   <FormMessage />
                 </FormItem>
               )}

@@ -46,7 +46,11 @@ const ClubSelect: React.FC<ClubSelectProps> = ({ selectedClub, onChange }) => {
     <FormControl className="flex relative mb-10">
       <Popover>
         <PopoverTrigger asChild>
-          <Button variant="outline" role="combobox" className={cn('h-13 justify-between', WIDTH)}>
+          <Button
+            variant="outline"
+            role="combobox"
+            className={cn('h-13 justify-between text-lg', WIDTH)}
+          >
             {selectedClub
               ? (clubOptions.find(club => club.id === selectedClub)?.name ?? 'Vyber klub')
               : 'Vyber klub'}

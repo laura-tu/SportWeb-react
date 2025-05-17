@@ -80,8 +80,13 @@ const EmailChange: React.FC<EmailChangeProps> = ({ userId, width }) => {
             name="email"
             render={({ field }) => (
               <FormItem className={cn(width)}>
-                <FormLabel>Nový email</FormLabel>
-                <Input type="email" placeholder="Zadajte nový email" {...field} />
+                <FormLabel className="text-lg">Nový email</FormLabel>
+                <Input
+                  type="email"
+                  placeholder="Zadajte nový email"
+                  className="text-lg"
+                  {...field}
+                />
                 <FormMessage />
               </FormItem>
             )}

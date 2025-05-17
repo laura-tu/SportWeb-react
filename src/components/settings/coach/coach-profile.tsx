@@ -138,7 +138,7 @@ const CoachProfile: React.FC<{ userId: string }> = ({ userId }) => {
           <Box direction="col" className="mb-6 gap-6">
             <Box direction="row" className="relative gap-4">
               <Box direction="col" className=" gap-2">
-                <FormLabel>Športy:</FormLabel>
+                <FormLabel className="text-lg">Športy:</FormLabel>
                 <SportSelect
                   selectedSports={formData.sport}
                   onChange={value => handleInputChange('sport', value)}
@@ -146,7 +146,7 @@ const CoachProfile: React.FC<{ userId: string }> = ({ userId }) => {
               </Box>
 
               <Box direction="col" className="flex gap-2">
-                <FormLabel>Športový klub:</FormLabel>
+                <FormLabel className="text-lg">Športový klub:</FormLabel>
                 <ClubSelect
                   selectedClub={formData.sport_club}
                   onChange={value => handleInputChange('sport_club', value)}
