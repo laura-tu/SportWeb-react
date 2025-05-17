@@ -1,13 +1,15 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Select, MenuItem, InputLabel, FormControl, Button } from '@mui/material'
 import { useForm, Controller } from 'react-hook-form'
 import ErrorModal from '../../error-modal/index'
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined'
-import { fetchSports } from '../../../services/sports'
-import { fetchSportClubs } from '../../../services/sport-clubs'
 import { registerCoach } from '../../../services/coach'
 import SuccessModal from '../../success-modal/index'
 import Box from '@/components/box'
+import { useFetchSports } from '@/api/hooks/useFetchSports'
+import { useFetchSportClubs } from '@/api/hooks/useFetchSportClubs'
+import LoadingSpinner from '@/components/loading/loading-spinner'
+import { ErrorMessage } from '@/components/error-message'
 
 export interface CoachFormData {
   sport: string[]
@@ -15,31 +17,15 @@ export interface CoachFormData {
   user?: string
 }
 
-interface SportOption {
-  id: string
-  name: string
-}
-
 const CoachRegistration = ({ userId, onClose }) => {
   const [successModalVisible, setSuccessModalVisible] = useState(false)
   const [errorModal, setErrorModal] = useState(false)
-  const [sportsOptions, setSportsOptions] = useState<SportOption[]>([])
-  const [clubOptions, setClubOptions] = useState<SportOption[]>([])
 
-  useEffect(() => {
-    const loadSports = async () => {
-      const sports = await fetchSports()
-      setSportsOptions(sports?.docs || [])
-    }
+  const { data: sportsData, isLoading: isLoadingSports, error: sportsError } = useFetchSports()
+  const { data: clubsData, isLoading: isLoadingClubs, error: clubsError } = useFetchSportClubs()
 
-    const loadSportClubs = async () => {
-      const clubs = await fetchSportClubs()
-      setClubOptions(clubs)
-    }
-
-    loadSports()
-    loadSportClubs()
-  }, [])
+  const sportsOptions = sportsData?.docs || []
+  const clubOptions = clubsData?.docs || []
 
   const { control, handleSubmit, setValue } = useForm<CoachFormData>()
 
@@ -50,6 +36,12 @@ const CoachRegistration = ({ userId, onClose }) => {
   const handleCloseSuccessModal = () => {
     setSuccessModalVisible(false)
     onClose()
+  }
+
+  if (isLoadingSports || isLoadingClubs) return <LoadingSpinner />
+
+  if (sportsError || clubsError) {
+    return <ErrorMessage message="Nepodarilo sa načítať športy alebo kluby." />
   }
 
   return (

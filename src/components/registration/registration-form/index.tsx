@@ -26,13 +26,11 @@ const RegistrationForm: React.FC<{
     email: '',
     password: '',
     passwordConf: '',
-    terms: false,
   }
 
   const [user, setUser] = useState(initialState)
   const [formSubmitted, setFormSubmitted] = useState(false)
   const [errorModalVisible, setErrorModalVisible] = useState(false)
-  const [errorModalMessage, setErrorModalMessage] = useState('')
   const [passwordVisible, setPasswordVisible] = useState(false)
   const [passwordConfVisible, setPasswordConfVisible] = useState(false)
   const [passwordError, setPasswordError] = useState('')
@@ -69,7 +67,7 @@ const RegistrationForm: React.FC<{
     setPasswordError('')
 
     try {
-      const { passwordConf, terms, role, ...userData } = user
+      const { passwordConf, role, ...userData } = user
       const formattedUserData = {
         ...userData,
         roles: [role],
@@ -98,7 +96,6 @@ const RegistrationForm: React.FC<{
       }
 
       setErrorModalVisible(true)
-      setErrorModalMessage(errorMessage)
     }
   }
 
@@ -221,14 +218,6 @@ const RegistrationForm: React.FC<{
                 label="Admin(tester)"
               />*/}
             </div>
-          </div>
-
-          {/**nechat? */}
-          <div className="form-row text-black">
-            <FormControlLabel
-              control={<GreenCheckbox checked={user.terms} onChange={handleChange} name="terms" />}
-              label="Súhlasím s podmienkami"
-            />
           </div>
 
           <div className="flex justify-between mt-8 ">

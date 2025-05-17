@@ -1,16 +1,14 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Select, MenuItem, InputLabel, FormControl, Button } from '@mui/material'
 import { useForm, Controller } from 'react-hook-form'
 import ErrorModal from '../../error-modal/index'
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined'
-import { fetchSports } from '../../../services/sports'
-import { fetchSportClubs } from '../../../services/sport-clubs'
 import { registerAthlete } from '../../../services/athlete'
 import SuccessModal from '../../success-modal/index'
-import { Club, Sport } from '../../../utils/interfaces'
 import Box from '@/components/box'
-import { useQuery } from '@tanstack/react-query'
 import LoadingSpinner from '@/components/loading/loading-spinner'
+import { useFetchSportClubs } from '@/api/hooks/useFetchSportClubs'
+import { useFetchSports } from '@/api/hooks/useFetchSports'
 
 export interface AthleteFormData {
   day: number | null
@@ -27,25 +25,12 @@ const AthleteRegistration = ({ userId, onClose }) => {
   const [successModalVisible, setSuccessModalVisible] = useState(false)
   const [errorModal, setErrorModal] = useState(false)
 
-  const {
-    data: sportsData,
-    isLoading: isLoadingSports,
-    error: sportsError,
-  } = useQuery({
-    queryKey: ['sports'],
-    queryFn: fetchSports,
-  })
+  const { data: sportsData, isLoading: isLoadingSports, error: sportsError } = useFetchSports()
 
-  const {
-    data: clubsData,
-    isLoading: isLoadingClubs,
-    error: clubsError,
-  } = useQuery({
-    queryKey: ['clubs'],
-    queryFn: fetchSportClubs,
-  })
+  const { data: clubsData, isLoading: isLoadingClubs, error: clubsError } = useFetchSportClubs()
+
   const sportsOptions = sportsData?.docs || []
-  const clubOptions = clubsData || []
+  const clubOptions = clubsData?.docs || []
 
   const { control, handleSubmit, setValue } = useForm<AthleteFormData>()
 

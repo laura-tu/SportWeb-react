@@ -5,11 +5,9 @@ import { Button } from '@/components/ui/button'
 import { Check } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { FormControl } from '@mui/material'
-import { Club } from '@/utils/interfaces'
-import { fetchSportClubs } from '@/services/sport-clubs'
 import LoadingSpinner from '../loading/loading-spinner'
-import { useQuery } from '@tanstack/react-query'
 import { ErrorMessage } from '../error-message'
+import { useFetchSportClubs } from '@/api/hooks/useFetchSportClubs'
 
 interface ClubSelectProps {
   selectedClub?: string
@@ -19,12 +17,8 @@ interface ClubSelectProps {
 const WIDTH = 'w-[23rem]'
 
 const ClubSelect: React.FC<ClubSelectProps> = ({ selectedClub, onChange }) => {
-  const { data, isLoading, error } = useQuery<Club[]>({
-    queryKey: ['clubs'],
-    queryFn: fetchSportClubs,
-    refetchOnWindowFocus: false,
-  })
-  const clubOptions = data || []
+  const { data, isLoading, error } = useFetchSportClubs()
+  const clubOptions = data?.docs || []
 
   if (isLoading) {
     return (
