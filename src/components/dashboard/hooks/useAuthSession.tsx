@@ -13,11 +13,10 @@ export const useAuthSession = () => {
   const queryClient = useQueryClient()
   const { signOut, signIn } = useAuth()
   const { data: user, isLoading: loading, error } = useCurrentUser()
-  console.log('user', user)
+
   const [credentials, setCredentials] = useState<{ email: string; password: string } | null>(null)
 
   const session: Session | null = user ? { user } : null
-  console.log('session', session)
 
   const authentication = useMemo(
     () => ({
