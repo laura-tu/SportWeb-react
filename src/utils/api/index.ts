@@ -57,13 +57,19 @@ export class AjaxError extends Error {
 
 type AjaxMethod = 'GET' | 'POST' | 'PUT' | 'DELETE'
 
-export const ajax = async <T>(method: AjaxMethod, url: string, data?: object): Promise<T> => {
+export const ajax = async <T>(
+  method: AjaxMethod,
+  url: string,
+  data?: object,
+  headers?: Record<string, string>,
+): Promise<T> => {
   const response = await fetch(`http://localhost:3000/${url}`, {
     method,
     credentials: runsOnServerSide() ? undefined : 'include',
     headers: {
       'Content-Type': 'application/json',
       Accept: 'application/json',
+      ...(headers || {}), // add custom headers
     },
     body: data ? JSON.stringify(data) : undefined,
   })
