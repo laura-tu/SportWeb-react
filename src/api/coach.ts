@@ -28,7 +28,7 @@ export const updateCoachData = async (
   updateData: Record<string, any>,
 ): Promise<any> => {
   const url = constructUrlWithParams(`${URL}/${coachId}`, {})
-  return ajax('PUT', url, updateData, {
+  return ajax('PATCH', url, updateData, {
     Authorization: `Bearer ${localStorage.getItem('token')}`,
   })
 }

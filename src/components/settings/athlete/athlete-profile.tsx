@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { useForm, Controller, FormProvider } from 'react-hook-form'
 import { Typography } from '@mui/material'
 import { useQueryClient, useMutation } from '@tanstack/react-query'
-import useFetchAthlete from '../hooks/useFetchAthlete'
+import { useFetchAthlete } from '@/api/hooks/useAthleteQuery'
 import useFetchCoach from '../hooks/useFetchCoach'
 import SuccessModal from '../../success-modal/index'
 import ErrorModal from '../../error-modal/index'
@@ -49,6 +49,7 @@ const AthleteProfile = ({ userId }: { userId: string }) => {
   const { control, handleSubmit, setValue, watch } = methods
 
   const { athlete, isFetchingAthleteId, athleteError } = useFetchAthlete(userId)
+  //console.log('Athlete data:', athlete)
   const { coach, isFetchingCoach } = useFetchCoach(athlete?.id)
 
   // Load athlete and coach data into form
@@ -57,7 +58,7 @@ const AthleteProfile = ({ userId }: { userId: string }) => {
       const initialData = {
         birth_date: athlete.birth_date ? formatDateForInput(athlete.birth_date) : '',
         gender: athlete.gender || '',
-        sport: athlete.sport.map(s => s.id) || [],
+        sport: athlete.sport.map(s => (typeof s === 'string' ? s : s.id)) || [], //TODO:check this
         club: typeof athlete.club === 'string' ? athlete.club : athlete.club?.id || '',
         coach: coach?.name || '',
       }

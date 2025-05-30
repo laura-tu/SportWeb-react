@@ -55,7 +55,7 @@ export class AjaxError extends Error {
   }
 }
 
-type AjaxMethod = 'GET' | 'POST' | 'PUT' | 'DELETE'
+type AjaxMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'
 
 export const ajax = async <T>(
   method: AjaxMethod,

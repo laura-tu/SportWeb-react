@@ -4,8 +4,6 @@ import { useQueryClient } from '@tanstack/react-query'
 import { updateCoachData, getCoachData } from '../coach'
 import { useCallback } from 'react'
 
-const queryClient = useQueryClient()
-
 export const useCoachQuery = (userId: string) => {
   return useQuery({
     queryKey: ['coach', userId],
@@ -15,6 +13,8 @@ export const useCoachQuery = (userId: string) => {
 }
 
 export const useUpdateCoach = (coachId: string) => {
+  const queryClient = useQueryClient()
+
   return useMutation({
     mutationKey: ['update_coach_data', coachId],
     mutationFn: ({ updatedAthletes }: { updatedAthletes: string[] }) =>
@@ -33,6 +33,8 @@ const extractAthleteIds = (coachData: any): string[] => {
 }
 
 export const useAddAthleteToCoach = (coachId: string, userId: string) => {
+  const queryClient = useQueryClient()
+
   const coachQuery = useQuery({
     queryKey: ['coach', userId],
     queryFn: () => fetchUCoachByUserId(userId),

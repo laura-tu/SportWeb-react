@@ -1,7 +1,7 @@
 import React from 'react'
 import Box from '@/components/box'
 import Typography from '@mui/material/Typography'
-import useFetchUserById from '../../utils/api/useFetchUserById'
+import { useFetchUserById } from '@/api/hooks/useUserQuery'
 import LoadingSpinner from '../loading/loading-spinner'
 
 interface DemoPageProps {

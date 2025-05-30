@@ -2,7 +2,7 @@ import { useState, useMemo } from 'react'
 import { useAuth } from '../../../services/user'
 import { Session as ToolpadSession } from '@toolpad/core/AppProvider'
 import { User } from '../../../utils/interfaces'
-import { useCurrentUser } from '@/api/hooks/useCurrentUser'
+import { useCurrentUser } from '@/api/hooks/useUserQuery'
 import { useQueryClient } from '@tanstack/react-query'
 
 interface Session extends ToolpadSession {

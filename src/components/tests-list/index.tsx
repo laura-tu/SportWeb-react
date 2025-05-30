@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import { Typography, Card, CardContent } from '@mui/material'
 import LoadingSpinner from '../loading/loading-spinner'
-import useFetchAthlete from '../settings/hooks/useFetchAthlete'
+import { useFetchAthlete } from '../../api/hooks/useAthleteQuery'
 import useFetchTestResults from './hooks/useFetchTestResults'
 import DateFilter from './date-filter/index'
-import useFetchUserById from '../../utils/api/useFetchUserById'
+//import { useFetchUserById } from '@/api/hooks/useUserQuery'
 import Box from '@/components/box'
 import PnoeComparisonPanel from './comparison-panel/pnoe-comparison'
 import InbodyComparisonPanel from './comparison-panel/inbody-comparison'
@@ -24,16 +24,16 @@ const TestResultsList: React.FC<SportTestsProps> = ({ userId, onResultClick, tes
     testType,
     athlete?.id,
   )
-  const { data: userData, isLoading, error } = useFetchUserById(userId)
+  //const { data: userData, isLoading, error } = useFetchUserById(userId)
 
-  if (isLoading || isFetchingTestResults || isFetchingAthleteId) {
+  if (isFetchingTestResults || isFetchingAthleteId) {
     return <LoadingSpinner />
   }
 
-  if (error || testResultsError || athleteError) {
+  if (testResultsError || athleteError) {
     return (
       <Typography variant="h6" color="error">
-        {String(error || testResultsError || athleteError)}
+        {String(testResultsError || athleteError)}
       </Typography>
     )
   }

@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { AthleteFormData } from '../components/registration/athlete-registration/index.js'
 import type { Athlete } from '../utils/interfaces.ts'
-import qs from 'qs'
+//import qs from 'qs'
 
 export interface AthleteIdResponse {
   docs: Athlete[]
@@ -32,7 +32,7 @@ export const registerAthlete = async (
   }
 }
 
-export const searchAthletesByName = async (query: string): Promise<Athlete[]> => {
+/*export const searchAthletesByName = async (query: string): Promise<Athlete[]> => {
   try {
     const stringifiedParams = qs.stringify(
       { where: { name: { equals: query } } },
@@ -48,9 +48,9 @@ export const searchAthletesByName = async (query: string): Promise<Athlete[]> =>
     console.error('Chyba pri načítaní športovcov podla mena:', error.message)
     throw new Error('Nepodarilo sa načítať športovcov. Prosím skúste to znovu neskôr.')
   }
-}
+}*/
 
-export const fetchAthleteByUserId = async (userId: string): Promise<AthleteIdResponse> => {
+/*export const fetchAthleteByUserId = async (userId: string): Promise<AthleteIdResponse> => {
   const response = await axios.get(`http://localhost:3000/api/u_athlete`)
   const athletes = response.data.docs
 
@@ -63,7 +63,7 @@ export const fetchAthleteByUserId = async (userId: string): Promise<AthleteIdRes
   })
 
   return { docs: filteredAthlete ? [filteredAthlete] : [] }
-}
+}*/
 
 export const updateAthleteData = async (athleteId: string, updateData: Record<string, any>) => {
   try {
