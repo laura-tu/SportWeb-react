@@ -1,18 +1,17 @@
 import React, { useState } from 'react'
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { TextField, List, ListItem, Button, Typography } from '@mui/material'
-import { updateCoachData, getCoachData } from '../../../services/coach'
-import { searchAthletesByName } from '../../../services/athlete'
 import LoadingSpinner from '@/components/loading/loading-spinner'
 import Box from '@/components/box'
+import { useSearchAthletes } from '@/api/hooks/useAthleteQuery'
+import { useUpdateCoach } from '@/api/hooks/useCoachQuery'
+import { useAddAthleteToCoach } from '@/api/hooks/useCoachQuery'
 
 interface SearchAthleteProps {
   coachId: string
+  userId: string
 }
 
-const SearchAthlete: React.FC<SearchAthleteProps> = ({ coachId }) => {
-  const queryClient = useQueryClient()
-
+const SearchAthlete: React.FC<SearchAthleteProps> = ({ coachId, userId }) => {
   const [searchQuery, setSearchQuery] = useState('')
 
   const {
@@ -20,25 +19,9 @@ const SearchAthlete: React.FC<SearchAthleteProps> = ({ coachId }) => {
     isLoading: isFetchingAthletes,
     error: searchError,
     refetch: refetchAthletes,
-  } = useQuery({
-    queryKey: ['searchAthletes', searchQuery],
-    queryFn: () => searchAthletesByName(searchQuery),
-    enabled: false, // Disable auto-fetching;
-  })
+  } = useSearchAthletes(searchQuery)
 
-  const patchCoachMutation = useMutation({
-    mutationKey: ['update_coach_data', coachId],
-    mutationFn: ({ updatedAthletes }: { updatedAthletes: string[] }) =>
-      updateCoachData(coachId, { athletes: updatedAthletes }),
-    onSuccess: () => {
-     // console.log('Zoznam športovcov bol úspešne aktualizovaný.')
-      queryClient.invalidateQueries({ queryKey: ['coach', coachId] })
-    },
-    onError: (error: any) => {
-      console.error('Zlyhalo aktualizovanie zoznamu športovcov:', error.message)
-      // Optionally show an error message to the user
-    },
-  })
+  const patchCoachMutation = useUpdateCoach(coachId)
 
   const handleSearch = () => {
     if (searchQuery.trim()) {
@@ -46,20 +29,10 @@ const SearchAthlete: React.FC<SearchAthleteProps> = ({ coachId }) => {
     }
   }
 
-  const handleAddAthlete = async (athleteId: string) => {
-    try {
-      const currentCoachData = await getCoachData(coachId)
-      const updatedAthletes = [
-        ...new Set([
-          ...(currentCoachData.athletes?.map(a => (typeof a === 'string' ? a : a.id)) || []),
-          athleteId,
-        ]),
-      ]
-      patchCoachMutation.mutate({ updatedAthletes })
-    } catch (error) {
-      console.error('Zlyhalo pridávanie športovca:', error.message)
-    }
-  }
+  const { addAthlete, isPending, isCoachLoading, coachError } = useAddAthleteToCoach(
+    coachId,
+    userId,
+  )
 
   return (
     <Box className="pt-2 w-full sm:w-[65%] md:w-[600px]">
@@ -103,7 +76,7 @@ const SearchAthlete: React.FC<SearchAthleteProps> = ({ coachId }) => {
             >
               <Typography>{athlete.name || 'Neznámy'}</Typography>
               {/* Fallback to 'Unknown' if name is null */}
-              <Button onClick={() => handleAddAthlete(athlete.id)} variant="outlined">
+              <Button onClick={() => addAthlete(athlete.id)} variant="outlined">
                 {'Pridať'}
               </Button>
             </ListItem>
