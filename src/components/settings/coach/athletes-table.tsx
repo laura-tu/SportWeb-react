@@ -1,20 +1,19 @@
 import React from 'react'
-import {
-  Typography,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-} from '@mui/material'
-//import { getCoachData } from '../../../services/coach'
 import { useCoachQuery } from '@/api/hooks/useCoachQuery'
-import LoadingSpinner from '@/components/loading/loading-spinner'
 import Box from '@/components/box'
 import Heading from '@/components/heading'
 import SearchAthlete from './search-athlete'
+import LoadingSpinner from '@/components/loading/loading-spinner'
+import { ErrorMessage } from '@/components/error-message'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHeader,
+  TableHead,
+  TableRow,
+} from '@/components/ui/table'
+import { Mars, Venus, FileUser } from 'lucide-react'
 
 export interface CoachProps {
   userId: string
@@ -30,9 +29,7 @@ const AthletesTable: React.FC<CoachProps> = ({ userId }) => {
   if (error) {
     return (
       <Box direction="col" className="text-center mt-4">
-        <Typography variant="body1" color="error">
-          Nepodarilo sa načítať dáta trénera.
-        </Typography>
+        <ErrorMessage message="Nepodarilo sa načítať dáta trénera." />
       </Box>
     )
   }
@@ -42,9 +39,7 @@ const AthletesTable: React.FC<CoachProps> = ({ userId }) => {
   if (!coach) {
     return (
       <Box direction="col" className="text-center mt-4">
-        <Typography variant="body1" color="text.secondary">
-          Nepodarilo sa nájsť trénera s týmto ID.
-        </Typography>
+        <p className="text-muted-foreground">Nepodarilo sa nájsť trénera s týmto ID.</p>
       </Box>
     )
   }
@@ -54,64 +49,54 @@ const AthletesTable: React.FC<CoachProps> = ({ userId }) => {
   return (
     <Box direction="col">
       <Box direction="col" className="mb-4 gap-4">
-        <Heading level={4} className="" text={'Športovci'} />
-        <div>Toto je zoznam športovcov vedených trénerom {coach.name}.</div>
+        <Heading level={4} text="Športovci" />
+        <p className="text-muted-foreground">
+          Toto je zoznam športovcov vedených trénerom <strong>{coach.name}</strong>.
+        </p>
+
         {athletes.length === 0 && (
-          <Typography variant="body2" color="text.secondary" mt={2}>
+          <p className="text-muted-foreground mt-2">
             Tento tréner nemá zatiaľ pridelených športovcov.
-          </Typography>
+          </p>
         )}
 
         <SearchAthlete coachId={coach.id} userId={userId} />
       </Box>
 
       {athletes.length > 0 && (
-        <Box direction="col" className="mb-4 gap-4">
-          <TableContainer component={Paper} sx={{ mt: 3 }}>
-            <Table>
-              <TableHead>
-                <TableRow className="bg-cyan-200/80 ">
-                  <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>Športovec</TableCell>
-                  <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>Pohlavie</TableCell>
-                  <TableCell sx={{ fontWeight: 'bold', textAlign: 'center' }}>
-                    Dátum narodenia
-                  </TableCell>
-                  <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', borderLeft: 1 }}>
-                    ID
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {athletes.map(ath => {
-                  if (typeof ath === 'string') {
-                    return (
-                      <TableRow key={ath}>
-                        <TableCell colSpan={3} align="center">
-                          Športovec ID: {ath}
-                        </TableCell>
-                      </TableRow>
-                    )
-                  }
-
-                  return (
+        <div className="mb-4 gap-4 mt-6 border rounded-md overflow-hidden">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Športovec</TableHead>
+                <TableHead>Pohlavie</TableHead>
+                <TableHead>Dátum narodenia</TableHead>
+                <TableHead>Náhľad výsledkov</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {athletes.map(
+                ath =>
+                  typeof ath !== 'string' && (
                     <TableRow key={ath.id}>
-                      <TableCell sx={{ textAlign: 'center' }}>{ath.name || 'Neznámy'}</TableCell>
-                      <TableCell sx={{ textAlign: 'center' }}>
-                        {ath.gender === 'muz' ? 'muž' : 'žena'}
-                      </TableCell>
-                      <TableCell sx={{ textAlign: 'center' }}>
-                        {new Date(ath.birth_date).toLocaleDateString('sk-SK')}
-                      </TableCell>
-                      <TableCell sx={{ textAlign: 'center', borderLeft: 1 }}>
-                        {ath.id || 'Neznáme'}
+                      <TableCell>{ath.name || 'Neznámy'}</TableCell>
+                      <TableCell>{ath.gender === 'muz' ? <Mars /> : <Venus />}</TableCell>
+                      <TableCell>{new Date(ath.birth_date).toLocaleDateString('sk-SK')}</TableCell>
+                      <TableCell>
+                        <button
+                          onClick={() => console.log(ath.id)}
+                          className="p-1 rounded hover:bg-muted transition-colors"
+                          title="open-results"
+                        >
+                          <FileUser className="h-5 w-5 text-muted-foreground hover:text-primary" />
+                        </button>
                       </TableCell>
                     </TableRow>
-                  )
-                })}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Box>
+                  ),
+              )}
+            </TableBody>
+          </Table>
+        </div>
       )}
     </Box>
   )
