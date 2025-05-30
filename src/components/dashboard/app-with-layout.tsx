@@ -28,7 +28,12 @@ export function AppWithLayout({ session, authentication, window }) {
       <DashboardLayout
         slots={{
           toolbarAccount: () => (
-            <Account localeText={{ signInLabel: 'Prihlásiť sa', signOutLabel: 'Odhlásiť sa' }} />
+            <Account
+              localeText={{
+                accountSignInLabel: 'Prihlásiť sa',
+                accountSignOutLabel: 'Odhlásiť sa',
+              }}
+            />
           ),
           toolbarActions: CustomThemeSwitcher,
         }}
