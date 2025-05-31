@@ -1,29 +1,14 @@
 import { useMemo } from 'react'
-import { NAVIGATION } from '../navigation-config'
-
-type NavItem = (typeof NAVIGATION)[number]
-
-function hasSegment(item: NavItem): item is NavItem & { segment: string } {
-  return typeof (item as any).segment === 'string'
-}
+import { NAVIGATION_ATHLETE, NAVIGATION_COACH } from '../navigation-config'
 
 export function useFilteredNavigation(session: any) {
   return useMemo(() => {
     if (!session?.user || !Array.isArray(session.user.roles)) {
-      return NAVIGATION.filter(
-        (item): item is NavItem & { segment: string } =>
-          hasSegment(item) && !['dashboard/athletes', 'dashboard/settings'].includes(item.segment),
-      )
+      return NAVIGATION_ATHLETE // fallback pre neregistrovaného
     }
 
-    const isCoach = session.user.roles.includes('sportCoach')
-
-    return NAVIGATION.filter(item => {
-      if (hasSegment(item)) {
-        return !(item.segment === 'dashboard/athletes' && !isCoach)
-      }
-      return true
-    })
+    const roles = session.user.roles
+    if (roles.includes('sportCoach')) return NAVIGATION_COACH
+    return NAVIGATION_ATHLETE
   }, [session])
 }
-

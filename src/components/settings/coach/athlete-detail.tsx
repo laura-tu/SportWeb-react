@@ -21,7 +21,6 @@ const AthleteDetail = ({ onResultClick }) => {
   const [selectedTest, setSelectedTest] = useState<TestType | null>(null)
 
   const { data: athlete, isLoading } = useAthleteDetailQuery(userId)
-  console.log('Athlete detail data:', athlete)
 
   useEffect(() => {
     // default test (napr. InBody)

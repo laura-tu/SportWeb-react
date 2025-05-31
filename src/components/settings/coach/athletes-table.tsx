@@ -95,7 +95,7 @@ const AthletesTable: React.FC<CoachProps> = ({ userId }) => {
                       </TableCell>
                       <TableCell className="text-center">
                         <button
-                          onClick={() => navigate(`/dashboard/athletes/${(ath.user as User)?.id}`)}
+                          onClick={() => navigate(`/dashboard/athletes/${ath.user}`)}
                           className="p-1 rounded hover:bg-muted transition-colors"
                           title="open-results"
                         >

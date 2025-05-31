@@ -5,21 +5,40 @@ import PersonPinOutlinedIcon from '@mui/icons-material/PersonPinOutlined'
 import AnalyticsIcon from '@mui/icons-material/Analytics'
 import PersonSearchIcon from '@mui/icons-material/PersonSearch'
 import MonitorHeartIcon from '@mui/icons-material/MonitorHeart'
-import ScoreboardOutlinedIcon from '@mui/icons-material/ScoreboardOutlined'
 import { type NavigationItem, type NavigationSubheaderItem } from '@toolpad/core/AppProvider'
 
 type Navigation = (NavigationItem | NavigationSubheaderItem)[]
 
-export const NAVIGATION: Navigation = [
+export const NAVIGATION_COACH: Navigation = [
   {
     segment: 'dashboard',
     title: 'Dashboard',
     icon: <DashboardIcon />,
   },
   {
+    segment: 'dashboard/settings',
+    title: 'Nastavenie profilu',
+    icon: <SettingsAccessibilityIcon />,
+  },
+  {
+    kind: 'divider',
+  },
+  {
+    kind: 'header',
+    title: 'Výsledky zverencov',
+  },
+  {
     segment: 'dashboard/athletes',
     title: 'Športovci',
     icon: <PersonPinOutlinedIcon />,
+  },
+]
+
+export const NAVIGATION_ATHLETE: Navigation = [
+  {
+    segment: 'dashboard',
+    title: 'Dashboard',
+    icon: <DashboardIcon />,
   },
   {
     segment: 'dashboard/settings',
@@ -51,13 +70,5 @@ export const NAVIGATION: Navigation = [
         icon: <MonitorHeartIcon />,
       },
     ],
-  },
-  {
-    kind: 'divider',
-  },
-  {
-    segment: 'dashboard/competitions',
-    title: 'Súťaže',
-    icon: <ScoreboardOutlinedIcon />,
   },
 ]
