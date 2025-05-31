@@ -2,11 +2,11 @@ import React from 'react'
 import { AppProvider } from '@toolpad/core/AppProvider'
 import { Toaster } from 'sonner'
 import { DashboardLayout } from '@toolpad/core/DashboardLayout'
-import { Account } from '@toolpad/core/Account'
 import { DashboardRoutes } from './dashboard-routes'
 import { CustomThemeSwitcher } from './theme-switcher'
 import { demoTheme } from './theme-switcher'
 import { useFilteredNavigation } from './hooks/useFilteredNavigation'
+import { AccountMenu } from './account-menu'
 
 export function AppWithLayout({ session, authentication, window }) {
   const filteredNavigation = useFilteredNavigation(session)
@@ -27,14 +27,7 @@ export function AppWithLayout({ session, authentication, window }) {
       <Toaster />
       <DashboardLayout
         slots={{
-          toolbarAccount: () => (
-            <Account
-              localeText={{
-                accountSignInLabel: 'Prihlásiť sa',
-                accountSignOutLabel: 'Odhlásiť sa',
-              }}
-            />
-          ),
+          toolbarAccount: () => <AccountMenu session={session} authentication={authentication} />,
           toolbarActions: CustomThemeSwitcher,
         }}
       >

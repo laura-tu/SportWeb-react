@@ -176,6 +176,7 @@ export interface User {
   id: string
   name?: string | null
   roles?: ('admin' | 'user' | 'sportCoach')[] | null
+  avatar?: string | Media | null
   updatedAt: string
   createdAt: string
   email: string
