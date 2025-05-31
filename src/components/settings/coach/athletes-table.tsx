@@ -14,6 +14,13 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { Mars, Venus, FileUser } from 'lucide-react'
+import {
+  Breadcrumb,
+  BreadcrumbList,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb'
 
 export interface CoachProps {
   userId: string
@@ -49,6 +56,19 @@ const AthletesTable: React.FC<CoachProps> = ({ userId }) => {
   return (
     <Box direction="col">
       <Box direction="col" className="mb-4 gap-4">
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink href="/dashboard">Dashboard</BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbLink href="/sportovci" className="font-medium text-foreground">
+                Športovci
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
         <Heading level={4} text="Športovci" />
         <p className="text-muted-foreground">
           Toto je zoznam športovcov vedených trénerom <strong>{coach.name}</strong>.
@@ -68,10 +88,10 @@ const AthletesTable: React.FC<CoachProps> = ({ userId }) => {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Športovec</TableHead>
-                <TableHead>Pohlavie</TableHead>
-                <TableHead>Dátum narodenia</TableHead>
-                <TableHead>Náhľad výsledkov</TableHead>
+                <TableHead className="text-center">Športovec</TableHead>
+                <TableHead className="text-center">Pohlavie</TableHead>
+                <TableHead className="text-center">Dátum narodenia</TableHead>
+                <TableHead className="text-center">Náhľad výsledkov</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -79,10 +99,18 @@ const AthletesTable: React.FC<CoachProps> = ({ userId }) => {
                 ath =>
                   typeof ath !== 'string' && (
                     <TableRow key={ath.id}>
-                      <TableCell>{ath.name || 'Neznámy'}</TableCell>
-                      <TableCell>{ath.gender === 'muz' ? <Mars /> : <Venus />}</TableCell>
-                      <TableCell>{new Date(ath.birth_date).toLocaleDateString('sk-SK')}</TableCell>
-                      <TableCell>
+                      <TableCell className="text-center">{ath.name || 'Neznámy'}</TableCell>
+                      <TableCell className="place-items-center ">
+                        {ath.gender === 'muz' ? (
+                          <Mars color="#ACD0F9" />
+                        ) : (
+                          <Venus color="#FAB4BE" />
+                        )}
+                      </TableCell>
+                      <TableCell className="text-center">
+                        {new Date(ath.birth_date).toLocaleDateString('sk-SK')}
+                      </TableCell>
+                      <TableCell className="text-center">
                         <button
                           onClick={() => console.log(ath.id)}
                           className="p-1 rounded hover:bg-muted transition-colors"
