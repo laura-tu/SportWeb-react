@@ -8,6 +8,7 @@ import TestDetailWindow from '../test-detail'
 import { TestResultsWrapper } from '../test-detail/test-results-wrapper'
 import SpiroergometryDetail from '../pnoe-detail'
 import AthletesTable from '../settings/coach/athletes-table'
+import AthleteDetail from '../settings/coach/athlete-detail'
 
 export function getTestTypeName(testType: string | CSportTest): string {
   return typeof testType === 'string' ? testType : testType.name
@@ -62,6 +63,11 @@ export function DashboardRoutes({ session }) {
           </div>
         }
       />
+      <Route
+        path="athletes/:userId"
+        element={<AthleteDetail  onResultClick={handleResultClick} />}
+      />
+
       <Route
         path="test_results/inbody_results"
         element={

@@ -14,13 +14,8 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { Mars, Venus, FileUser } from 'lucide-react'
-import {
-  Breadcrumb,
-  BreadcrumbList,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb'
+import { useNavigate } from 'react-router-dom'
+import { User } from '@/utils/payload/payload-types'
 
 export interface CoachProps {
   userId: string
@@ -28,6 +23,7 @@ export interface CoachProps {
 
 const AthletesTable: React.FC<CoachProps> = ({ userId }) => {
   const { data, isLoading, error } = useCoachQuery(userId)
+  const navigate = useNavigate()
 
   if (isLoading) {
     return <LoadingSpinner />
@@ -56,19 +52,6 @@ const AthletesTable: React.FC<CoachProps> = ({ userId }) => {
   return (
     <Box direction="col">
       <Box direction="col" className="mb-4 gap-4">
-        <Breadcrumb>
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink href="/dashboard">Dashboard</BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbLink href="/sportovci" className="font-medium text-foreground">
-                Športovci
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
         <Heading level={4} text="Športovci" />
         <p className="text-muted-foreground">
           Toto je zoznam športovcov vedených trénerom <strong>{coach.name}</strong>.
@@ -112,7 +95,7 @@ const AthletesTable: React.FC<CoachProps> = ({ userId }) => {
                       </TableCell>
                       <TableCell className="text-center">
                         <button
-                          onClick={() => console.log(ath.id)}
+                          onClick={() => navigate(`/dashboard/athletes/${(ath.user as User)?.id}`)}
                           className="p-1 rounded hover:bg-muted transition-colors"
                           title="open-results"
                         >
