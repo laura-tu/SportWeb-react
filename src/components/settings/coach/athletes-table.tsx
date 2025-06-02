@@ -13,14 +13,17 @@ import {
   TableHead,
   TableRow,
 } from '@/components/ui/table'
-import { Mars, Venus, FileUser } from 'lucide-react'
+import { Mars, Venus, FileUser, ChevronDown, ChevronUp } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
+import { UAthlete } from '@/utils/payload/payload-types'
 
 export interface CoachProps {
   userId: string
 }
 
 const AthletesTable: React.FC<CoachProps> = ({ userId }) => {
+  const [sortAsc, setSortAsc] = React.useState<null | boolean>(null)
+
   const { data: coach, isLoading, error } = useCoachQuery(userId)
   const navigate = useNavigate()
 
@@ -44,7 +47,18 @@ const AthletesTable: React.FC<CoachProps> = ({ userId }) => {
     )
   }
 
+  const isUAthlete = (ath: unknown): ath is UAthlete =>
+    typeof ath === 'object' && ath !== null && 'id' in ath && 'name' in ath
+
   const athletes = coach.athletes || []
+
+  const sortedAthletes = athletes
+    .filter(isUAthlete)
+    .slice() // kopíruj pole, aby si nemutoval originál
+    .sort((a, b) => {
+      if (sortAsc === null) return 0 // zachová pôvodné poradie
+      return sortAsc ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name)
+    })
 
   return (
     <Box direction="col">
@@ -68,40 +82,45 @@ const AthletesTable: React.FC<CoachProps> = ({ userId }) => {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className="text-center">Športovec</TableHead>
+                <TableHead
+                  className="text-center cursor-pointer select-none"
+                  onClick={() =>
+                    setSortAsc(prev => (prev === null ? true : prev === true ? false : null))
+                  }
+                >
+                  Športovec
+                  {sortAsc ? (
+                    <ChevronUp className="inline w-4 h-4 ml-1" />
+                  ) : (
+                    <ChevronDown className="inline w-4 h-4 ml-1" />
+                  )}
+                </TableHead>
                 <TableHead className="text-center">Pohlavie</TableHead>
                 <TableHead className="text-center">Dátum narodenia</TableHead>
                 <TableHead className="text-center">Náhľad výsledkov</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {athletes.map(
-                ath =>
-                  typeof ath !== 'string' && (
-                    <TableRow key={ath.id}>
-                      <TableCell className="text-center">{ath.name || 'Neznámy'}</TableCell>
-                      <TableCell className="place-items-center ">
-                        {ath.gender === 'muz' ? (
-                          <Mars color="#ACD0F9" />
-                        ) : (
-                          <Venus color="#FAB4BE" />
-                        )}
-                      </TableCell>
-                      <TableCell className="text-center">
-                        {new Date(ath.birth_date).toLocaleDateString('sk-SK')}
-                      </TableCell>
-                      <TableCell className="text-center">
-                        <button
-                          onClick={() => navigate(`/dashboard/athletes/${ath.user}`)}
-                          className="p-1 rounded hover:bg-muted transition-colors"
-                          title="open-results"
-                        >
-                          <FileUser className="h-5 w-5 text-muted-foreground hover:text-primary" />
-                        </button>
-                      </TableCell>
-                    </TableRow>
-                  ),
-              )}
+              {sortedAthletes.map(ath => (
+                <TableRow key={ath.id}>
+                  <TableCell className="text-center">{ath.name || 'Neznámy'}</TableCell>
+                  <TableCell className="place-items-center ">
+                    {ath.gender === 'muz' ? <Mars color="#ACD0F9" /> : <Venus color="#FAB4BE" />}
+                  </TableCell>
+                  <TableCell className="text-center">
+                    {new Date(ath.birth_date).toLocaleDateString('sk-SK')}
+                  </TableCell>
+                  <TableCell className="text-center">
+                    <button
+                      onClick={() => navigate(`/dashboard/athletes/${ath.user}`)}
+                      className="p-1 rounded hover:bg-muted transition-colors"
+                      title="open-results"
+                    >
+                      <FileUser className="h-5 w-5 text-muted-foreground hover:text-primary" />
+                    </button>
+                  </TableCell>
+                </TableRow>
+              ))}
             </TableBody>
           </Table>
         </div>
