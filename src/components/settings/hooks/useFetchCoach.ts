@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
-import { fetchCoachByAthleteId, CoachIdResponse } from '../../../services/coach'
+import {  CoachIdResponse } from '../../../services/coach'
 
-const useFetchCoach = (athleteId?: string) => {
+/*const useFetchCoach = (athleteId?: string) => {
   const { data, isLoading, error } = useQuery<CoachIdResponse>({
     queryKey: ['coach', athleteId], // Use athlete.id as the query key
     queryFn: () => {
@@ -17,4 +17,4 @@ const useFetchCoach = (athleteId?: string) => {
   return { coach, isFetchingCoach: isLoading, coachError: error }
 }
 
-export default useFetchCoach
+export default useFetchCoach*/

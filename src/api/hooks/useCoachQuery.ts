@@ -1,8 +1,9 @@
 import { useQuery, useMutation } from '@tanstack/react-query'
 import { fetchUCoachByUserId } from '../coach'
 import { useQueryClient } from '@tanstack/react-query'
-import { updateCoachData } from '../coach'
+import { updateCoachData, fetchCoachByAthleteId } from '../coach'
 import { useCallback } from 'react'
+import { UCoach } from '@/utils/payload/payload-types'
 
 export const useCoachQuery = (userId: string) => {
   return useQuery({
@@ -72,4 +73,23 @@ export const useAddAthleteToCoach = (coachId: string, userId: string) => {
     isCoachLoading: coachQuery.isLoading,
     coachError: coachQuery.error,
   }
+}
+
+export const useFetchCoachByAthleteId = (athleteId?: string) => {
+  const {
+    data: coach,
+    isLoading: isFetchingCoach,
+    error: coachError,
+  } = useQuery<UCoach | null>({
+    queryKey: ['coach', athleteId],
+    queryFn: () => {
+      if (!athleteId) {
+        return Promise.reject(new Error('Nie je dostupné žiadne ID športovca'))
+      }
+      return fetchCoachByAthleteId(athleteId)
+    },
+    enabled: !!athleteId,
+  })
+
+  return { coach, isFetchingCoach, coachError }
 }

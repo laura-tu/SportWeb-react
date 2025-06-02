@@ -3,7 +3,7 @@ import { useForm, Controller, FormProvider } from 'react-hook-form'
 import { Typography } from '@mui/material'
 import { useQueryClient, useMutation } from '@tanstack/react-query'
 import { useFetchAthlete } from '@/api/hooks/useAthleteQuery'
-import useFetchCoach from '../hooks/useFetchCoach'
+import { useFetchCoachByAthleteId } from '@/api/hooks/useCoachQuery'
 import SuccessModal from '../../success-modal/index'
 import ErrorModal from '../../error-modal/index'
 import { formatDateForInput } from '../../../utils/formatDate'
@@ -48,9 +48,9 @@ const AthleteProfile = ({ userId }: { userId: string }) => {
 
   const { control, handleSubmit, setValue, watch } = methods
 
-  const { athlete, isFetchingAthleteId, athleteError } = useFetchAthlete(userId)
-  //console.log('Athlete data:', athlete)
-  const { coach, isFetchingCoach } = useFetchCoach(athlete?.id)
+  const { data: athlete, isLoading, error } = useFetchAthlete(userId)
+
+  const { coach, isFetchingCoach, coachError } = useFetchCoachByAthleteId(athlete?.id)
 
   // Load athlete and coach data into form
   useEffect(() => {
@@ -122,14 +122,25 @@ const AthleteProfile = ({ userId }: { userId: string }) => {
     })
   }
 
-  if (isFetchingAthleteId || isFetchingCoach) return <LoadingSpinner />
-
-  if (athleteError)
+  if (isLoading || isFetchingCoach) {
     return (
-      <Typography color="error" sx={{ mt: 3 }}>
-        {athleteError.message} Nepodarilo sa načítať údaje trénera. Skúste to znova neskôr.
-      </Typography>
+      <Box className="w-full h-screen flex justify-center items-center">
+        <LoadingSpinner />
+      </Box>
     )
+  }
+
+  if (error || coachError) {
+    return (
+      <Box className="w-full h-screen flex justify-center items-center">
+        <Typography color="error" sx={{ mt: 3, fontSize: '1.2rem' }}>
+          {error?.message ||
+            coachError?.message ||
+            'Nepodarilo sa načítať údaje. Skúste to znova neskôr.'}
+        </Typography>
+      </Box>
+    )
+  }
 
   return (
     <FormProvider {...methods}>

@@ -1,7 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { searchAthletesByName } from '../athlete'
 import { UAthlete } from '@/utils/payload/payload-types'
-import { useRef } from 'react'
 import { fetchAthleteByUserId } from '../athlete'
 
 export const useSearchAthletes = (searchQuery: string) => {
@@ -13,16 +12,9 @@ export const useSearchAthletes = (searchQuery: string) => {
 }
 
 export const useFetchAthlete = (userId: string) => {
-  const originalDataRef = useRef<any>(null)
-
-  const {
-    data: athlete,
-    isLoading: isFetchingAthleteId,
-    error: athleteError,
-  } = useQuery<UAthlete | null>({
+  return useQuery({
     queryKey: ['athleteId', userId],
-    queryFn: () => fetchAthleteByUserId(userId), // must return UAthlete | null
+    queryFn: () => fetchAthleteByUserId(userId),
+    enabled: !!userId,
   })
-
-  return { athlete, isFetchingAthleteId, athleteError, originalDataRef }
 }

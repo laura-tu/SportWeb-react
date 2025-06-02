@@ -24,9 +24,12 @@ export const searchAthletesByName = async (query: string): Promise<UAthlete[]> =
 }
 
 export const fetchAthleteByUserId = async (userId: string): Promise<UAthlete | null> => {
+  const token = localStorage.getItem('token')
+  if (!token) throw new Error('Token sa nenašiel')
+
   const params = {
     limit: 1,
-    depth: 1, 
+    //depth: 1,
     where: {
       user: {
         equals: userId,
@@ -35,7 +38,9 @@ export const fetchAthleteByUserId = async (userId: string): Promise<UAthlete | n
   }
 
   const url = constructUrlWithParams(URL, params)
-  const response = await ajax<ApiGetList<UAthlete>>('GET', url)
+  const response = await ajax<ApiGetList<UAthlete>>('GET', url, undefined, {
+    Authorization: `Bearer ${token}`,
+  })
 
-  return response?.docs?.[0] || null
+  return response.docs?.[0] ?? null
 }
