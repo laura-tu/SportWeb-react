@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState, useEffect } from 'react'
 import { FormLabel } from '@/components/ui/form'
 import { Button } from '@/components/ui/button'
-import { fetchCoachByUserId, CoachIdResponse, updateCoachData } from '../../../services/coach'
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useCoachQuery } from '@/api/hooks/useCoachQuery'
+import { useUpdateCoach } from '@/api/hooks/useCoachQuery'
 import LoadingSpinner from '../../loading/loading-spinner'
 import SuccessModal from '../../success-modal/index'
 import ErrorModal from '../../error-modal/index'
@@ -18,67 +18,28 @@ interface CoachFormData {
 }
 
 const CoachProfile: React.FC<{ userId: string }> = ({ userId }) => {
-  const queryClient = useQueryClient()
   const [successModalOpen, setSuccessModalOpen] = useState(false)
   const [errorModalOpen, setErrorModalOpen] = useState(false)
 
-  const [formData, setFormData] = useState<CoachFormData>({
-    sport: [],
-    sport_club: '',
-  })
-
-  const {
-    data: coachData,
-    isLoading: isFetchingCoachId,
-    error: coachIdError,
-  } = useQuery<CoachIdResponse>({
-    queryKey: ['coachId', userId],
-    queryFn: () => fetchCoachByUserId(userId),
-  })
-
-  const coach = coachData?.docs[0]
+  const { data: coach, isLoading, error } = useCoachQuery(userId)
 
   const methods = useForm<CoachFormData>({
-    defaultValues: useMemo(() => {
-      if (!coach) return { sport: [], sport_club: '' }
-      return {
-        sport: coach.sport.map(s => s.id),
-        sport_club:
-          typeof coach.sport_club === 'string' ? coach.sport_club : coach.sport_club?.id || '',
-      }
-    }, [coach]),
+    defaultValues: {
+      sport: [],
+      sport_club: '',
+    },
   })
 
   useEffect(() => {
     if (coach) {
-      const initialData = {
-        sport: coach.sport.map(s => s.id) || [],
-        sport_club:
-          typeof coach.sport_club === 'string' ? coach.sport_club : coach.sport_club?.id || '',
-      }
-      setFormData(initialData)
+      methods.reset({
+        sport: coach.sport.map(s => (typeof s === 'string' ? s : s.id)),
+        sport_club: typeof coach.club === 'string' ? coach.club : coach.club?.id || '',
+      })
     }
-  }, [coach?.id])
+  }, [coach, methods])
 
-  const mutation = useMutation({
-    mutationKey: ['update_coach_data'],
-    mutationFn: ({ coachId, updateData }: { coachId: string; updateData: Record<string, any> }) =>
-      updateCoachData(coachId, updateData),
-    onSuccess: () => {
-      setSuccessModalOpen(true)
-      queryClient.invalidateQueries({ queryKey: ['coachId', userId] })
-    },
-    onError: () => {
-      setErrorModalOpen(true)
-    },
-  })
-
-  const handleInputChange = (field: keyof CoachFormData, value: string | string[]) => {
-    setFormData(prevState => ({
-      ...prevState,
-      [field]: field === 'sport' ? (Array.isArray(value) ? value : [value]) : value,
-    }))
-  }
+  const mutation = useUpdateCoach(coach?.id ?? '')
 
   const handleSaveChanges = () => {
     if (!coach) {
@@ -86,35 +47,27 @@ const CoachProfile: React.FC<{ userId: string }> = ({ userId }) => {
       return
     }
 
-    const modifiedData = {
-      sport: formData.sport,
-      sport_club: formData.sport_club,
-    }
+    const modifiedData = methods.getValues()
 
-    mutation.mutate({
-      coachId: coach.id,
-      updateData: modifiedData, // Send only modified fields
+    mutation.mutate(modifiedData, {
+      onSuccess: () => setSuccessModalOpen(true),
+      onError: () => setErrorModalOpen(true),
     })
   }
 
-  if (isFetchingCoachId && !coachData) {
+  if (isLoading && !coach) {
     return (
       <Box className="w-full h-screen flex justify-center items-center">
         <LoadingSpinner />
       </Box>
     )
   }
-  {
-    isFetchingCoachId && (
-      <div className="absolute top-4 right-4 z-10">
-        <LoadingSpinner small />
-      </div>
-    )
-  }
 
-  if (coachIdError) {
+  if (error) {
     return (
-      <p>Chyba pri načítavaní informácií o trénerovi cez id používateľa: {coachIdError.message}</p>
+      <p>
+        Chyba pri načítavaní informácií o trénerovi cez ID používateľa: {(error as Error).message}
+      </p>
     )
   }
 
@@ -140,16 +93,18 @@ const CoachProfile: React.FC<{ userId: string }> = ({ userId }) => {
               <Box direction="col" className=" gap-2">
                 <FormLabel className="text-lg">Športy:</FormLabel>
                 <SportSelect
-                  selectedSports={formData.sport}
-                  onChange={value => handleInputChange('sport', value)}
+                  selectedSports={methods.watch('sport')}
+                  onChange={value =>
+                    methods.setValue('sport', Array.isArray(value) ? value : [value])
+                  }
                 />
               </Box>
 
               <Box direction="col" className="flex gap-2">
                 <FormLabel className="text-lg">Športový klub:</FormLabel>
                 <ClubSelect
-                  selectedClub={formData.sport_club}
-                  onChange={value => handleInputChange('sport_club', value)}
+                  selectedClub={methods.watch('sport_club')}
+                  onChange={value => methods.setValue('sport_club', value)}
                 />
               </Box>
             </Box>

@@ -33,21 +33,6 @@ export const getCoachData = async (coachId: string): Promise<Coach> => {
   }
 }
 
-export const fetchCoachByUserId = async (userId: string): Promise<CoachIdResponse> => {
-  const response = await axios.get(`http://localhost:3000/api/u_coach`)
-  const coaches = response.data.docs
-
-  const filteredCoach = coaches.find((coach: Coach) => {
-    if (typeof coach.user === 'object' && 'id' in coach.user) {
-      return coach.user.id === userId
-    } else {
-      return coach.user === userId
-    }
-  })
-
-  return { docs: filteredCoach ? [filteredCoach] : [] }
-}
-
 export const fetchCoachByAthleteId = async (athleteId: string): Promise<CoachIdResponse> => {
   try {
     const response = await axios.get(`http://localhost:3000/api/u_coach`, {

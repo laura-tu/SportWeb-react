@@ -1,7 +1,7 @@
 import { useQuery, useMutation } from '@tanstack/react-query'
 import { fetchUCoachByUserId } from '../coach'
 import { useQueryClient } from '@tanstack/react-query'
-import { updateCoachData, getCoachData } from '../coach'
+import { updateCoachData } from '../coach'
 import { useCallback } from 'react'
 
 export const useCoachQuery = (userId: string) => {
@@ -17,13 +17,12 @@ export const useUpdateCoach = (coachId: string) => {
 
   return useMutation({
     mutationKey: ['update_coach_data', coachId],
-    mutationFn: ({ updatedAthletes }: { updatedAthletes: string[] }) =>
-      updateCoachData(coachId, { athletes: updatedAthletes }),
+    mutationFn: (updateData: Record<string, any>) => updateCoachData(coachId, updateData),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['coach', coachId] })
     },
     onError: (error: any) => {
-      console.error('Zlyhalo aktualizovanie zoznamu športovcov:', error.message)
+      console.error('Zlyhala aktualizácia údajov trénera:', error.message)
     },
   })
 }
@@ -55,7 +54,7 @@ export const useAddAthleteToCoach = (coachId: string, userId: string) => {
 
   const addAthlete = useCallback(
     (athleteId: string) => {
-      const coach = coachQuery.data?.docs?.[0]
+      const coach = coachQuery
       if (!coach) return
 
       const existingIds = extractAthleteIds(coach)
