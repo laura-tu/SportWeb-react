@@ -2,7 +2,6 @@ import { useQuery, useMutation } from '@tanstack/react-query'
 import { fetchUCoachByUserId } from '../coach'
 import { useQueryClient } from '@tanstack/react-query'
 import { updateCoachData, fetchCoachByAthleteId } from '../coach'
-import { useCallback } from 'react'
 import { UCoach } from '@/utils/payload/payload-types'
 
 export const useCoachQuery = (userId: string) => {
@@ -28,50 +27,39 @@ export const useUpdateCoach = (coachId: string) => {
   })
 }
 
-const extractAthleteIds = (coachData: any): string[] => {
-  return (coachData.athletes || []).map((a: any) => (typeof a === 'string' ? a : a.id))
-}
-
 export const useAddAthleteToCoach = (coachId: string, userId: string) => {
   const queryClient = useQueryClient()
 
-  const coachQuery = useQuery({
-    queryKey: ['coach', userId],
-    queryFn: () => fetchUCoachByUserId(userId),
-    enabled: !!userId,
-  })
+  const { data: coach } = useCoachQuery(userId)
 
-  const updateCoach = useMutation({
-    mutationKey: ['update_coach_data', coachId],
-    mutationFn: ({ updatedAthletes }: { updatedAthletes: string[] }) =>
-      updateCoachData(coachId, { athletes: updatedAthletes }),
+  const mutation = useMutation({
+    mutationKey: ['add_athlete_to_coach', coachId],
+    mutationFn: async (athleteId: string) => {
+      if (!coach) throw new Error('Coach nebol nájdený')
+
+      const currentAthletes = coach.athletes || []
+
+      const athleteIds = currentAthletes.map(a => (typeof a === 'string' ? a : a.id))
+
+      // Zamedzenie duplicite
+      if (athleteIds.includes(athleteId)) return
+
+      const updatedAthletes = [...athleteIds, athleteId]
+
+      return updateCoachData(coachId, { athletes: updatedAthletes })
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['coach', userId] })
     },
     onError: (error: any) => {
-      console.error('Zlyhalo aktualizovanie zoznamu športovcov:', error.message)
+      console.error('Zlyhalo pridanie športovca:', error.message)
     },
   })
 
-  const addAthlete = useCallback(
-    (athleteId: string) => {
-      const coach = coachQuery
-      if (!coach) return
-
-      const existingIds = extractAthleteIds(coach)
-      if (!existingIds.includes(athleteId)) {
-        const updatedAthletes = [...existingIds, athleteId]
-        updateCoach.mutate({ updatedAthletes })
-      }
-    },
-    [coachQuery.data, updateCoach],
-  )
-
   return {
-    addAthlete,
-    isPending: updateCoach.isPending,
-    isCoachLoading: coachQuery.isLoading,
-    coachError: coachQuery.error,
+    addAthlete: mutation.mutate,
+    isPending: mutation.isPending,
+    coachError: mutation.error,
   }
 }
 

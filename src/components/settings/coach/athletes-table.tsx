@@ -15,14 +15,13 @@ import {
 } from '@/components/ui/table'
 import { Mars, Venus, FileUser } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
-import { User } from '@/utils/payload/payload-types'
 
 export interface CoachProps {
   userId: string
 }
 
 const AthletesTable: React.FC<CoachProps> = ({ userId }) => {
-  const { data, isLoading, error } = useCoachQuery(userId)
+  const { data: coach, isLoading, error } = useCoachQuery(userId)
   const navigate = useNavigate()
 
   if (isLoading) {
@@ -36,8 +35,6 @@ const AthletesTable: React.FC<CoachProps> = ({ userId }) => {
       </Box>
     )
   }
-
-  const coach = data?.docs[0]
 
   if (!coach) {
     return (

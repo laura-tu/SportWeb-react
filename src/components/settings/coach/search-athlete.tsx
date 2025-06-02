@@ -64,35 +64,40 @@ const SearchAthlete: React.FC<SearchAthleteProps> = ({ coachId, userId }) => {
         <ErrorMessage message="Zlyhalo pridávanie športovca. Skúste to znova neskôr." />
       )}
 
-      {searchResults && searchResults.length > 0 && (
-        <ScrollArea className="border rounded-md ml-8 h-fit mt-12 bg-blue-50">
-          <ul className="divide-y">
-            {searchResults.map(athlete => (
-              <li key={athlete.id} className="flex justify-between items-center p-3 w-[15rem] h-13">
-                <div className="m-1 min-w-28">
-                  <span>
-                    <strong>{athlete.name || 'Neznámy'}</strong>
-                  </span>
-                </div>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="bg-blue-300 px-4 hover:bg-blue-900 hover:text-white"
-                  onClick={() => addAthlete(athlete.id)}
+      <Box direction="col" className="flex gap-4 ml-8">
+        {searchResults && searchResults.length > 0 && (
+          <ScrollArea className="border rounded-md h-fit mt-12 bg-blue-50">
+            <ul className="divide-y">
+              {searchResults.map(athlete => (
+                <li
+                  key={athlete.id}
+                  className="flex justify-between items-center p-3 w-[15rem] h-13"
                 >
-                  Pridať
-                </Button>
-              </li>
-            ))}
-          </ul>
-        </ScrollArea>
-      )}
+                  <div className="m-1 min-w-28">
+                    <span>
+                      <strong>{athlete.name || 'Neznámy'}</strong>
+                    </span>
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="bg-blue-300 px-4 hover:bg-blue-900 hover:text-white"
+                    onClick={() => addAthlete(athlete.id)}
+                  >
+                    Pridať
+                  </Button>
+                </li>
+              ))}
+            </ul>
+          </ScrollArea>
+        )}
 
-      {isAddingAthlete && (
-        <div className="text-blue-600 text-sm mt-4">
-          Aktualizuje sa zoznam trénerových zverencov...
-        </div>
-      )}
+        {isAddingAthlete && (
+          <div className="text-blue-600 text-sm mt-4">
+            Aktualizuje sa zoznam trénerových zverencov...
+          </div>
+        )}
+      </Box>
     </Box>
   )
 }
