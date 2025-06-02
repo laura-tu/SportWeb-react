@@ -19,7 +19,12 @@ const TestResultsList: React.FC<SportTestsProps> = ({ userId, onResultClick, tes
   const [startDate, setStartDate] = useState<Date | null>(null)
   const [endDate, setEndDate] = useState<Date | null>(null)
 
-  const { athlete, isFetchingAthleteId, athleteError } = useFetchAthlete(userId)
+  const {
+    data: athlete,
+    isLoading: isFetchingAthleteId,
+    error: athleteError,
+  } = useFetchAthlete(userId)
+
   const { testResults, isFetchingTestResults, testResultsError } = useFetchTestResults(
     testType,
     athlete?.id,
