@@ -8,7 +8,7 @@ export const searchAthletesByName = async (query: string): Promise<UAthlete[]> =
     const params = {
       where: {
         name: {
-          equals: query,
+          contains: query,
         },
       },
     }

@@ -46,7 +46,7 @@ const SearchAthlete: React.FC<SearchAthleteProps> = ({ coachId, userId }) => {
           value={searchQuery}
           onChange={e => setSearchQuery(e.target.value)}
           onKeyDown={e => e.key === 'Enter' && handleSearch()}
-          className="flex-grow min-w-80"
+          className="flex min-w-80"
         />
         <Button
           onClick={handleSearch}
