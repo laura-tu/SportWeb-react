@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Route, Routes, useNavigate } from 'react-router-dom'
-import { CSportTest, TestResult } from '@/utils/interfaces'
+import { TestResult, CSportTest } from '@/utils/payload/payload-types'
 import { TestType } from '.'
 import DemoPageContent from './demo-page-content'
 import SettingsLayout from '../settings/settings-layout'
@@ -65,7 +65,7 @@ export function DashboardRoutes({ session }) {
       />
       <Route
         path="athletes/:userId"
-        element={<AthleteDetail  onResultClick={handleResultClick} />}
+        element={<AthleteDetail onResultClick={handleResultClick} />}
       />
 
       <Route

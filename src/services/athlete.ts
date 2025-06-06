@@ -1,10 +1,9 @@
 import axios from 'axios'
 import { AthleteFormData } from '../components/registration/athlete-registration/index.js'
-import type { Athlete } from '../utils/interfaces.ts'
-//import qs from 'qs'
+import type { UAthlete } from '@/utils/payload/payload-types.js'
 
 export interface AthleteIdResponse {
-  docs: Athlete[]
+  docs: UAthlete[]
 }
 
 export const registerAthlete = async (
@@ -32,38 +31,6 @@ export const registerAthlete = async (
   }
 }
 
-/*export const searchAthletesByName = async (query: string): Promise<Athlete[]> => {
-  try {
-    const stringifiedParams = qs.stringify(
-      { where: { name: { equals: query } } },
-      { addQueryPrefix: true },
-    )
-
-    const response = await fetch(`http://localhost:3000/api/u_athlete${stringifiedParams}`)
-
-    const data = await response.json()
-
-    return data?.docs || []
-  } catch (error) {
-    console.error('Chyba pri načítaní športovcov podla mena:', error.message)
-    throw new Error('Nepodarilo sa načítať športovcov. Prosím skúste to znovu neskôr.')
-  }
-}*/
-
-/*export const fetchAthleteByUserId = async (userId: string): Promise<AthleteIdResponse> => {
-  const response = await axios.get(`http://localhost:3000/api/u_athlete`)
-  const athletes = response.data.docs
-
-  const filteredAthlete = athletes.find((athlete: Athlete) => {
-    if (typeof athlete.user === 'object' && 'id' in athlete.user) {
-      return athlete.user.id === userId
-    } else {
-      return athlete.user === userId
-    }
-  })
-
-  return { docs: filteredAthlete ? [filteredAthlete] : [] }
-}*/
 
 export const updateAthleteData = async (athleteId: string, updateData: Record<string, any>) => {
   try {

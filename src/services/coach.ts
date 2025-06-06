@@ -1,9 +1,9 @@
 import axios from 'axios'
 import { CoachFormData } from '../components/registration/coach-registration/index'
-import { Coach } from '../utils/interfaces'
+import { UCoach } from '@/utils/payload/payload-types'
 
 export interface CoachIdResponse {
-  docs: Coach[]
+  docs: UCoach[]
 }
 
 export const registerCoach = async (
@@ -23,7 +23,7 @@ export const registerCoach = async (
   }
 }
 
-export const getCoachData = async (coachId: string): Promise<Coach> => {
+export const getCoachData = async (coachId: string): Promise<UCoach> => {
   try {
     const response = await axios.get(`http://localhost:3000/api/u_coach/${coachId}`)
     return response.data

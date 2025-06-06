@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Check } from 'lucide-react'
 import { cn } from '@/utils/cn'
 import { FormControl } from '@mui/material'
-import { Sport } from '@/utils/interfaces'
+import { CSport } from '@/utils/payload/payload-types'
 import { fetchSports } from '@/api/sports'
 import LoadingSpinner from '../loading/loading-spinner'
 import { useQuery } from '@tanstack/react-query'
@@ -19,7 +19,7 @@ interface SportSelectProps {
 const WIDTH = 'w-[23rem]'
 
 const SportSelect: React.FC<SportSelectProps> = ({ selectedSports, onChange }) => {
-  const { data, isLoading, error } = useQuery<{ docs: Sport[] }>({
+  const { data, isLoading, error } = useQuery<{ docs: CSport[] }>({
     queryKey: ['sports'],
     queryFn: fetchSports,
     refetchOnWindowFocus: false, // nemusí sa znova fetchnúť pri focusnutí okna

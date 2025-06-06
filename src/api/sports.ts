@@ -1,14 +1,14 @@
 import { ajax, ApiGetList } from '../utils/api'
-import { Sport } from '../utils/interfaces'
+import { CSport } from '@/utils/payload/payload-types'
 import { constructUrlWithParams } from '../utils/api'
 
 const URL = 'api/c_sport'
 
-export const fetchSports = async (): Promise<ApiGetList<Sport>> => {
+export const fetchSports = async (): Promise<ApiGetList<CSport>> => {
   const params = {
-    limit: 0, // no limit in PayloadCMS, adjust as needed
+    limit: 0, // no limit 
   }
 
   const url = constructUrlWithParams(URL, params)
-  return ajax<ApiGetList<Sport>>('GET', url)
+  return ajax<ApiGetList<CSport>>('GET', url)
 }
