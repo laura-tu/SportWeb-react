@@ -8,6 +8,9 @@ import { Badge } from '@/components/ui/badge'
 import Heading from '../heading'
 import { useTheme } from '@mui/material/styles'
 import { cn } from '@/utils/cn'
+import { useTestResultsByAthleteId } from '@/api/hooks/useFetchResults'
+import type { CSport, CSportTest } from '@/utils/payload/payload-types'
+import { useCoachQuery } from '@/api/hooks/useCoachQuery'
 
 interface DemoPageProps {
   userId: string
@@ -15,7 +18,23 @@ interface DemoPageProps {
 
 const DemoPageContent: React.FC<DemoPageProps> = ({ userId }) => {
   const { data: userData, isLoading, error } = useFetchUserById(userId)
-  const { data: athleteData, isLoading: isAthleteLoading } = useFetchAthlete(userId)
+
+  const isUser = userData?.roles?.includes('user')
+  const isCoachAthlete = userData?.roles?.includes('sportCoach')
+
+  const { data: athleteData, isLoading: isAthleteLoading } = useFetchAthlete(userId, {
+    enabled: !!userId && isUser,
+  })
+
+  const { data: coach, isLoading: isCoachLoading } = useCoachQuery(userId, {
+    enabled: !!userId && isCoachAthlete,
+  })
+
+  const {
+    data: testResults,
+    isLoading: isLoadingResults,
+    error: resultsError,
+  } = useTestResultsByAthleteId(athleteData?.id, { enabled: !!athleteData?.id })
 
   const [currentTime, setCurrentTime] = useState<string>('')
 
@@ -39,6 +58,25 @@ const DemoPageContent: React.FC<DemoPageProps> = ({ userId }) => {
 
   const theme = useTheme()
   const isDarkMode = theme.palette.mode === 'dark'
+
+  const sports = React.useMemo(() => {
+    if (userData?.roles?.includes('user')) {
+      return (athleteData?.sport as CSport[]) || []
+    }
+    if (userData?.roles?.includes('sportCoach')) {
+      return (coach?.sport as CSport[]) || []
+    }
+    return []
+  }, [userData, athleteData, coach])
+
+  const testCountsByType = testResults?.docs.reduce(
+    (acc, test) => {
+      const type = (test.testType as CSportTest)?.name || 'Neznámy typ'
+      acc[type] = (acc[type] || 0) + 1
+      return acc
+    },
+    {} as Record<string, number>,
+  )
 
   if (isLoading) return <LoadingSpinner />
 
@@ -64,7 +102,7 @@ const DemoPageContent: React.FC<DemoPageProps> = ({ userId }) => {
             sx={{ color: theme => (theme.palette.mode === 'dark' ? 'white' : 'black') }}
             variant="h4"
           >
-            Vitaj späť, {userData?.name}!
+            Vitaj späť, <span className="font-bold">{userData?.name}</span>!
           </Typography>
           <Heading
             level={6}
@@ -85,7 +123,7 @@ const DemoPageContent: React.FC<DemoPageProps> = ({ userId }) => {
             <Typography variant="subtitle1" className="text-center text-inherit">
               Aktuálny dátum a čas:
             </Typography>
-            <Typography variant="h6" className="text-center text-inherit">
+            <Typography variant="h6" className="text-center text-inherit font-bold!">
               {currentTime}
             </Typography>
           </Box>
@@ -101,15 +139,15 @@ const DemoPageContent: React.FC<DemoPageProps> = ({ userId }) => {
               Toto je zoznam športov, ktorým sa venuješ:
             </Typography>
 
-            {isAthleteLoading ? (
+            {(isUser && isAthleteLoading) || (isCoachAthlete && isCoachLoading) ? (
               <Typography variant="body2" className="text-gray-400">
                 Načítavam...
               </Typography>
-            ) : athleteData?.sport?.length > 0 ? (
+            ) : sports.length > 0 ? (
               <div className="flex flex-wrap gap-2 ">
-                {athleteData.sport.map((sport: any, index: number) => (
+                {sports.map((sport, index) => (
                   <Badge
-                    key={index}
+                    key={sport?.id || index}
                     variant="secondary"
                     className="px-6 py-2 rounded-4xl font-bold text-[16px] border-[1px] border-gray-700"
                   >
@@ -127,12 +165,68 @@ const DemoPageContent: React.FC<DemoPageProps> = ({ userId }) => {
       </Box>
 
       <Box direction="row" className="gap-2 m-2">
-        <Box direction="col" className="border-2 h-[23rem] flex-1">
-          4
+        <Box
+          direction="col"
+          className={cn(
+            'border-2 border-gray-400 rounded-3xl h-[23rem] flex-1 justify-start items-start p-8',
+            isDarkMode ? 'bg-[#2a81fa] text-white' : 'bg-[#d4f8ff] text-black',
+          )}
+        >
+          <Typography variant="body2" className="text-inherit"></Typography>
         </Box>
-        <Box direction="col" className="border-2 h-[23rem] flex-1">
-          5
-        </Box>
+        {userData?.roles?.includes('user') && (
+          <Box
+            direction="col"
+            className={cn(
+              'border-2 border-gray-400 rounded-3xl flex-1 justify-start items-start p-8',
+              isDarkMode ? 'bg-[#2a81fa] text-white' : 'bg-[#d4f8ff] text-black',
+            )}
+          >
+            <Typography variant="subtitle1" className="text-left text-inherit pb-4">
+              Počet absolvovaných testov podľa typu:
+            </Typography>
+
+            {isLoadingResults ? (
+              <Typography variant="body2" className="text-gray-400">
+                Načítavam testy...
+              </Typography>
+            ) : resultsError ? (
+              <Typography variant="body2" className="text-red-500">
+                Chyba pri načítaní testov.
+              </Typography>
+            ) : testCountsByType && Object.keys(testCountsByType).length > 0 ? (
+              <div className="flex flex-col gap-3 text-[16px]">
+                {Object.entries(testCountsByType).map(([type, count]) => (
+                  <div
+                    key={type}
+                    className={cn(
+                      'px-4 py-2 rounded-full shadow-sm border-[1px] bg-gray-100 text-black',
+                      isDarkMode ? 'border-emerald-200' : 'border-blue-800',
+                    )}
+                  >
+                    <span className="font-semibold">{type}</span>: {count}
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <Typography variant="body2" className="text-gray-400">
+                Žiadne výsledky testov.
+              </Typography>
+            )}
+          </Box>
+        )}
+
+        {userData?.roles?.includes('sportCoach') && (
+          <Box
+            direction="col"
+            className={cn(
+              'border-2 border-gray-400 rounded-3xl flex-1 justify-start items-start p-8',
+              isDarkMode ? 'bg-[#2a81fa] text-white' : 'bg-[#d4f8ff] text-black',
+            )}
+          >
+            <Typography variant="body2" className="text-inherit"></Typography>
+          </Box>
+        )}
       </Box>
     </div>
   )

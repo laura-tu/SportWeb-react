@@ -1,14 +1,18 @@
-import { useQuery, useMutation } from '@tanstack/react-query'
+import { useQuery, useMutation, UseQueryOptions } from '@tanstack/react-query'
 import { fetchUCoachByUserId } from '../coach'
 import { useQueryClient } from '@tanstack/react-query'
 import { updateCoachData, fetchCoachByAthleteId } from '../coach'
 import { UCoach } from '@/utils/payload/payload-types'
 
-export const useCoachQuery = (userId: string) => {
+export const useCoachQuery = (
+  userId: string,
+  options?: Partial<UseQueryOptions<UCoach, Error, UCoach, [string, string]>>,
+) => {
   return useQuery({
     queryKey: ['coach', userId],
     queryFn: () => fetchUCoachByUserId(userId),
     enabled: !!userId,
+    ...options,
   })
 }
 
