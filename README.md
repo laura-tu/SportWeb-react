@@ -20,7 +20,7 @@ Tento projekt predstavuje frontendovú časť systému pre správu športových 
 
 ### 1. Klonovanie repozitára
 
-    git clone https://github.com/tvoj-username/frontend-repo.git
+    git clone https://github.com/tvoj-username/SportWeb-react.git
     cd frontend-repo
 
 ### 2. Inštalovanie závislostí
