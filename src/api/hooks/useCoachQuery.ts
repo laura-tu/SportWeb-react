@@ -1,8 +1,10 @@
 import { useQuery, useMutation, UseQueryOptions } from '@tanstack/react-query'
 import { fetchUCoachByUserId } from '../coach'
 import { useQueryClient } from '@tanstack/react-query'
-import { updateCoachData, fetchCoachByAthleteId } from '../coach'
+import { updateCoachData, fetchCoachByAthleteId,createCoach } from '../coach'
 import { UCoach } from '@/utils/payload/payload-types'
+import { ApiResponse } from '@/utils/api'
+import { CoachFormData } from '@/components/registration/coach-registration'
 
 export const useCoachQuery = (
   userId: string,
@@ -84,4 +86,16 @@ export const useFetchCoachByAthleteId = (athleteId?: string) => {
   })
 
   return { coach, isFetchingCoach, coachError }
+}
+
+export const useCreateCoach = (
+  userId: string,
+  onSuccess?: (data: ApiResponse<UCoach>) => void,
+  onError?: (error: unknown) => void
+) => {
+  return useMutation<ApiResponse<UCoach>, unknown, CoachFormData>({
+    mutationFn: (formData) => createCoach(formData, userId),
+    onSuccess,
+    onError,
+  })
 }

@@ -3,7 +3,7 @@ import { Select, MenuItem, InputLabel, FormControl, Button } from '@mui/material
 import { useForm, Controller } from 'react-hook-form'
 import ErrorModal from '../../error-modal/index'
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined'
-import { registerCoach } from '../../../services/coach'
+import { useCreateCoach } from '@/api/hooks/useCoachQuery'
 import SuccessModal from '../../success-modal/index'
 import Box from '@/components/box'
 import { useFetchSports } from '@/api/hooks/useFetchSports'
@@ -29,8 +29,14 @@ const CoachRegistration = ({ userId, onClose }) => {
 
   const { control, handleSubmit, setValue } = useForm<CoachFormData>()
 
-  const onSubmit = async (data: CoachFormData) => {
-    await registerCoach(data, userId, setSuccessModalVisible, setErrorModal)
+  const { mutate: registerCoach, isPending } = useCreateCoach(
+    userId,
+    () => setSuccessModalVisible(true),
+    () => setErrorModal(true),
+  )
+
+  const onSubmit = (data: CoachFormData) => {
+    registerCoach(data)
   }
 
   const handleCloseSuccessModal = () => {
@@ -116,9 +122,10 @@ const CoachRegistration = ({ userId, onClose }) => {
               variant="contained"
               color="success"
               fullWidth
-              className=" text-white py-2 px-4 rounded hover:bg-green-600"
+              disabled={isPending}
+              className="text-white py-2 px-4 rounded hover:bg-green-600"
             >
-              ZAREGISTROVAŤ SA
+              {isPending ? 'Registrujem...' : 'ZAREGISTROVAŤ SA'}
             </Button>
           </div>
         </form>

@@ -1,6 +1,7 @@
-import { ajax, ApiGetList } from '../utils/api'
+import { ajax, ApiGetList, ApiResponse } from '../utils/api'
 import { UCoach } from '@/utils/payload/payload-types'
 import { constructUrlWithParams } from '../utils/api'
+import { CoachFormData } from '../components/registration/coach-registration/index'
 
 const URL = 'api/u_coach'
 
@@ -60,4 +61,13 @@ export const fetchCoachByAthleteId = async (athleteId: string): Promise<UCoach |
   })
 
   return response.docs?.[0] ?? null
+}
+
+export const createCoach = async (
+  data: CoachFormData,
+  userId: string,
+): Promise<ApiResponse<UCoach>> => {
+  data.user = userId
+
+  return ajax<ApiResponse<UCoach>>('POST', URL, data)
 }
