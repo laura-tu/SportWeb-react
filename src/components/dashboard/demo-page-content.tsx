@@ -9,8 +9,9 @@ import Heading from '../heading'
 import { useTheme } from '@mui/material/styles'
 import { cn } from '@/utils/cn'
 import { useTestResultsByAthleteId } from '@/api/hooks/useFetchResults'
-import type { CSport, CSportTest } from '@/utils/payload/payload-types'
+import type { CSport, CSportTest, UAthlete } from '@/utils/payload/payload-types'
 import { useCoachQuery } from '@/api/hooks/useCoachQuery'
+import { Venus, Mars, HelpCircle } from 'lucide-react'
 
 interface DemoPageProps {
   userId: string
@@ -172,61 +173,98 @@ const DemoPageContent: React.FC<DemoPageProps> = ({ userId }) => {
             isDarkMode ? 'bg-[#2a81fa] text-white' : 'bg-[#d4f8ff] text-black',
           )}
         >
+          {isCoachAthlete && (
+            <>
+              <Typography variant="subtitle1" className="text-left text-inherit pb-4">
+                Športovci, ktorých trénuješ:
+              </Typography>
+
+              {isCoachLoading ? (
+                <Typography variant="body2" className="text-gray-400">
+                  Načítavam...
+                </Typography>
+              ) : coach?.athletes && coach.athletes.length > 0 ? (
+                <div className="flex flex-wrap gap-2">
+                  {coach.athletes
+                    .filter((a): a is UAthlete => typeof a !== 'string')
+                    .map((athlete, index) => {
+                      const genderIcon =
+                        athlete.gender === 'zena' ? (
+                          <Venus size={12} />
+                        ) : athlete.gender === 'muz' ? (
+                          <Mars size={12} />
+                        ) : (
+                          <HelpCircle size={12} />
+                        )
+
+                      return (
+                        <Badge
+                          key={athlete.id || index}
+                          variant="secondary"
+                          className="flex items-center gap-2 px-6 py-2 rounded-4xl font-bold text-[16px] border-[1px] border-gray-700"
+                        >
+                          {genderIcon}
+                          {athlete.user && typeof athlete.user !== 'string'
+                            ? athlete.user.name
+                            : (athlete.name ?? 'Nepomenovaný')}
+                        </Badge>
+                      )
+                    })}
+                </div>
+              ) : (
+                <Typography variant="body2" className="text-gray-400">
+                  Nemáš priradených žiadnych športovcov.
+                </Typography>
+              )}
+            </>
+          )}
+
+          {isUser && (
+            <>
+              <Typography variant="subtitle1" className="text-left text-inherit pb-4">
+                Počet absolvovaných testov podľa typu:
+              </Typography>
+
+              {isLoadingResults ? (
+                <Typography variant="body2" className="text-gray-400">
+                  Načítavam testy...
+                </Typography>
+              ) : resultsError ? (
+                <Typography variant="body2" className="text-red-500">
+                  Chyba pri načítaní testov.
+                </Typography>
+              ) : testCountsByType && Object.keys(testCountsByType).length > 0 ? (
+                <div className="flex flex-col gap-3 text-[16px]">
+                  {Object.entries(testCountsByType).map(([type, count]) => (
+                    <div
+                      key={type}
+                      className={cn(
+                        'px-4 py-2 rounded-full shadow-sm border-[1px] bg-gray-100 text-black',
+                        isDarkMode ? 'border-emerald-200' : 'border-blue-800',
+                      )}
+                    >
+                      <span className="font-semibold">{type}</span>: {count}
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <Typography variant="body2" className="text-gray-400">
+                  Žiadne výsledky testov.
+                </Typography>
+              )}
+            </>
+          )}
+        </Box>
+
+        <Box
+          direction="col"
+          className={cn(
+            'border-2 border-gray-400 rounded-3xl flex-1 justify-start items-start p-8',
+            isDarkMode ? 'bg-[#2a81fa] text-white' : 'bg-[#d4f8ff] text-black',
+          )}
+        >
           <Typography variant="body2" className="text-inherit"></Typography>
         </Box>
-        {userData?.roles?.includes('user') && (
-          <Box
-            direction="col"
-            className={cn(
-              'border-2 border-gray-400 rounded-3xl flex-1 justify-start items-start p-8',
-              isDarkMode ? 'bg-[#2a81fa] text-white' : 'bg-[#d4f8ff] text-black',
-            )}
-          >
-            <Typography variant="subtitle1" className="text-left text-inherit pb-4">
-              Počet absolvovaných testov podľa typu:
-            </Typography>
-
-            {isLoadingResults ? (
-              <Typography variant="body2" className="text-gray-400">
-                Načítavam testy...
-              </Typography>
-            ) : resultsError ? (
-              <Typography variant="body2" className="text-red-500">
-                Chyba pri načítaní testov.
-              </Typography>
-            ) : testCountsByType && Object.keys(testCountsByType).length > 0 ? (
-              <div className="flex flex-col gap-3 text-[16px]">
-                {Object.entries(testCountsByType).map(([type, count]) => (
-                  <div
-                    key={type}
-                    className={cn(
-                      'px-4 py-2 rounded-full shadow-sm border-[1px] bg-gray-100 text-black',
-                      isDarkMode ? 'border-emerald-200' : 'border-blue-800',
-                    )}
-                  >
-                    <span className="font-semibold">{type}</span>: {count}
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <Typography variant="body2" className="text-gray-400">
-                Žiadne výsledky testov.
-              </Typography>
-            )}
-          </Box>
-        )}
-
-        {userData?.roles?.includes('sportCoach') && (
-          <Box
-            direction="col"
-            className={cn(
-              'border-2 border-gray-400 rounded-3xl flex-1 justify-start items-start p-8',
-              isDarkMode ? 'bg-[#2a81fa] text-white' : 'bg-[#d4f8ff] text-black',
-            )}
-          >
-            <Typography variant="body2" className="text-inherit"></Typography>
-          </Box>
-        )}
       </Box>
     </div>
   )
