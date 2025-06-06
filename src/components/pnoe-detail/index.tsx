@@ -283,11 +283,6 @@ const SpiroergometryDetail: React.FC<{ result: any }> = ({ result }) => {
           </>
         )}
 
-        {parsedData.length > 0 && result.testType?.name === 'Pnoe' ? (
-          <ParsedTest parsedData={parsedData} />
-        ) : (
-          <div>nic</div>
-        )}
       </div>
     </div>
   )

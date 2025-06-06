@@ -53,14 +53,6 @@ const TestDetailWindow: React.FC<{ result: any }> = ({ result }) => {
         </Typography>
 
         {parsedData.length > 0 && <InbodyTest parsedData={parsedData} params={params} />}
-
-        {/*Table Data parsed from XLSX file*/}
-        {/*<Divider />
-        {parsedData.length > 0 && result.testType?.name === 'INBODY' ? (
-          <ParsedTest parsedData={parsedData} />
-        ) : (
-          <div>nic</div>
-        )}*/}
       </div>
     </Box>
   )
