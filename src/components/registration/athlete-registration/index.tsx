@@ -3,12 +3,12 @@ import { Select, MenuItem, InputLabel, FormControl, Button } from '@mui/material
 import { useForm, Controller } from 'react-hook-form'
 import ErrorModal from '../../error-modal/index'
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined'
-import { registerAthlete } from '../../../services/athlete'
 import SuccessModal from '../../success-modal/index'
 import Box from '@/components/box'
 import LoadingSpinner from '@/components/loading/loading-spinner'
 import { useFetchSportClubs } from '@/api/hooks/useFetchSportClubs'
 import { useFetchSports } from '@/api/hooks/useFetchSports'
+import { useCreateAthlete } from '@/api/hooks/useAthleteQuery'
 
 export interface AthleteFormData {
   day: number | null
@@ -42,8 +42,14 @@ const AthleteRegistration = ({ userId, onClose }) => {
     { label: 'Žena', value: 'zena' },
   ]
 
-  const onSubmit = async (data: AthleteFormData) => {
-    await registerAthlete(data, userId, setSuccessModalVisible, setErrorModal)
+  const { mutate: registerAthlete, isPending } = useCreateAthlete(
+    userId,
+    () => setSuccessModalVisible(true),
+    () => setErrorModal(true),
+  )
+
+  const onSubmit = (data: AthleteFormData) => {
+    registerAthlete(data)
   }
 
   const handleCloseSuccessModal = () => {
@@ -251,9 +257,10 @@ const AthleteRegistration = ({ userId, onClose }) => {
               variant="contained"
               color="success"
               fullWidth
-              className=" text-white py-2 px-4 rounded hover:bg-green-600"
+              disabled={isPending}
+              className="text-white py-2 px-4 rounded hover:bg-green-600"
             >
-              ZAREGISTROVAŤ SA
+              {isPending ? 'Registrujem...' : 'ZAREGISTROVAŤ SA'}
             </Button>
           </div>
         </form>

@@ -1,5 +1,6 @@
-import { ajax, ApiGetList, constructUrlWithParams } from '../utils/api'
+import { ajax, ApiGetList, constructUrlWithParams, ApiResponse } from '../utils/api'
 import { UAthlete } from '@/utils/payload/payload-types'
+import { AthleteFormData } from '@/components/registration/athlete-registration'
 
 const URL = 'api/u_athlete'
 
@@ -43,4 +44,32 @@ export const fetchAthleteByUserId = async (userId: string): Promise<UAthlete | n
   })
 
   return response.docs?.[0] ?? null
+}
+
+export interface AthleteIdResponse {
+  docs: UAthlete[]
+}
+
+export const createAthlete = async (
+  data: AthleteFormData,
+  userId: string,
+): Promise<ApiResponse<UAthlete>> => {
+  const birth_date = `${data.year}-${String(data.month).padStart(2, '0')}-${String(data.day).padStart(2, '0')}`
+  const { day, month, year, ...rest } = data
+
+  const payload = { ...rest, birth_date, user: userId }
+
+  return ajax<ApiResponse<UAthlete>>('POST', 'api/u_athlete', payload)
+}
+
+export const updateAthleteData = async (
+  athleteId: string,
+  updateData: Partial<UAthlete>,
+): Promise<ApiResponse<UAthlete>> => {
+  const token = localStorage.getItem('token')
+  if (!token) throw new Error('Token sa nenašiel')
+
+  return ajax<ApiResponse<UAthlete>>('PATCH', `api/u_athlete/${athleteId}`, updateData, {
+    Authorization: `Bearer ${token}`,
+  })
 }

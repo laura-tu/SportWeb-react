@@ -7,7 +7,7 @@ import { useFetchCoachByAthleteId } from '@/api/hooks/useCoachQuery'
 import SuccessModal from '../../success-modal/index'
 import ErrorModal from '../../error-modal/index'
 import { formatDateForInput } from '../../../utils/formatDate'
-import { updateAthleteData } from '../../../services/athlete'
+import { useUpdateAthlete } from '@/api/hooks/useAthleteQuery'
 import SettingsUser from '../user/index'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
@@ -72,24 +72,16 @@ const AthleteProfile = ({ userId }: { userId: string }) => {
     }
   }, [athlete, coach, setValue])
 
-  const mutation = useMutation({
-    mutationKey: ['update_athlete_data'],
-    mutationFn: ({
-      athleteId,
-      updateData,
-    }: {
-      athleteId: string
-      updateData: Record<string, any>
-    }) => updateAthleteData(athleteId, updateData),
-    onSuccess: () => {
+  const { mutate, isPending } = useUpdateAthlete(
+    () => {
       setSuccessModalOpen(true)
       queryClient.invalidateQueries({ queryKey: ['athleteId', userId] })
       queryClient.invalidateQueries({ queryKey: ['user'] })
     },
-    onError: () => {
+    () => {
       setErrorModalOpen(true)
     },
-  })
+  )
 
   const getModifiedData = () => {
     const modifiedData: Record<string, any> = {}
@@ -116,9 +108,9 @@ const AthleteProfile = ({ userId }: { userId: string }) => {
       return
     }
 
-    mutation.mutate({
-      athleteId: athlete?.id,
-      updateData: modifiedData,
+    mutate({
+      athleteId: athlete?.id!,
+      data: modifiedData,
     })
   }
 
@@ -257,10 +249,10 @@ const AthleteProfile = ({ userId }: { userId: string }) => {
             <Button
               color="primary"
               onClick={handleSubmit(onSubmit)}
-              disabled={mutation.isPending}
+              disabled={isPending}
               className="w-fit"
             >
-              {mutation.isPending ? <LoadingSpinner small /> : 'Uložiť zmeny'}
+              {isPending ? <LoadingSpinner small /> : 'Uložiť zmeny'}
             </Button>
           </Box>
         </Box>
