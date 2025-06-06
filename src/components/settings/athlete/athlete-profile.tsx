@@ -16,7 +16,7 @@ import SportSelect from '@/components/select-popover/sport-select'
 import ClubSelect from '@/components/select-popover/club-select'
 import LoadingSpinner from '@/components/loading/loading-spinner'
 import Box from '@/components/box'
-import { cn } from '@/lib/utils'
+import { cn } from '@/utils/cn'
 import CoachSelect from './coach-select'
 
 interface AthleteFormData {

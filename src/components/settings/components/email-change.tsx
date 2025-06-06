@@ -12,7 +12,7 @@ import useFetchUser from '../hooks/useFetchUser'
 import { updateUserData } from '@/services/user'
 import { useQueryClient, useMutation } from '@tanstack/react-query'
 import LoadingSpinner from '@/components/loading/loading-spinner'
-import { cn } from '@/lib/utils'
+import { cn } from '@/utils/cn'
 
 interface EmailChangeProps {
   userId: string

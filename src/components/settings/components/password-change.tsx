@@ -10,7 +10,7 @@ import ErrorModal from '@/components/error-modal'
 import SuccessModal from '@/components/success-modal'
 import LoadingSpinner from '@/components/loading/loading-spinner'
 import Box from '@/components/box'
-import { cn } from '@/lib/utils'
+import { cn } from '@/utils/cn'
 
 interface PasswordChangeProps {
   userId: string

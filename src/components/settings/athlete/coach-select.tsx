@@ -1,7 +1,7 @@
 import React from 'react'
 import { FormControl } from '@mui/material'
 import { Input } from '@/components/ui/input'
-import { cn } from '@/lib/utils'
+import { cn } from '@/utils/cn'
 
 interface CoachSelectProps {
   coachName: string
