@@ -2,9 +2,8 @@ import React, { useState } from 'react'
 import { Typography, Card, CardContent } from '@mui/material'
 import LoadingSpinner from '../loading/loading-spinner'
 import { useFetchAthlete } from '../../api/hooks/useAthleteQuery'
-import useFetchTestResults from './hooks/useFetchTestResults'
+import { useTestResultsByAthleteAndType } from '@/api/hooks/useFetchResults'
 import DateFilter from './date-filter/index'
-//import { useFetchUserById } from '@/api/hooks/useUserQuery'
 import Box from '@/components/box'
 import PnoeComparisonPanel from './comparison-panel/pnoe-comparison'
 import InbodyComparisonPanel from './comparison-panel/inbody-comparison'
@@ -25,11 +24,11 @@ const TestResultsList: React.FC<SportTestsProps> = ({ userId, onResultClick, tes
     error: athleteError,
   } = useFetchAthlete(userId)
 
-  const { testResults, isFetchingTestResults, testResultsError } = useFetchTestResults(
-    testType,
-    athlete?.id,
-  )
-  //const { data: userData, isLoading, error } = useFetchUserById(userId)
+  const {
+    data: testResults,
+    isLoading: isFetchingTestResults,
+    error: testResultsError,
+  } = useTestResultsByAthleteAndType(testType, athlete?.id)
 
   if (isFetchingTestResults || isFetchingAthleteId) {
     return <LoadingSpinner />
@@ -43,7 +42,7 @@ const TestResultsList: React.FC<SportTestsProps> = ({ userId, onResultClick, tes
     )
   }
 
-  const docs = testResults || []
+  const docs = testResults?.docs || []
   const flattenResults = (results: any[]) => results.flat()
   const flattenedTestResults = flattenResults(docs)
 
